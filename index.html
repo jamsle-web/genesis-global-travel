@@ -1708,114 +1708,237 @@
         };
 
         // ===== FUNCIÓN DE ENVÍO REAL CON EMAILJS + WHATSAPP =====
-        window.submitRequest = function() {
-            // Recopilar datos
-            const origen = document.getElementById('origenInput').value.trim();
-            const destino = document.getElementById('destinoInput').value.trim();
-            const fechaViaje = document.getElementById('fechaViaje').value;
-            const fechaRegreso = document.getElementById('fechaRegreso').value;
-            const adultos = document.getElementById('adultos').value;
-            const ninos = document.getElementById('ninos').value;
-            const tipoSelect = document.getElementById('tipoViaje');
-            const tipo = tipoSelect.options[tipoSelect.selectedIndex].text;
-            const nombre = document.getElementById('nombre').value.trim();
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const residencia = document.getElementById('residencia').value.trim();
-            const comentarios = document.getElementById('comentarios').value.trim();
+     window.submitRequest = async function() {
 
-            // Validar campos requeridos
-            if (!origen || !destino || !nombre || !whatsapp || !email || !residencia) {
-                alert('⚠️ Por favor, completa todos los datos requeridos (origen, destino, nombre, WhatsApp, email y residencia).');
-                return;
-            }
+    const origen = document.getElementById('origenInput').value.trim();
+    const destino = document.getElementById('destinoInput').value.trim();
+    const fechaViaje = document.getElementById('fechaViaje').value;
+    const fechaRegreso = document.getElementById('fechaRegreso').value;
+    const adultos = document.getElementById('adultos').value;
+    const ninos = document.getElementById('ninos').value;
 
-            // Deshabilitar botón para evitar múltiples envíos
-            const btn = document.getElementById('enviarBtn');
-            btn.disabled = true;
-            btn.textContent = 'Enviando...';
+    const tipoSelect = document.getElementById('tipoViaje');
+    const tipo = tipoSelect.options[typeSelect.selectedIndex].text;
 
-            // Verificar que EmailJS esté disponible
-            if (typeof emailjs === 'undefined') {
-                alert('❌ Error: El servicio de correo no está disponible. Por favor, recarga la página e intenta de nuevo.');
-                btn.disabled = false;
-                btn.textContent = 'Enviar solicitud →';
-                return;
-            }
+    const nombre = document.getElementById('nombre').value.trim();
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const residencia = document.getElementById('residencia').value.trim();
+    const comentarios = document.getElementById('comentarios').value.trim();
 
-            // Preparar parámetros para EmailJS
-            const templateParams = {
-                to_email: 'porcenatjamsle07@gmail.com',
-                origen: origen,
-                destino: destino,
-                tipo: tipo,
-                fecha_salida: fechaViaje || 'No especificada',
-                fecha_regreso: fechaRegreso || 'No especificada',
-                viajeros: `${adultos} adultos${ninos > 0 ? `, ${ninos} niños` : ''}`,
-                nombre: nombre,
-                email: email,
-                whatsapp: whatsapp,
-                residencia: residencia,
-                comentarios: comentarios || 'Ninguno'
-            };
+    // Validación
+    if (!origen || !destino || !nombre || !whatsapp || !email || !residencia) {
+        alert(
+            '⚠️ Por favor, completa todos los datos requeridos.'
+        );
+        return;
+    }
 
-            console.log('📧 Enviando solicitud con EmailJS...', templateParams);
+    const btn = document.getElementById('enviarBtn');
 
-            // Enviar mediante EmailJS
-            emailjs.send('service_q28ua8c', 'template_2t8g1pc', templateParams)
-                .then(function(response) {
-                    console.log('✅ Email enviado correctamente:', response);
+    btn.disabled = true;
+    btn.textContent = 'Guardando solicitud...';
 
-                    // Generar mensaje de WhatsApp con el formato solicitado
-                    const mensajeWhatsApp = `📩 NUEVA SOLICITUD DE VIAJE — GÉNESIS GLOBAL
+    try {
 
-        ✈️ INFORMACIÓN DEL VIAJE
+        // =====================================================
+        // 1. GUARDAR EN SUPABASE
+        // =====================================================
 
-        País de origen/residencia: ${residencia}
-        Origen: ${origen}
-        Destino: ${destino}
-        Tipo de viaje: ${tipo}
-        Fecha de salida: ${fechaViaje || 'No especificada'}
-        Fecha de regreso: ${fechaRegreso || 'No especificada'}
-        Número de viajeros: ${adultos} adultos${ninos > 0 ? `, ${ninos} niños` : ''}
+        if (
+            typeof window.saveTravelRequest !== 'function'
+        ) {
+            throw new Error(
+                'La conexión con Supabase no está disponible.'
+            );
+        }
 
-        👤 DATOS DEL CLIENTE
+        await window.saveTravelRequest({
 
-        Nombre completo: ${nombre}
-        Email: ${email}
-        WhatsApp / Teléfono: ${whatsapp}
+            origen: origen,
+            destino: destino,
 
-        💬 COMENTARIOS
+            fechaViaje:
+                fechaViaje || null,
 
-        ${comentarios || 'Ninguno'}`;
+            fechaRegreso:
+                fechaRegreso || null,
 
-                    // Mostrar éxito
-                    alert('✅ ¡Solicitud enviada con éxito!\n\n📧 Se ha enviado un correo a GÉNESIS GLOBAL.\n📱 Se abrirá WhatsApp para contactar al asesor.');
+            adultos:
+                Number(adultos || 1),
 
-                    // Abrir WhatsApp con el número del asesor
-                    const urlWhatsApp = `https://wa.me/18099995904?text=${encodeURIComponent(mensajeWhatsApp)}`;
-                    window.open(urlWhatsApp, '_blank');
+            ninos:
+                Number(ninos || 0),
 
-                    // Restaurar botón
-                    btn.disabled = false;
-                    btn.textContent = 'Enviar solicitud →';
-                }, function(error) {
-                    console.error('❌ Error al enviar email:', error);
+            tipo:
+                tipo,
 
-                    // Mostrar error detallado
-                    let mensajeError = '❌ Hubo un error al enviar la solicitud.\n\n';
-                    if (error.text) {
-                        mensajeError += 'Detalle: ' + error.text + '\n\n';
-                    }
-                    mensajeError += 'Por favor, intenta de nuevo o contacta directamente por WhatsApp al +1 (809) 999-5904.';
+            nombre:
+                nombre,
 
-                    alert(mensajeError);
+            whatsapp:
+                whatsapp,
 
-                    // Restaurar botón para permitir reintentar
-                    btn.disabled = false;
-                    btn.textContent = 'Enviar solicitud →';
-                });
+            email:
+                email,
+
+            residencia:
+                residencia,
+
+            comentarios:
+                comentarios || null
+        });
+
+
+        console.log(
+            '✅ Solicitud guardada en Supabase'
+        );
+
+
+        // =====================================================
+        // 2. ENVIAR EMAIL
+        // =====================================================
+
+        if (typeof emailjs === 'undefined') {
+            throw new Error(
+                'EmailJS no está disponible.'
+            );
+        }
+
+        btn.textContent = 'Enviando solicitud...';
+
+        const templateParams = {
+
+            to_email:
+                'porcenatjamsle07@gmail.com',
+
+            origen:
+                origen,
+
+            destino:
+                destino,
+
+            tipo:
+                tipo,
+
+            fecha_salida:
+                fechaViaje || 'No especificada',
+
+            fecha_regreso:
+                fechaRegreso || 'No especificada',
+
+            viajeros:
+                `${adultos} adultos${
+                    Number(ninos) > 0
+                        ? `, ${ninos} niños`
+                        : ''
+                }`,
+
+            nombre:
+                nombre,
+
+            email:
+                email,
+
+            whatsapp:
+                whatsapp,
+
+            residencia:
+                residencia,
+
+            comentarios:
+                comentarios || 'Ninguno'
         };
+
+
+        await emailjs.send(
+            'service_q28ua8c',
+            'template_2t8g1pc',
+            templateParams
+        );
+
+
+        console.log(
+            '✅ Email enviado correctamente'
+        );
+
+
+        // =====================================================
+        // 3. WHATSAPP
+        // =====================================================
+
+        const mensajeWhatsApp =
+`📩 NUEVA SOLICITUD DE VIAJE — GÉNESIS GLOBAL
+
+✈️ INFORMACIÓN DEL VIAJE
+
+País de origen/residencia: ${residencia}
+Origen: ${origen}
+Destino: ${destino}
+Tipo de viaje: ${tipo}
+Fecha de salida: ${fechaViaje || 'No especificada'}
+Fecha de regreso: ${fechaRegreso || 'No especificada'}
+Número de viajeros: ${adultos} adultos${
+    Number(ninos) > 0
+        ? `, ${ninos} niños`
+        : ''
+}
+
+👤 DATOS DEL CLIENTE
+
+Nombre completo: ${nombre}
+Email: ${email}
+WhatsApp / Teléfono: ${whatsapp}
+
+💬 COMENTARIOS
+
+${comentarios || 'Ninguno'}`;
+
+
+        const urlWhatsApp =
+            `https://wa.me/18099995904?text=${encodeURIComponent(
+                mensajeWhatsApp
+            )}`;
+
+
+        // =====================================================
+        // 4. ÉXITO
+        // =====================================================
+
+        alert(
+            '✅ ¡Solicitud enviada correctamente!\\n\\n' +
+            'Tu solicitud fue registrada y nuestro equipo ' +
+            'recibirá la información.\\n\\n' +
+            'Ahora se abrirá WhatsApp para continuar la atención.'
+        );
+
+
+        window.open(
+            urlWhatsApp,
+            '_blank'
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            '❌ Error enviando solicitud:',
+            error
+        );
+
+        alert(
+            '❌ No pudimos completar la solicitud.\\n\\n' +
+            'Por favor, inténtalo nuevamente o contáctanos ' +
+            'directamente por WhatsApp al +1 (809) 999-5904.'
+        );
+
+    } finally {
+
+        btn.disabled = false;
+        btn.textContent = 'Enviar solicitud →';
+
+    }
+};
 
         // ===== NAVEGACIÓN Y UTILIDADES =====
         window.scrollToId = function(id) {
