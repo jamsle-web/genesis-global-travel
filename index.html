@@ -830,7 +830,7 @@
             transform: translateY(0) scale(1);
         }
 
-        /* ===== RESPONSIVE ===== */
+             /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .cards {
                 grid-template-columns: repeat(2, 1fr);
@@ -914,6 +914,13 @@
                 width: 100%;
                 justify-content: center;
             }
+            .lang-selector {
+                margin: 4px 0 !important;
+            }
+            .lang-selector button {
+                font-size: 18px !important;
+                padding: 2px 4px !important;
+            }
         }
         @media (max-width: 600px) {
             .shell {
@@ -972,6 +979,14 @@
                 width: 70px;
                 height: 70px;
             }
+            .lang-selector {
+                margin: 4px 0 !important;
+                padding: 2px 4px !important;
+            }
+            .lang-selector button {
+                font-size: 16px !important;
+                padding: 2px 3px !important;
+            }
         }
     </style>
 </head>
@@ -997,12 +1012,12 @@
 </button>
             <button class="cta" onclick="scrollToId('planner')">Planificar mi viaje →</button>
         </div>
-        <!-- Selector de idioma -->
-<div class="lang-selector">
-    <button class="active" data-lang="es" title="Español" onclick="setLanguage('es')">🇪🇸</button>
-    <button data-lang="en" title="English" onclick="setLanguage('en')">🇬🇧</button>
-    <button data-lang="fr" title="Français" onclick="setLanguage('fr')">🇫🇷</button>
-    <button data-lang="pt" title="Português" onclick="setLanguage('pt')">🇵🇹</button>
+     <!-- Selector de idioma -->
+<div class="lang-selector" style="display:flex;gap:4px;background:rgba(255,255,255,0.05);border-radius:999px;padding:4px 8px;border:1px solid rgba(255,255,255,0.08);margin:0 8px;">
+    <button onclick="translatePage('es')" style="background:none;border:0;font-size:22px;padding:4px 6px;cursor:pointer;border-radius:999px;transition:transform 0.2s;opacity:0.6;filter:grayscale(0.6);" onmouseover="this.style.transform='scale(1.15)';this.style.opacity='0.9'" onmouseout="this.style.transform='scale(1)';this.style.opacity='0.6'">🇪🇸</button>
+    <button onclick="translatePage('en')" style="background:none;border:0;font-size:22px;padding:4px 6px;cursor:pointer;border-radius:999px;transition:transform 0.2s;opacity:0.6;filter:grayscale(0.6);" onmouseover="this.style.transform='scale(1.15)';this.style.opacity='0.9'" onmouseout="this.style.transform='scale(1)';this.style.opacity='0.6'">🇬🇧</button>
+    <button onclick="translatePage('fr')" style="background:none;border:0;font-size:22px;padding:4px 6px;cursor:pointer;border-radius:999px;transition:transform 0.2s;opacity:0.6;filter:grayscale(0.6);" onmouseover="this.style.transform='scale(1.15)';this.style.opacity='0.9'" onmouseout="this.style.transform='scale(1)';this.style.opacity='0.6'">🇫🇷</button>
+    <button onclick="translatePage('pt')" style="background:none;border:0;font-size:22px;padding:4px 6px;cursor:pointer;border-radius:999px;transition:transform 0.2s;opacity:0.6;filter:grayscale(0.6);" onmouseover="this.style.transform='scale(1.15)';this.style.opacity='0.9'" onmouseout="this.style.transform='scale(1)';this.style.opacity='0.6'">🇵🇹</button>
 </div>
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
@@ -2039,6 +2054,58 @@ ${comentarios || 'Ninguno'}`;
 
         console.log('✅ GÉNESIS GLOBAL — Todo listo con WhatsApp integrado');
     </script>
+    <!-- ===== SCRIPT DE TRADUCCIÓN AUTOMÁTICA ===== -->
+    <script>
+    function translatePage(lang) {
+        localStorage.setItem('genesis-lang', lang);
+        const elements = document.querySelectorAll('body *:not(script):not(style):not(noscript)');
+        elements.forEach(el => {
+            if (el.children.length === 0 && el.textContent.trim() !== '') {
+                const originalText = el.textContent.trim();
+                if (originalText.length > 1 && !originalText.match(/^[0-9\s\.\,\-\+\$\%\€]+$/)) {
+                    translateText(originalText, lang, el);
+                }
+            }
+        });
+        document.querySelectorAll('.lang-selector button').forEach(btn => {
+            btn.style.opacity = '0.6';
+            btn.style.filter = 'grayscale(0.6)';
+            btn.style.background = 'none';
+            btn.style.transform = 'scale(1)';
+        });
+        const activeBtn = document.querySelector(`.lang-selector button[onclick="translatePage('${lang}')"]`);
+        if (activeBtn) {
+            activeBtn.style.opacity = '1';
+            activeBtn.style.filter = 'grayscale(0)';
+            activeBtn.style.background = 'rgba(102, 230, 196, 0.15)';
+            activeBtn.style.transform = 'scale(1.1)';
+        }
+    }
 
+    function translateText(text, targetLang, element) {
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data[0] && data[0][0] && data[0][0][0]) {
+                    const translated = data[0][0][0];
+                    if (translated !== text) {
+                        element.textContent = translated;
+                    }
+                }
+            })
+            .catch(error => {
+                element.textContent = text;
+            });
+    }
+
+    // Cargar idioma guardado al iniciar
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedLang = localStorage.getItem('genesis-lang');
+        if (savedLang && ['es','en','fr','pt'].includes(savedLang)) {
+            setTimeout(() => translatePage(savedLang), 800);
+        }
+    });
+    </script>
 </body>
 </html>
