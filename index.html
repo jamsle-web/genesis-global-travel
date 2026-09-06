@@ -832,7 +832,159 @@
             transform: translateY(0) scale(1);
         }
 
-             /* ===== RESPONSIVE ===== */
+        /* ===== SELECTOR DE IDIOMA PROFESIONAL ===== */
+
+.language-switcher {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 8px;
+    z-index: 100;
+}
+
+.language-current {
+    height: 42px;
+    min-width: 76px;
+    padding: 0 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.055);
+    color: #f3f8ff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    cursor: pointer;
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.language-current:hover,
+.language-switcher.open .language-current {
+    background: rgba(102, 230, 196, 0.09);
+    border-color: rgba(102, 230, 196, 0.28);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+}
+
+.language-current svg:first-child {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: #66e6c4;
+    stroke-width: 1.7;
+}
+
+.language-chevron {
+    width: 13px;
+    height: 13px;
+    fill: none;
+    stroke: #9db0c7;
+    stroke-width: 2;
+    transition: transform .25s ease;
+}
+
+.language-switcher.open .language-chevron {
+    transform: rotate(180deg);
+}
+
+.language-menu {
+    position: absolute;
+    top: calc(100% + 9px);
+    right: 0;
+    width: 190px;
+    padding: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 16px;
+    background: rgba(6, 16, 29, 0.96);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .38);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-7px) scale(.97);
+    transform-origin: top right;
+    transition:
+        opacity .2s ease,
+        transform .2s ease,
+        visibility .2s ease;
+}
+
+.language-switcher.open .language-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.language-option {
+    width: 100%;
+    min-height: 43px;
+    display: grid;
+    grid-template-columns: 34px 1fr 18px;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 9px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: #b8c8db;
+    font-family: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        background .2s ease,
+        color .2s ease;
+}
+
+.language-option:hover {
+    background: rgba(255, 255, 255, .055);
+    color: #fff;
+}
+
+.language-option.active {
+    background: rgba(102, 230, 196, .08);
+    color: #f3f8ff;
+}
+
+.language-flag {
+    width: 30px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, .05);
+    color: #66e6c4;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .04em;
+}
+
+.language-name {
+    white-space: nowrap;
+}
+
+.language-check {
+    color: #66e6c4;
+    font-size: 14px;
+    opacity: 0;
+    transform: scale(.7);
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+}
+
+.language-option.active .language-check {
+    opacity: 1;
+    transform: scale(1);
+}
         @media (max-width: 1024px) {
             .cards {
                 grid-template-columns: repeat(2, 1fr);
@@ -916,13 +1068,18 @@
                 width: 100%;
                 justify-content: center;
             }
-            .lang-selector {
-                margin: 4px 0 !important;
-            }
-            .lang-selector button {
-                font-size: 18px !important;
-                padding: 2px 4px !important;
-            }
+            .language-switcher {
+    margin: 4px 0;
+}
+
+.language-current {
+    height: 40px;
+    min-width: 70px;
+}
+
+.language-menu {
+    right: 0;
+}
         }
         @media (max-width: 600px) {
             .shell {
@@ -981,14 +1138,25 @@
                 width: 70px;
                 height: 70px;
             }
-            .lang-selector {
-                margin: 4px 0 !important;
-                padding: 2px 4px !important;
-            }
-            .lang-selector button {
-                font-size: 16px !important;
-                padding: 2px 3px !important;
-            }
+            .language-switcher {
+    margin: 4px 0;
+}
+
+.language-current {
+    min-width: 66px;
+    height: 38px;
+    padding: 0 9px;
+    gap: 6px;
+}
+
+.language-current svg:first-child {
+    width: 16px;
+    height: 16px;
+}
+
+.language-menu {
+    width: 180px;
+}
         }
     </style>
 </head>
