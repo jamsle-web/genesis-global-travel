@@ -66,37 +66,37 @@ const services = {
 
 
 /* =========================================================
-   3. MENSAJES DE WHATSAPP
+   3. MENSAJES INTELIGENTES DE WHATSAPP
    ========================================================= */
 
 const messages = {
 
   general:
-    'Hola, GÉNESIS GLOBAL. Me gustaría conocer más sobre sus otros servicios para mi proyecto o negocio.',
+    'Hola, GÉNESIS GLOBAL 👋 Me gustaría conocer sus otros servicios. Quiero recibir orientación sobre mi proyecto o negocio. ¿Podrían ayudarme?',
 
   web:
-    'Hola, GÉNESIS GLOBAL. Estoy interesado/a en Desarrollo Web. Me gustaría hablar sobre mi proyecto.',
+    'Hola, GÉNESIS GLOBAL 👋 Estoy interesado/a en Desarrollo Web. Quiero crear o mejorar un sitio web para mi proyecto. Me gustaría conocer las opciones, el proceso y el presupuesto.',
 
   branding:
-    'Hola, GÉNESIS GLOBAL. Estoy interesado/a en Branding e Identidad Visual. Me gustaría hablar sobre mi marca.',
+    'Hola, GÉNESIS GLOBAL 👋 Estoy interesado/a en Branding e Identidad Visual. Quiero trabajar la imagen de mi marca y me gustaría conocer el proceso y las opciones disponibles.',
 
   marketing:
-    'Hola, GÉNESIS GLOBAL. Estoy interesado/a en Marketing Digital. Me gustaría conocer cómo pueden ayudar a crecer mi negocio.',
+    'Hola, GÉNESIS GLOBAL 👋 Estoy interesado/a en Marketing Digital. Quiero mejorar la presencia y el crecimiento de mi negocio. Me gustaría conocer cómo pueden ayudarme.',
 
   'private-brand':
-    'Hola, GÉNESIS GLOBAL. Estoy interesado/a en crear una Marca Privada. Me gustaría conversar sobre mi idea.',
+    'Hola, GÉNESIS GLOBAL 👋 Estoy interesado/a en crear una Marca Privada. Tengo una idea o proyecto y me gustaría recibir orientación sobre el proceso y las opciones.',
 
   ecommerce:
-    'Hola, GÉNESIS GLOBAL. Estoy interesado/a en crear una tienda E-commerce. Me gustaría conocer las opciones.',
+    'Hola, GÉNESIS GLOBAL 👋 Estoy interesado/a en crear una tienda E-commerce. Me gustaría conocer las opciones, el proceso y cómo podemos comenzar.',
 
   content:
-    'Hola, GÉNESIS GLOBAL. Estoy interesado/a en Contenido & Multimedia. Me gustaría hablar sobre lo que necesito para mi negocio.',
+    'Hola, GÉNESIS GLOBAL 👋 Estoy interesado/a en Contenido & Multimedia. Necesito apoyo para crear contenido para mi proyecto o negocio. Me gustaría conocer las opciones.',
 
   ai:
-    'Hola, GÉNESIS GLOBAL. Estoy interesado/a en soluciones de IA y Automatización para mi negocio. Me gustaría conocer más.',
+    'Hola, GÉNESIS GLOBAL 👋 Estoy interesado/a en soluciones de IA y Automatización para mi negocio. Me gustaría conocer qué procesos pueden automatizarse y cómo podemos comenzar.',
 
   consulting:
-    'Hola, GÉNESIS GLOBAL. Estoy interesado/a en Consultoría para Negocios. Me gustaría conversar sobre mi proyecto.'
+    'Hola, GÉNESIS GLOBAL 👋 Estoy interesado/a en Consultoría para Negocios. Me gustaría recibir orientación sobre mi proyecto y conocer cómo pueden ayudarme.'
 };
 
 
@@ -151,10 +151,12 @@ async function logLead(type) {
       });
 
     if (error) {
+
       console.warn(
         'GÉNESIS GLOBAL: no se pudo registrar el contacto en Supabase.',
-        error
+        error.message
       );
+
     }
 
   } catch (error) {
@@ -163,6 +165,7 @@ async function logLead(type) {
       'GÉNESIS GLOBAL: error inesperado al registrar el contacto.',
       error
     );
+
   }
 }
 
@@ -181,7 +184,12 @@ function setupWhatsAppLinks() {
     const type =
       link.dataset.whatsapp;
 
+    /* -----------------------------------------------------
+       VALIDAR SERVICIO
+       ----------------------------------------------------- */
+
     if (!services[type]) {
+
       console.warn(
         `GÉNESIS GLOBAL: servicio desconocido "${type}".`
       );
@@ -189,26 +197,92 @@ function setupWhatsAppLinks() {
       return;
     }
 
+
+    /* -----------------------------------------------------
+       EVITAR DUPLICAR EVENTOS
+       ----------------------------------------------------- */
+
+    if (
+      link.dataset.genesisWhatsappReady === 'true'
+    ) {
+      return;
+    }
+
+    link.dataset.genesisWhatsappReady = 'true';
+
+
+    /* -----------------------------------------------------
+       CONFIGURAR ENLACE
+       ----------------------------------------------------- */
+
     link.href =
       buildWhatsAppUrl(type);
 
-    link.target = '_blank';
+    link.target =
+      '_blank';
 
     link.rel =
       'noopener noreferrer';
 
-    link.addEventListener('click', () => {
 
-      void logLead(type);
+    /* -----------------------------------------------------
+       REGISTRAR CONTACTO
+       ----------------------------------------------------- */
 
-    });
+    link.addEventListener(
+      'click',
+      () => {
+
+        /*
+         * WhatsApp se abre inmediatamente.
+         * Supabase registra el contacto
+         * de forma independiente.
+         */
+
+        void logLead(type);
+
+      }
+    );
 
   });
 }
 
 
 /* =========================================================
-   7. NAVEGACIÓN FLUIDA
+   7. API INTERNA DE WHATSAPP
+   ========================================================= */
+
+window.genesisWhatsApp = {
+
+  buildUrl: buildWhatsAppUrl,
+
+  open: (type) => {
+
+    if (!services[type]) {
+
+      console.warn(
+        `GÉNESIS GLOBAL: no se puede abrir WhatsApp para "${type}".`
+      );
+
+      return;
+    }
+
+    window.open(
+      buildWhatsAppUrl(type),
+      '_blank',
+      'noopener,noreferrer'
+    );
+
+    void logLead(type);
+  },
+
+  logLead
+
+};
+
+
+/* =========================================================
+   8. NAVEGACIÓN FLUIDA
    ========================================================= */
 
 function setupSmoothNavigation() {
@@ -223,7 +297,10 @@ function setupSmoothNavigation() {
       'servicios'
     );
 
-  if (!explore || !servicesSection) {
+  if (
+    !explore ||
+    !servicesSection
+  ) {
     return;
   }
 
@@ -239,12 +316,15 @@ function setupSmoothNavigation() {
         ).matches;
 
       servicesSection.scrollIntoView({
+
         behavior:
           reducedMotion
             ? 'auto'
             : 'smooth',
 
-        block: 'start'
+        block:
+          'start'
+
       });
 
     }
@@ -253,23 +333,27 @@ function setupSmoothNavigation() {
 
 
 /* =========================================================
-   8. AÑO AUTOMÁTICO DEL FOOTER
+   9. AÑO AUTOMÁTICO DEL FOOTER
    ========================================================= */
 
 function setupCurrentYear() {
 
   const year =
-    document.getElementById('year');
+    document.getElementById(
+      'year'
+    );
 
   if (year) {
+
     year.textContent =
       new Date().getFullYear();
+
   }
 }
 
 
 /* =========================================================
-   9. MOTION
+   10. MOTION
    ========================================================= */
 
 async function loadMotion() {
@@ -560,21 +644,16 @@ async function loadMotion() {
       error
     );
 
-    /*
-     * Si Motion falla, quitamos el estado de
-     * preparación para que ningún elemento
-     * quede oculto.
-     */
-
     document.body.classList.remove(
       'motion-ready'
     );
+
   }
 }
 
 
 /* =========================================================
-   10. INICIALIZACIÓN
+   11. INICIALIZACIÓN
    ========================================================= */
 
 document.addEventListener(
