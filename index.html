@@ -27,6 +27,8 @@
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
+    <!-- Sistema de idiomas GÉNESIS GLOBAL -->
+<script src="i18n.js"></script>
     
     <style>
         /* ===== RESET & BASE ===== */
@@ -1012,12 +1014,55 @@
 </button>
             <button class="cta" onclick="scrollToId('planner')">Planificar mi viaje →</button>
         </div>
-          <!-- Selector de idioma CON ANIMACIONES -->
-<div class="lang-selector" style="display:flex;gap:4px;background:rgba(255,255,255,0.08);border-radius:999px;padding:4px 6px;border:1px solid rgba(255,255,255,0.12);margin:0 8px;box-shadow:0 4px 20px rgba(0,0,0,0.2);">
-    <button onclick="translatePage('es')" data-lang="es" class="lang-btn active" style="background:none;border:0;font-size:22px;padding:5px 8px;cursor:pointer;border-radius:999px;transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);opacity:0.6;filter:grayscale(0.6);transform:scale(0.9);position:relative;" onmouseover="this.style.transform='scale(1.2)';this.style.opacity='0.9'" onmouseout="if(!this.classList.contains('active')){this.style.transform='scale(0.9)';this.style.opacity='0.6'}">🇪🇸</button>
-    <button onclick="translatePage('en')" data-lang="en" class="lang-btn" style="background:none;border:0;font-size:22px;padding:5px 8px;cursor:pointer;border-radius:999px;transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);opacity:0.6;filter:grayscale(0.6);transform:scale(0.9);position:relative;" onmouseover="this.style.transform='scale(1.2)';this.style.opacity='0.9'" onmouseout="if(!this.classList.contains('active')){this.style.transform='scale(0.9)';this.style.opacity='0.6'}">🇬🇧</button>
-    <button onclick="translatePage('fr')" data-lang="fr" class="lang-btn" style="background:none;border:0;font-size:22px;padding:5px 8px;cursor:pointer;border-radius:999px;transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);opacity:0.6;filter:grayscale(0.6);transform:scale(0.9);position:relative;" onmouseover="this.style.transform='scale(1.2)';this.style.opacity='0.9'" onmouseout="if(!this.classList.contains('active')){this.style.transform='scale(0.9)';this.style.opacity='0.6'}">🇫🇷</button>
-    <button onclick="translatePage('pt')" data-lang="pt" class="lang-btn" style="background:none;border:0;font-size:22px;padding:5px 8px;cursor:pointer;border-radius:999px;transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);opacity:0.6;filter:grayscale(0.6);transform:scale(0.9);position:relative;" onmouseover="this.style.transform='scale(1.2)';this.style.opacity='0.9'" onmouseout="if(!this.classList.contains('active')){this.style.transform='scale(0.9)';this.style.opacity='0.6'}">🇵🇹</button>
+         <!-- ===== SELECTOR DE IDIOMA ===== -->
+<div class="language-switcher" id="languageSwitcher">
+    <button
+        class="language-current"
+        id="languageCurrent"
+        type="button"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-label="Seleccionar idioma"
+    >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M3 12h18"></path>
+            <path d="M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9"></path>
+            <path d="M12 3c-2.5 2.5-3.5 5.5-3.5 9s1 6.5 3.5 9"></path>
+        </svg>
+
+        <span id="languageCurrentCode">ES</span>
+
+        <svg class="language-chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m6 9 6 6 6-6"></path>
+        </svg>
+    </button>
+
+    <div class="language-menu" id="languageMenu">
+        <button type="button" class="language-option active" data-language="es">
+            <span class="language-flag">ES</span>
+            <span class="language-name">Español</span>
+            <span class="language-check">✓</span>
+        </button>
+
+        <button type="button" class="language-option" data-language="en">
+            <span class="language-flag">EN</span>
+            <span class="language-name">English</span>
+            <span class="language-check">✓</span>
+        </button>
+
+        <button type="button" class="language-option" data-language="fr">
+            <span class="language-flag">FR</span>
+            <span class="language-name">Français</span>
+            <span class="language-check">✓</span>
+        </button>
+
+        <button type="button" class="language-option" data-language="pt">
+            <span class="language-flag">PT</span>
+            <span class="language-name">Português</span>
+            <span class="language-check">✓</span>
+        </button>
+    </div>
 </div>
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
