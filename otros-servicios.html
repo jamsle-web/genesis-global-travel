@@ -976,7 +976,46 @@
 
   <!-- JavaScript de esta página -->
   <script type="module" src="otros-servicios.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script type="module" src="otros-servicios.js"></script>
 
+<!-- MENÚ MÓVIL -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const menuButton = document.getElementById("menu-button");
+    const links = document.getElementById("links");
+
+    if (!menuButton || !links) return;
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = links.classList.toggle("open");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+      menuButton.textContent = isOpen ? "×" : "☰";
+    });
+
+    links.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        links.classList.remove("open");
+
+        menuButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+        menuButton.textContent = "☰";
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
 </body>
 </html>
 ```
