@@ -18,7 +18,57 @@ const supabaseClient = window.supabase.createClient(
 
 // Disponible para el resto del sitio
 window.genesisSupabase = supabaseClient;
+// ============================================================
+// ANALYTICS — REGISTRAR VISITAS
+// ============================================================
 
+function getGenesisVisitorId() {
+    const storageKey = "genesis_global_visitor_id";
+
+    let visitorId = localStorage.getItem(storageKey);
+
+    if (!visitorId) {
+        visitorId =
+            window.crypto?.randomUUID?.() ||
+            `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+        localStorage.setItem(storageKey, visitorId);
+    }
+
+    return visitorId;
+}
+
+window.trackGenesisPageView = async function () {
+    try {
+        const { error } = await window.genesisSupabase
+            .from("site_page_views")
+            .insert({
+                visitor_id: getGenesisVisitorId(),
+                page_path: window.location.pathname,
+                page_title: document.title || null,
+                referrer: document.referrer || null,
+                user_agent: navigator.userAgent || null
+            });
+
+        if (error) {
+            console.warn(
+                "Analytics GÉNESIS GLOBAL:",
+                error.message
+            );
+        }
+    } catch (error) {
+        console.warn(
+            "No se pudo registrar la visita:",
+            error
+        );
+    }
+};
+
+
+// Registrar visita cuando la página carga
+document.addEventListener("DOMContentLoaded", () => {
+    window.trackGenesisPageView();
+});
 
 // ============================================================
 // GUARDAR SOLICITUD DE VIAJE
