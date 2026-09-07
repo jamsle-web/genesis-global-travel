@@ -656,13 +656,18 @@ function applyGenesisLanguage(language) {
     /*
      * ELEMENTOS DE CONFIANZA
      */
-    const trustElements = document.querySelectorAll('.trust-item');
+   const trustElements = document.querySelectorAll('.trust span');
 
-    if (trustElements.length >= 3) {
-        trustElements[0].textContent = genesisGetTranslation('hero.human');
-        trustElements[1].textContent = genesisGetTranslation('hero.clear');
-        trustElements[2].textContent = genesisGetTranslation('hero.support');
-    }
+if (trustElements.length >= 3) {
+    trustElements[0].textContent =
+        genesisGetTranslation('hero.human');
+
+    trustElements[1].textContent =
+        genesisGetTranslation('hero.clear');
+
+    trustElements[2].textContent =
+        genesisGetTranslation('hero.support');
+}
 
     /*
      * PLANNER
@@ -689,7 +694,7 @@ function applyGenesisLanguage(language) {
         /*
          * STEP 1
          */
-        const step1 = document.querySelector('#xxyrx7');
+        const step1 = document.querySelector('#step1');
 
         if (step1) {
 
@@ -729,7 +734,7 @@ function applyGenesisLanguage(language) {
         /*
          * STEP 2
          */
-        const step2 = document.querySelector('#1zqffm');
+      const step2 = document.querySelector('#step2');
 
         if (step2) {
 
@@ -796,7 +801,7 @@ function applyGenesisLanguage(language) {
         /*
          * STEP 3
          */
-        const step3 = document.querySelector('#rd8rqi');
+       const step3 = document.querySelector('#step3');
 
         if (step3) {
 
@@ -854,7 +859,7 @@ function applyGenesisLanguage(language) {
         /*
          * STEP 4
          */
-        const step4 = document.querySelector('#0l3k4k');
+        const step4 = document.querySelector('#step4');
 
         if (step4) {
 
@@ -928,15 +933,28 @@ function applyGenesisLanguage(language) {
     /*
      * Actualizar selector de idioma
      */
-    document.querySelectorAll('.lang-btn').forEach(button => {
-        button.classList.toggle(
-            'active',
-            button.dataset.lang === language
-        );
-    });
+  /*
+ * Actualizar selector de idioma profesional
+ */
+const languageCode = document.getElementById('languageCurrentCode');
 
-    console.log(`GÉNESIS GLOBAL: idioma cambiado a ${language}`);
+if (languageCode) {
+    const codes = {
+        es: 'ES',
+        en: 'EN',
+        fr: 'FR',
+        pt: 'PT'
+    };
+
+    languageCode.textContent = codes[language] || 'ES';
 }
+
+document.querySelectorAll('.language-option').forEach(option => {
+    option.classList.toggle(
+        'active',
+        option.dataset.language === language
+    );
+});
 
 
 /* =========================================================
@@ -981,5 +999,59 @@ document.addEventListener('DOMContentLoaded', () => {
      * No usamos localStorage.
      */
     applyGenesisLanguage('es');
+
+});
+    /* =========================================================
+   SELECTOR DE IDIOMA — ABRIR / CERRAR
+========================================================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const switcher = document.getElementById('languageSwitcher');
+    const currentButton = document.getElementById('languageCurrent');
+
+    if (!switcher || !currentButton) return;
+
+    currentButton.addEventListener('click', (event) => {
+
+        event.stopPropagation();
+
+        const isOpen = switcher.classList.toggle('open');
+
+        currentButton.setAttribute(
+            'aria-expanded',
+            String(isOpen)
+        );
+
+    });
+
+});
+    document.addEventListener('DOMContentLoaded', () => {
+
+    const switcher = document.getElementById('languageSwitcher');
+    const currentButton = document.getElementById('languageCurrent');
+
+    if (!switcher || !currentButton) return;
+
+    document.querySelectorAll('.language-option').forEach(option => {
+
+        option.addEventListener('click', () => {
+
+            const language = option.dataset.language;
+
+            if (typeof window.translatePage === 'function') {
+                window.translatePage(language);
+            }
+
+            switcher.classList.remove('open');
+
+            currentButton.setAttribute(
+                'aria-expanded',
+                'false'
+            );
+
+        });
+
+    });
 
 });
