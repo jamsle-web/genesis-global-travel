@@ -1720,12 +1720,13 @@ fetch(GEOJSON_URL)
     })
     .then(geojson => {
 
-        worldFeatures = geojson.features || [];
+     worldFeatures = geojson.features || [];
 
-        createCountryBorders(geojson);
+createCountryBorders(geojson);
 
-        console.log('✅ GeoJSON mundial cargado correctamente');
+createCountryFills(geojson);
 
+console.log('✅ GeoJSON mundial cargado correctamente');
     })
     .catch(error => {
 
@@ -1735,7 +1736,151 @@ fetch(GEOJSON_URL)
         );
 
     });
+/* ============================================================
+   CAPA VISUAL DE PAÍSES
+   ============================================================ */
 
+let countryFillGroup = null;
+
+function createCountryFills(geojson) {
+
+    // Eliminar capa anterior si existe
+    if (countryFillGroup) {
+        scene.remove(countryFillGroup);
+
+        countryFillGroup.traverse(obj => {
+            if (obj.geometry) obj.geometry.dispose();
+            if (obj.material) obj.material.dispose();
+        });
+    }
+
+    countryFillGroup = new THREE.Group();
+
+    geojson.features.forEach(feature => {
+
+        if (!feature.geometry) return;
+
+        const geometry = feature.geometry;
+
+        function createPolygon(rings) {
+
+            if (!rings || !rings.length) return;
+
+            const outerRing = rings[0];
+
+            if (!outerRing || outerRing.length < 3) {
+                return;
+            }
+
+            /*
+             * Convertimos longitud/latitud
+             * a coordenadas 2D para triangular
+             * el territorio.
+             */
+            const shapePoints = outerRing.map(([lon, lat]) => {
+
+                return new THREE.Vector2(
+                    lon,
+                    lat
+                );
+
+            });
+
+            const triangles =
+                THREE.ShapeUtils.triangulateShape(
+                    shapePoints,
+                    []
+                );
+
+            if (!triangles.length) return;
+
+            const positions = [];
+
+            triangles.forEach(triangle => {
+
+                triangle.forEach(index => {
+
+                    const [lon, lat] = outerRing[index];
+
+                    const point =
+                        latLonToVector3(
+                            lat,
+                            lon,
+                            1.006
+                        );
+
+                    positions.push(
+                        point.x,
+                        point.y,
+                        point.z
+                    );
+
+                });
+
+            });
+
+            if (!positions.length) return;
+
+            const fillGeometry =
+                new THREE.BufferGeometry();
+
+            fillGeometry.setAttribute(
+                'position',
+                new THREE.Float32BufferAttribute(
+                    positions,
+                    3
+                )
+            );
+
+            fillGeometry.computeVertexNormals();
+
+            const fillMaterial =
+                new THREE.MeshBasicMaterial({
+                    color: 0x66e6c4,
+                    transparent: true,
+                    opacity: 0.08,
+                    side: THREE.DoubleSide,
+                    depthWrite: false
+                });
+
+            const countryMesh =
+                new THREE.Mesh(
+                    fillGeometry,
+                    fillMaterial
+                );
+
+            countryMesh.userData.country =
+                feature;
+
+            countryFillGroup.add(
+                countryMesh
+            );
+        }
+
+        if (geometry.type === 'Polygon') {
+
+            createPolygon(
+                geometry.coordinates
+            );
+
+        } else if (
+            geometry.type === 'MultiPolygon'
+        ) {
+
+            geometry.coordinates.forEach(
+                polygon => {
+                    createPolygon(polygon);
+                }
+            );
+        }
+    });
+
+    scene.add(countryFillGroup);
+
+    console.log(
+        `🗺️ Capa visual de países creada: ${geojson.features.length}`
+    );
+}
         const cloudTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
         const cloudMat = new THREE.MeshPhongMaterial({
             map: cloudTexture,
