@@ -1802,19 +1802,127 @@ fetch(GEOJSON_URL)
         let hoveredCountry = null;
 
         function getCountryFromPosition(point) {
-            const pos = point.clone().normalize();
-            const lat = Math.asin(pos.y) * 180 / Math.PI;
-            const lon = Math.atan2(-pos.x, pos.z) * 180 / Math.PI;
-            let nearest = null;
-            let minDist = Infinity;
-            countryData.forEach(c => {
-                const d = Math.sqrt(Math.pow(lat - c.lat, 2) + Math.pow(lon - c.lon, 2));
-                if (d < minDist) { minDist = d;
-                    nearest = c; }
-            });
-            if (nearest && minDist < 20) return nearest;
-            return null;
+
+    // El GeoJSON todavía no está disponible
+    if (
+        !worldFeatures ||
+        worldFeatures.length === 0 ||
+        typeof window.geoContains !== 'function'
+    ) {
+        return null;
+    }
+
+    // Convertir el punto 3D del globo
+    // a coordenadas geográficas
+    const pos = point.clone().normalize();
+
+    const lat =
+        Math.asin(pos.y) * 180 / Math.PI;
+
+    const lon =
+        Math.atan2(-pos.x, pos.z) * 180 / Math.PI;
+
+    // d3-geo utiliza [longitud, latitud]
+    const coordinates = [lon, lat];
+
+    // Buscar el país cuyo polígono
+    // contiene realmente el punto
+    const feature = worldFeatures.find(feature => {
+
+        if (!feature || !feature.geometry) {
+            return false;
         }
+
+        try {
+            return window.geoContains(
+                feature,
+                coordinates
+            );
+        } catch (error) {
+
+            console.warn(
+                'Error comprobando país:',
+                error
+            );
+
+            return false;
+        }
+    });
+
+    // Si estamos sobre océano
+    // no existe ningún país
+    if (!feature) {
+        return null;
+    }
+
+    console.log(
+        '🌍 País detectado:',
+        feature.properties?.name,
+        feature.id
+    );
+
+    /*
+     * El GeoJSON utiliza códigos ISO-3
+     * mientras que countryData utiliza ISO-2.
+     *
+     * Esta conversión permite mantener
+     * nuestros 27 países actuales.
+     */
+    const iso3ToIso2 = {
+        CUB: 'CU',
+        BRA: 'BR',
+        DOM: 'DO',
+        MEX: 'MX',
+        USA: 'US',
+        ESP: 'ES',
+        ARG: 'AR',
+        COL: 'CO',
+        VEN: 'VE',
+        PER: 'PE',
+        CHL: 'CL',
+        ECU: 'EC',
+        URY: 'UY',
+        PRY: 'PY',
+        BOL: 'BO',
+        PAN: 'PA',
+        CRI: 'CR',
+        GTM: 'GT',
+        HND: 'HN',
+        NIC: 'NI',
+        SLV: 'SV',
+        FRA: 'FR',
+        ITA: 'IT',
+        DEU: 'DE',
+        GBR: 'GB',
+        PRT: 'PT',
+        CAN: 'CA'
+    };
+
+    const iso2 = iso3ToIso2[feature.id];
+
+    // Comprobar si ya tenemos
+    // ese país dentro de countryData
+    const existingCountry = countryData.find(
+        country => country.code === iso2
+    );
+
+    // Si existe, conservar sus datos,
+    // incluyendo bandera y nombre en español
+    if (existingCountry) {
+        return existingCountry;
+    }
+
+    // Para países que todavía no están
+    // en nuestros 27 marcadores
+    return {
+        name: feature.properties?.name || 'País',
+        code: feature.id || '',
+        lat: lat,
+        lon: lon,
+        flag: '🌍',
+        feature: feature
+    };
+}
 
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();
