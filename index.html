@@ -19,6 +19,13 @@
             }
         }
     </script>
+    <script type="module">
+    import { geoContains } from "https://esm.run/d3-geo@3.1.1";
+
+    window.geoContains = geoContains;
+
+    console.log("🌍 d3-geo cargado correctamente");
+</script>
 
     <!-- EmailJS - Cargado correctamente -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
