@@ -2084,9 +2084,30 @@ function createCountryFills(geojson) {
             if (intersects.length > 0) {
                 const point = intersects[0].point;
                 const country = getCountryFromPosition(point);
-                if (country) {
-                    selectedCountry = country;
-                    const destinoInput = document.getElementById('destinoInput');
+               if (country) {
+    selectedCountry = country;
+
+    if (selectedCountryMesh) {
+        selectedCountryMesh.material.opacity = 0.08;
+        selectedCountryMesh = null;
+    }
+
+    if (country.feature && countryFillGroup) {
+
+        countryFillGroup.traverse(mesh => {
+
+            if (
+                mesh.userData.country === country.feature &&
+                mesh.material
+            ) {
+                selectedCountryMesh = mesh;
+                mesh.material.opacity = 0.35;
+            }
+
+        });
+    }
+
+    const destinoInput = document.getElementById('destinoInput');
                     if (destinoInput) {
                         destinoInput.value = country.name;
                         destinoInput.dispatchEvent(new Event('input'));
