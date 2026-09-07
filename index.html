@@ -1611,6 +1611,128 @@
         });
         const earth = new THREE.Mesh(earthGeo, earthMat);
         scene.add(earth);
+        /* ============================================================
+   🌍 FRONTERAS REALES DE LOS PAÍSES — GEOJSON
+   ============================================================ */
+
+let worldFeatures = [];
+let countryBorders = null;
+
+const GEOJSON_URL =
+    'https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json';
+
+function latLonToVector3(lat, lon, radius = 1.014) {
+    const phi = (90 - lat) * Math.PI / 180;
+    const theta = (lon + 180) * Math.PI / 180;
+
+    return new THREE.Vector3(
+        -Math.sin(phi) * Math.cos(theta) * radius,
+        Math.cos(phi) * radius,
+        Math.sin(phi) * Math.sin(theta) * radius
+    );
+}
+
+function createCountryBorders(geojson) {
+
+    if (countryBorders) {
+        scene.remove(countryBorders);
+        countryBorders.traverse(obj => {
+            if (obj.geometry) obj.geometry.dispose();
+            if (obj.material) obj.material.dispose();
+        });
+    }
+
+    const borderGroup = new THREE.Group();
+
+    geojson.features.forEach(feature => {
+
+        if (!feature.geometry) return;
+
+        const geometry = feature.geometry;
+
+        function addRing(ring) {
+
+            if (!ring || ring.length < 2) return;
+
+            const points = [];
+
+            ring.forEach(([lon, lat]) => {
+                points.push(latLonToVector3(lat, lon));
+            });
+
+            const lineGeometry =
+                new THREE.BufferGeometry().setFromPoints(points);
+
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0x66e6c4,
+                transparent: true,
+                opacity: 0.55,
+                depthTest: true
+            });
+
+            const line = new THREE.Line(
+                lineGeometry,
+                lineMaterial
+            );
+
+            borderGroup.add(line);
+        }
+
+        if (geometry.type === 'Polygon') {
+
+            geometry.coordinates.forEach(ring => {
+                addRing(ring);
+            });
+
+        } else if (geometry.type === 'MultiPolygon') {
+
+            geometry.coordinates.forEach(polygon => {
+
+                polygon.forEach(ring => {
+                    addRing(ring);
+                });
+
+            });
+        }
+    });
+
+    countryBorders = borderGroup;
+
+    scene.add(countryBorders);
+
+    console.log(
+        `🌎 Fronteras cargadas: ${geojson.features.length} países`
+    );
+}
+
+fetch(GEOJSON_URL)
+    .then(response => {
+
+        if (!response.ok) {
+            throw new Error(
+                `HTTP ${response.status} al cargar GeoJSON`
+            );
+        }
+
+        return response.json();
+    })
+    .then(geojson => {
+
+        worldFeatures = geojson.features || [];
+
+        createCountryBorders(geojson);
+
+        console.log('✅ GeoJSON mundial cargado correctamente');
+
+    })
+    .catch(error => {
+
+        console.error(
+            '❌ Error cargando las fronteras mundiales:',
+            error
+        );
+
+    });
 
         const cloudTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
         const cloudMat = new THREE.MeshPhongMaterial({
