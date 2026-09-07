@@ -1,2132 +1,1510 @@
-'use strict';
+/* ============================================================
+   GÉNESIS GLOBAL — SISTEMA DE IDIOMAS
+   ES = Español
+   EN = English
+   FR = Français
+   PT = Português
 
-/*
- * =========================================================
- * GÉNESIS GLOBAL
- * SISTEMA MULTILINGÜE
- * =========================================================
- *
- * Idioma por defecto: Español
- *
- * Idiomas:
- * ES = Español
- * EN = English
- * FR = Français
- * PT = Português
- *
- * IMPORTANTE:
- * - NO usamos localStorage para guardar el idioma.
- * - Al recargar la página comienza nuevamente en Español.
- * - El selector de idioma funciona sin modificar la URL.
- * =========================================================
- */
+   IMPORTANTE:
+   - Español es siempre el idioma inicial.
+   - NO usamos localStorage.
+   - El idioma solo permanece mientras la página está abierta.
+   - Al volver a cargar/visitar el sitio, comienza en español.
+   ============================================================ */
 
+(function () {
+    'use strict';
 
-/* =========================================================
-   DICCIONARIOS
-========================================================= */
+    const LANGUAGES = {
+        es: 'ES',
+        en: 'EN',
+        fr: 'FR',
+        pt: 'PT'
+    };
 
-const GENESIS_TRANSLATIONS = {
+    let currentLanguage = 'es';
 
-    /* =====================================================
-       ESPAÑOL
-    ===================================================== */
+    /* ============================================================
+       TRADUCCIONES
+       ============================================================ */
 
-    es: {
+    const translations = {
 
-        language: {
-            code: 'ES',
-            name: 'Español',
-            selector: 'Seleccionar idioma'
-        },
+        /* =========================
+           ESPAÑOL
+           ========================= */
+        es: {
 
-        nav: {
-            home: 'Inicio',
-            services: 'Servicios',
-            process: 'Cómo funciona',
-            about: 'Nosotros',
-            faq: 'FAQ',
-            otherServices: 'Otros Servicios',
-            plan: 'Planificar mi viaje →'
-        },
+            nav: {
+                home: 'Inicio',
+                services: 'Servicios',
+                process: 'Cómo funciona',
+                about: 'Nosotros',
+                faq: 'FAQ',
+                other: 'Otros Servicios',
+                plan: 'Planificar mi viaje →'
+            },
 
-        hero: {
-            eyebrow: '✦ Una nueva forma de organizar tu viaje familiar',
-            title: 'Los kilómetros no deberían separar a las <span>familias.</span>',
-            slogan: '“Donde comienzan nuevas oportunidades.”',
-            description: 'Planificamos y coordinamos tu viaje para que puedas concentrarte en lo más importante: <b>volver a estar cerca de quienes amas.</b>',
-            plan: 'Planificar mi viaje →',
-            seeProcess: 'Ver cómo funciona',
-            human: 'Atención humana',
-            clear: 'Proceso claro',
-            support: 'Acompañamiento',
-            globe: '🌍 <strong>Gira</strong> · <strong>Haz clic</strong> en un país'
-        },
+            hero: {
+                eyebrow: '✦ Una nueva forma de organizar tu viaje familiar',
+                title: 'Los kilómetros no deberían separar a las <span>familias.</span>',
+                slogan: '“Donde comienzan nuevas oportunidades.”',
+                description: 'Planificamos y coordinamos tu viaje para que puedas concentrarte en lo más importante: <b>volver a estar cerca de quienes amas.</b>',
+                plan: 'Planificar mi viaje →',
+                process: 'Ver cómo funciona',
+                trust1: 'Atención humana',
+                trust2: 'Proceso claro',
+                trust3: 'Acompañamiento',
+                globe: '🌍 <strong>Gira</strong> · <strong>Haz clic</strong> en un país'
+            },
 
-        planner: {
+            planner: {
+                kicker: 'Planifica tu viaje',
+                title: 'Cuéntanos <span class="text-gradient">desde dónde y hacia dónde</span>',
+                description: 'Completa los datos y nosotros organizamos el resto.',
 
-            kicker: 'Planea tu viaje',
-
-            title: 'Cuéntanos <span class="text-gradient">de dónde vienes y hacia dónde vas</span>',
-
-            description: 'Completa los datos y nosotros nos encargaremos del resto.',
-
-            step1: {
-                title: '1. Ruta del viaje',
-
-                origin: '🇧🇷 ¿Desde dónde viajas?',
-
+                originLabel: '🇧🇷 ¿Desde dónde viajas?',
                 originPlaceholder: 'Ej: Brasil, Cuba, España...',
 
-                destination: '🇨🇺 ¿A dónde quieres viajar?',
-
+                destinationLabel: '🇨🇺 ¿A dónde quieres viajar?',
                 destinationPlaceholder: 'Ej: Cuba, Brasil, México...',
 
                 continue: 'Continuar →',
 
-                tip: '💡 También puedes hacer clic en un país del globo para seleccionarlo como destino.'
-            },
+                hint: '💡 También puedes hacer clic en un país del globo para seleccionarlo como destino.',
 
-            step2: {
-                title: '2. Detalles del viaje',
-
-                departure: '📅 Fecha aproximada de viaje',
-
-                return: '📅 Fecha de regreso (opcional)',
-
+                dateDeparture: '📅 Fecha aproximada de viaje',
+                dateReturn: '📅 Fecha de regreso (opcional)',
                 adults: '👥 Número de adultos',
-
                 children: '👶 Número de niños',
+                tripType: '❤️ Tipo de viaje',
 
-                type: '❤️ Tipo de viaje',
-
-                typePlaceholder: 'Selecciona una opción',
-
-                family: 'Visita familiar',
-
+                familyVisit: 'Visita familiar',
                 personal: 'Viaje personal',
-
                 tourism: 'Turismo',
-
                 other: 'Otro',
 
                 back: '← Atrás',
 
-                continue: 'Continuar →'
-            },
-
-            step3: {
-
-                title: '3. Tus datos',
-
-                name: '👤 Nombre completo',
-
-                namePlaceholder: 'Tu nombre completo',
+                fullName: '👤 Nombre completo',
+                fullNamePlaceholder: 'Tu nombre completo',
 
                 whatsapp: '📱 WhatsApp',
-
                 whatsappPlaceholder: '+54 9 11 1234 5678',
 
                 email: '📧 Correo electrónico',
-
                 emailPlaceholder: 'tucorreo@ejemplo.com',
 
                 residence: '🌍 País donde resides actualmente',
-
                 residencePlaceholder: 'Ej: Brasil, Argentina, España...',
 
                 comments: '💬 Comentarios adicionales',
-
                 commentsPlaceholder: 'Cuéntanos algo más que necesites...',
 
-                back: '← Atrás',
+                summary: 'Ver resumen',
+                edit: '← Editar',
+                send: 'Enviar solicitud →',
 
-                summary: 'Ver resumen'
+                summaryDate: '📅 Fecha viaje:',
+                summaryReturn: '📅 Regreso:',
+                summaryTravelers: '👥 Viajeros:',
+                summaryReason: '❤️ Motivo:',
+                summaryName: '👤 Nombre:',
+                summaryWhatsapp: '📱 WhatsApp:',
+                summaryEmail: '📧 Email:',
+                summaryResidence: '🌍 Residencia:',
+                summaryComments: '💬 Comentarios:',
+                unspecified: 'No especificada',
+                adultsText: 'adultos',
+                childrenText: 'niños',
+                none: 'Ninguno'
             },
 
-            step4: {
+            proof: {
+                kicker: 'Nuestro propósito',
+                title: 'Conectamos destinos. <span class="text-gradient">Reunimos familias.</span>',
+                slogan: '“Donde comienzan nuevas oportunidades.”',
+                description: 'Una experiencia digital sencilla, atención cercana y coordinación profesional para ayudarte a organizar tu próximo viaje.'
+            },
 
-                title: '4. Revisa tu solicitud',
+            services: {
+                kicker: 'Servicios',
+                title: 'Todo lo esencial, <span class="text-gradient">en un solo lugar.</span>',
+                description: 'Empezamos con servicios claros y humanos, diseñados para reducir la incertidumbre y simplificar cada etapa.',
 
-                edit: '← Editar',
+                s1Title: 'Planificación de viajes',
+                s1Text: 'Rutas, fechas, conexiones e itinerarios organizados según tu situación.',
+                s2Title: 'Viajes familiares',
+                s2Text: 'Acompañamiento pensado para quienes quieren volver a encontrarse con los suyos.',
+                s3Title: 'Orientación documental',
+                s3Text: 'Información clara sobre requisitos aplicables y coordinación con profesionales autorizados.',
+                s4Title: 'Alojamiento y transporte',
+                s4Text: 'Coordinamos opciones complementarias para que tengas un viaje más sencillo.',
 
-                send: 'Enviar solicitud →'
+                plan: 'Planificar ahora →'
+            },
+
+            process: {
+                kicker: 'Experiencia del cliente',
+                title: 'Simple desde el primer <span class="text-gradient">mensaje.</span>',
+                description: 'Diseñamos el proceso para reducir dudas, pasos innecesarios y fricción.',
+
+                p1Title: 'Cuéntanos tu situación',
+                p1Text: 'Completa una solicitud breve y dinos desde dónde viajas, hacia dónde quieres ir y qué necesitas.',
+
+                p2Title: 'Analizamos tus opciones',
+                p2Text: 'Nuestro equipo revisa rutas, servicios y requisitos aplicables.',
+
+                p3Title: 'Recibes tu propuesta',
+                p3Text: 'Te explicamos opciones, costes y próximos pasos antes de continuar.',
+
+                p4Title: 'Te acompañamos',
+                p4Text: 'Coordinamos el proceso contratado y mantenemos la comunicación contigo.'
+            },
+
+            about: {
+                kicker: 'GÉNESIS GLOBAL',
+                title: 'Una marca creada para <span class="text-gradient">acercar personas.</span>',
+                description: 'Queremos construir una empresa moderna, humana y transparente. Nuestra tecnología debe facilitar el trabajo del equipo y, sobre todo, hacer que el cliente entienda qué ocurre en cada etapa.',
+                slogan: '“Donde comienzan nuevas oportunidades.”',
+                trust1: 'Confianza',
+                trust2: 'Transparencia',
+                trust3: 'Cercanía',
+                trust4: 'Profesionalismo'
+            },
+
+            faq: {
+                kicker: 'Preguntas frecuentes',
+                title: 'Claridad antes de <span class="text-gradient">decidir.</span>',
+
+                q1: '¿GÉNESIS GLOBAL vende visas?',
+                a1: 'No. La empresa puede orientar sobre requisitos aplicables y coordinar con profesionales autorizados cuando un caso lo requiera. Las decisiones migratorias corresponden a las autoridades competentes.',
+
+                q2: '¿Puedo solicitar ayuda para viajar hacia Cuba?',
+                a2: 'Sí. El concepto contempla personas que viven en Brasil u otros países y quieren organizar un viaje a Cuba para visitar a sus familiares, sujeto a las normas vigentes.',
+
+                q3: '¿También se pueden organizar viajes desde Cuba?',
+                a3: 'Sí. Puede contemplarse la planificación de viajes desde Cuba hacia Brasil u otros destinos, dependiendo de requisitos y servicios disponibles.',
+
+                q4: '¿Cómo empiezo?',
+                a4: 'Completa el formulario de orientación. Un miembro del equipo podrá revisar tu solicitud y explicarte los próximos pasos.'
+            },
+
+            footer: {
+                slogan: 'Donde comienzan nuevas oportunidades.',
+                description: 'Conectamos destinos. Reunimos familias.',
+
+                company: 'Empresa',
+                attention: 'Atención',
+
+                about: 'Nosotros',
+                services: 'Servicios',
+
+                personalized: 'Orientación personalizada',
+                whatsapp: 'WhatsApp Business',
+                form: 'Formulario de solicitud',
+
+                privacy: 'Política de Privacidad',
+                terms: 'Términos y Condiciones',
+                cookies: 'Política de Cookies',
+
+                copyright: '© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.'
             },
 
             alerts: {
-                route: 'Por favor, selecciona tu origen y destino.',
-                personal: 'Por favor, completa todos los datos personales.',
-                success: '✅ ¡Solicitud enviada con éxito!\n\n📧 Se ha enviado un correo a GÉNESIS GLOBAL.\n📱 Se abrirá WhatsApp para contactar al asesor.',
-                error: '❌ Hubo un error al enviar la solicitud.\n\nPor favor, intenta de nuevo o contacta directamente por WhatsApp al +1 (809) 999-5904.'
+                originDestination: 'Por favor, selecciona tu origen y destino.',
+                personalData: 'Por favor, completa todos los datos personales.',
+                required: '⚠️ Por favor, completa todos los datos requeridos.',
+                saving: 'Guardando solicitud...',
+                sending: 'Enviando solicitud...',
+                success: '✅ ¡Solicitud enviada correctamente!\n\nTu solicitud fue registrada y nuestro equipo recibirá la información.\n\nAhora se abrirá WhatsApp para continuar la atención.',
+                error: '❌ No pudimos completar la solicitud.\n\nPor favor, inténtalo nuevamente o contáctanos directamente por WhatsApp al +1 (809) 999-5904.',
+                supabase: 'La conexión con Supabase no está disponible.',
+                emailjs: 'EmailJS no está disponible.'
             },
 
-            summary: {
-                travelDate: '📅 Fecha de viaje:',
-                returnDate: '📅 Regreso:',
-                travelers: '👥 Viajeros:',
-                adults: 'adultos',
-                children: 'niños',
-                reason: '❤️ Motivo:',
-                name: '👤 Nombre:',
-                whatsapp: '📱 WhatsApp:',
-                email: '📧 Email:',
-                residence: '🌍 Residencia:',
-                comments: '💬 Comentarios:',
-                unspecified: 'No especificada',
-                none: 'Ninguno'
+            policies: {
+                privacy: {
+                    title: 'Política de Privacidad',
+                    intro: 'En <strong>GÉNESIS GLOBAL</strong> nos tomamos muy en serio la privacidad. Esta política explica cómo recopilamos, usamos y protegemos tu información personal.',
+                    h1: '1. Información que recopilamos',
+                    p1: 'Recopilamos la información que nos proporcionas voluntariamente al completar el formulario: nombre, origen, destino y mensaje. También podemos recopilar datos de uso anónimos a través de cookies.',
+                    h2: '2. Uso de la información',
+                    p2: 'Utilizamos tu información para evaluar tu solicitud, coordinar la atención y mejorar nuestros servicios. No compartimos tus datos con terceros sin tu consentimiento.',
+                    h3: '3. Seguridad',
+                    p3: 'Implementamos medidas de seguridad técnicas y organizativas para proteger tu información. Sin embargo, ningún sistema es 100% seguro.',
+                    h4: '4. Tus derechos',
+                    p4: 'Puedes solicitar acceso, rectificación o eliminación de tus datos enviando un correo a <span style="color:#66e6c4;">privacidad@genesistriplea.com</span>.'
+                },
+
+                terms: {
+                    title: 'Términos y Condiciones',
+                    intro: 'Al utilizar nuestro sitio web y servicios, aceptas los siguientes términos.',
+                    h1: '1. Servicios ofrecidos',
+                    p1: 'GÉNESIS GLOBAL ofrece planificación y coordinación de viajes familiares, orientación documental y acompañamiento personalizado. No vendemos visas ni gestionamos trámites migratorios directamente.',
+                    h2: '2. Responsabilidad',
+                    p2: 'No nos responsabilizamos de errores u omisiones en los contenidos. Las decisiones migratorias son competencia de las autoridades.',
+                    h3: '3. Propiedad intelectual',
+                    p3: 'Todo el contenido es propiedad de GÉNESIS GLOBAL y está protegido por las leyes de propiedad intelectual.'
+                },
+
+                cookies: {
+                    title: 'Política de Cookies',
+                    intro: 'Utilizamos cookies para mejorar tu experiencia. Esta política explica qué son y cómo las usamos.',
+                    h1: '1. ¿Qué son las cookies?',
+                    p1: 'Son pequeños archivos de texto que se almacenan en tu dispositivo para recordar preferencias y analizar el tráfico.',
+                    h2: '2. Cookies que utilizamos',
+                    technical: '<strong>Técnicas:</strong> necesarias para el funcionamiento básico.',
+                    analytics: '<strong>Análisis:</strong> usamos Google Analytics de forma anónima.',
+                    preferences: '<strong>Preferencias:</strong> recuerdan tu configuración.',
+                    h3: '3. Gestión de cookies',
+                    p3: 'Puedes aceptar o rechazar las cookies desde la configuración de tu navegador.'
+                },
+
+                updated: 'Última actualización: 18 de agosto de 2026'
             }
         },
 
-        proof: {
-            kicker: 'Nuestro propósito',
-            title: 'Conectamos destinos. <span>Reunimos familias.</span>',
-            slogan: '“Donde comienzan nuevas oportunidades.”',
-            description: 'Una experiencia digital sencilla, atención cercana y coordinación profesional para ayudarte a organizar tu próximo viaje.'
-        },
 
-        services: {
-            kicker: 'Nuestros servicios',
-            title: 'Todo lo que necesitas para <span class="text-gradient">organizar tu viaje.</span>',
-            description: 'Soluciones pensadas para acompañarte durante cada etapa.',
+        /* =========================
+           ENGLISH
+           ========================= */
+        en: {
 
-            one: {
-                title: 'Planificación de viajes',
-                description: 'Rutas, fechas, conexiones e itinerarios organizados según tus necesidades.',
-                button: 'Planificar ahora →'
+            nav: {
+                home: 'Home',
+                services: 'Services',
+                process: 'How it works',
+                about: 'About us',
+                faq: 'FAQ',
+                other: 'Other Services',
+                plan: 'Plan my trip →'
             },
 
-            two: {
-                title: 'Viajes familiares',
-                description: 'Acompañamiento pensado para quienes desean reunirse con sus seres queridos.',
-                button: 'Más información →'
+            hero: {
+                eyebrow: '✦ A new way to organize your family trip',
+                title: 'Distance should never separate <span>families.</span>',
+                slogan: '“Where new opportunities begin.”',
+                description: 'We plan and coordinate your trip so you can focus on what matters most: <b>being close to the people you love again.</b>',
+                plan: 'Plan my trip →',
+                process: 'See how it works',
+                trust1: 'Human support',
+                trust2: 'Clear process',
+                trust3: 'Guidance',
+                globe: '🌍 <strong>Rotate</strong> · <strong>Click</strong> on a country'
             },
 
-            three: {
-                title: 'Orientación documental',
-                description: 'Información clara sobre documentos, requisitos y pasos que debes considerar.',
-                button: 'Consultar →'
-            },
+            planner: {
+                kicker: 'Plan your trip',
+                title: 'Tell us <span class="text-gradient">where you are coming from and where you are going</span>',
+                description: 'Complete the information and we will organize the rest.',
 
-            four: {
-                title: 'Alojamiento y transporte',
-                description: 'Coordinamos opciones de alojamiento y transporte para facilitar tu viaje.',
-                button: 'Ver opciones →'
-            }
-        },
-
-        process: {
-            kicker: 'Experiencia del cliente',
-            title: 'Simple desde el primer <span class="text-gradient">mensaje.</span>',
-            description: 'Diseñamos el proceso para reducir dudas, pasos innecesarios y fricción.',
-
-            one: {
-                title: 'Cuéntanos tu situación',
-                description: 'Completa una solicitud breve con la información de tu viaje.'
-            },
-
-            two: {
-                title: 'Analizamos tus opciones',
-                description: 'Nuestro equipo revisa tu situación y las alternativas disponibles.'
-            },
-
-            three: {
-                title: 'Recibes tu propuesta',
-                description: 'Te explicamos las opciones, los pasos y la información relevante.'
-            },
-
-            four: {
-                title: 'Te acompañamos',
-                description: 'Coordinamos el proceso y te orientamos durante cada etapa.'
-            }
-        },
-
-        about: {
-            kicker: 'GÉNESIS GLOBAL',
-            title: 'Una marca creada para <span class="text-gradient">acercar personas.</span>',
-            description: 'Queremos construir una empresa moderna, humana y confiable que facilite la planificación de viajes y ayude a las personas a estar más cerca de quienes aman.',
-            slogan: '“Donde comienzan nuevas oportunidades.”',
-            trust: 'Confianza',
-            transparency: 'Transparencia',
-            closeness: 'Cercanía',
-            professionalism: 'Profesionalismo'
-        },
-
-        faq: {
-            kicker: 'Preguntas frecuentes',
-            title: 'Claridad antes de <span class="text-gradient">decidir.</span>',
-
-            one: {
-                question: '¿GÉNESIS GLOBAL vende visas?',
-                answer: 'No. La empresa puede orientar sobre requisitos aplicables y coordinar con profesionales autorizados cuando un caso lo requiera. Las decisiones migratorias corresponden a las autoridades competentes.'
-            },
-
-            two: {
-                question: '¿Puedo solicitar ayuda para viajar hacia Cuba?',
-                answer: 'Sí. El concepto contempla personas que viven en Brasil u otros países y quieren organizar un viaje a Cuba para visitar a sus familiares, sujeto a las normas vigentes.'
-            },
-
-            three: {
-                question: '¿También se pueden organizar viajes desde Cuba?',
-                answer: 'Sí. Puede contemplarse la planificación de viajes desde Cuba hacia Brasil u otros destinos, dependiendo de requisitos y servicios disponibles.'
-            },
-
-            four: {
-                question: '¿Cómo empiezo?',
-                answer: 'Completa el formulario de orientación. Un miembro del equipo podrá revisar tu solicitud y explicarte los próximos pasos.'
-            }
-        },
-
-        footer: {
-            slogan: 'Donde comienzan nuevas oportunidades.',
-            statement: 'Conectamos destinos. Reunimos familias.',
-
-            company: 'Empresa',
-            about: 'Nosotros',
-            services: 'Servicios',
-            faq: 'FAQ',
-
-            attention: 'Atención',
-            personalized: 'Orientación personalizada',
-            whatsapp: 'WhatsApp Business',
-            form: 'Formulario de solicitud',
-
-            copyright: '© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.',
-
-            privacy: 'Política de Privacidad',
-            terms: 'Términos y Condiciones',
-            cookies: 'Política de Cookies'
-        }
-    },
-
-
-    /* =====================================================
-       ENGLISH
-    ===================================================== */
-
-    en: {
-
-        language: {
-            code: 'EN',
-            name: 'English',
-            selector: 'Select language'
-        },
-
-        nav: {
-            home: 'Home',
-            services: 'Services',
-            process: 'How it works',
-            about: 'About us',
-            faq: 'FAQ',
-            otherServices: 'Other Services',
-            plan: 'Plan my trip →'
-        },
-
-        hero: {
-            eyebrow: '✦ A new way to organize your family trip',
-            title: 'Distance should never separate <span>families.</span>',
-            slogan: '“Where new opportunities begin.”',
-            description: 'We plan and coordinate your trip so you can focus on what matters most: <b>being close to the people you love again.</b>',
-            plan: 'Plan my trip →',
-            seeProcess: 'See how it works',
-            human: 'Human support',
-            clear: 'Clear process',
-            support: 'Personal guidance',
-            globe: '🌍 <strong>Rotate</strong> · <strong>Click</strong> on a country'
-        },
-
-        planner: {
-
-            kicker: 'Plan your trip',
-
-            title: 'Tell us <span class="text-gradient">where you are coming from and where you are going</span>',
-
-            description: 'Complete the information and we will take care of the rest.',
-
-            step1: {
-                title: '1. Trip route',
-
-                origin: '🇧🇷 Where are you traveling from?',
-
+                originLabel: '🇧🇷 Where are you traveling from?',
                 originPlaceholder: 'E.g.: Brazil, Cuba, Spain...',
 
-                destination: '🇨🇺 Where do you want to travel?',
-
+                destinationLabel: '🇨🇺 Where do you want to travel?',
                 destinationPlaceholder: 'E.g.: Cuba, Brazil, Mexico...',
 
                 continue: 'Continue →',
+                hint: '💡 You can also click on a country on the globe to select it as your destination.',
 
-                tip: '💡 You can also click on a country on the globe to select it as your destination.'
-            },
-
-            step2: {
-                title: '2. Trip details',
-
-                departure: '📅 Approximate travel date',
-
-                return: '📅 Return date (optional)',
-
+                dateDeparture: '📅 Approximate travel date',
+                dateReturn: '📅 Return date (optional)',
                 adults: '👥 Number of adults',
-
                 children: '👶 Number of children',
+                tripType: '❤️ Type of trip',
 
-                type: '❤️ Type of trip',
-
-                typePlaceholder: 'Select an option',
-
-                family: 'Family visit',
-
+                familyVisit: 'Family visit',
                 personal: 'Personal trip',
-
                 tourism: 'Tourism',
-
                 other: 'Other',
 
                 back: '← Back',
 
-                continue: 'Continue →'
-            },
-
-            step3: {
-
-                title: '3. Your information',
-
-                name: '👤 Full name',
-
-                namePlaceholder: 'Your full name',
+                fullName: '👤 Full name',
+                fullNamePlaceholder: 'Your full name',
 
                 whatsapp: '📱 WhatsApp',
-
                 whatsappPlaceholder: '+54 9 11 1234 5678',
 
                 email: '📧 Email address',
-
-                emailPlaceholder: 'youremail@example.com',
+                emailPlaceholder: 'you@example.com',
 
                 residence: '🌍 Country where you currently live',
-
                 residencePlaceholder: 'E.g.: Brazil, Argentina, Spain...',
 
                 comments: '💬 Additional comments',
-
                 commentsPlaceholder: 'Tell us anything else you may need...',
 
-                back: '← Back',
+                summary: 'View summary',
+                edit: '← Edit',
+                send: 'Send request →',
 
-                summary: 'View summary'
+                summaryDate: '📅 Travel date:',
+                summaryReturn: '📅 Return:',
+                summaryTravelers: '👥 Travelers:',
+                summaryReason: '❤️ Reason:',
+                summaryName: '👤 Name:',
+                summaryWhatsapp: '📱 WhatsApp:',
+                summaryEmail: '📧 Email:',
+                summaryResidence: '🌍 Residence:',
+                summaryComments: '💬 Comments:',
+                unspecified: 'Not specified',
+                adultsText: 'adults',
+                childrenText: 'children',
+                none: 'None'
             },
 
-            step4: {
+            proof: {
+                kicker: 'Our purpose',
+                title: 'We connect destinations. <span class="text-gradient">We reunite families.</span>',
+                slogan: '“Where new opportunities begin.”',
+                description: 'A simple digital experience, personal attention and professional coordination to help you organize your next trip.'
+            },
 
-                title: '4. Review your request',
+            services: {
+                kicker: 'Services',
+                title: 'Everything essential, <span class="text-gradient">in one place.</span>',
+                description: 'We start with clear, human services designed to reduce uncertainty and simplify every stage.',
 
-                edit: '← Edit',
+                s1Title: 'Travel planning',
+                s1Text: 'Routes, dates, connections and itineraries organized according to your situation.',
+                s2Title: 'Family travel',
+                s2Text: 'Support designed for people who want to reunite with their loved ones.',
+                s3Title: 'Document guidance',
+                s3Text: 'Clear information about applicable requirements and coordination with authorized professionals.',
+                s4Title: 'Accommodation and transportation',
+                s4Text: 'We coordinate complementary options to make your trip easier.',
 
-                send: 'Send request →'
+                plan: 'Plan now →'
+            },
+
+            process: {
+                kicker: 'Customer experience',
+                title: 'Simple from the first <span class="text-gradient">message.</span>',
+                description: 'We designed the process to reduce questions, unnecessary steps and friction.',
+
+                p1Title: 'Tell us your situation',
+                p1Text: 'Complete a short request and tell us where you are traveling from, where you want to go and what you need.',
+
+                p2Title: 'We analyze your options',
+                p2Text: 'Our team reviews routes, services and applicable requirements.',
+
+                p3Title: 'Receive your proposal',
+                p3Text: 'We explain options, costs and next steps before moving forward.',
+
+                p4Title: 'We accompany you',
+                p4Text: 'We coordinate the contracted process and stay in communication with you.'
+            },
+
+            about: {
+                kicker: 'GÉNESIS GLOBAL',
+                title: 'A brand created to <span class="text-gradient">bring people closer.</span>',
+                description: 'We want to build a modern, human and transparent company. Our technology should make the team’s work easier and, above all, help clients understand what happens at every stage.',
+                slogan: '“Where new opportunities begin.”',
+                trust1: 'Trust',
+                trust2: 'Transparency',
+                trust3: 'Closeness',
+                trust4: 'Professionalism'
+            },
+
+            faq: {
+                kicker: 'Frequently asked questions',
+                title: 'Clarity before you <span class="text-gradient">decide.</span>',
+
+                q1: 'Does GÉNESIS GLOBAL sell visas?',
+                a1: 'No. The company can provide guidance regarding applicable requirements and coordinate with authorized professionals when necessary. Immigration decisions belong to the competent authorities.',
+
+                q2: 'Can I request help traveling to Cuba?',
+                a2: 'Yes. The concept includes people living in Brazil or other countries who want to organize a trip to Cuba to visit their families, subject to current regulations.',
+
+                q3: 'Can trips also be organized from Cuba?',
+                a3: 'Yes. Travel planning from Cuba to Brazil or other destinations may be considered, depending on requirements and available services.',
+
+                q4: 'How do I get started?',
+                a4: 'Complete the guidance form. A team member can review your request and explain the next steps.'
+            },
+
+            footer: {
+                slogan: 'Where new opportunities begin.',
+                description: 'We connect destinations. We reunite families.',
+                company: 'Company',
+                attention: 'Support',
+                about: 'About us',
+                services: 'Services',
+                personalized: 'Personalized guidance',
+                whatsapp: 'WhatsApp Business',
+                form: 'Request form',
+                privacy: 'Privacy Policy',
+                terms: 'Terms and Conditions',
+                cookies: 'Cookie Policy',
+                copyright: '© 2026 GÉNESIS GLOBAL — Where new opportunities begin.'
             },
 
             alerts: {
-                route: 'Please select your origin and destination.',
-                personal: 'Please complete all personal information.',
-                success: '✅ Your request was sent successfully!\n\n📧 An email has been sent to GÉNESIS GLOBAL.\n📱 WhatsApp will open to contact an advisor.',
-                error: '❌ There was an error sending your request.\n\nPlease try again or contact us directly on WhatsApp at +1 (809) 999-5904.'
-            },
-
-            summary: {
-                travelDate: '📅 Travel date:',
-                returnDate: '📅 Return:',
-                travelers: '👥 Travelers:',
-                adults: 'adults',
-                children: 'children',
-                reason: '❤️ Reason:',
-                name: '👤 Name:',
-                whatsapp: '📱 WhatsApp:',
-                email: '📧 Email:',
-                residence: '🌍 Residence:',
-                comments: '💬 Comments:',
-                unspecified: 'Not specified',
-                none: 'None'
+                originDestination: 'Please select your origin and destination.',
+                personalData: 'Please complete all personal information.',
+                required: '⚠️ Please complete all required information.',
+                saving: 'Saving request...',
+                sending: 'Sending request...',
+                success: '✅ Request sent successfully!\n\nYour request has been registered and our team will receive the information.\n\nWhatsApp will now open to continue the conversation.',
+                error: '❌ We could not complete your request.\n\nPlease try again or contact us directly on WhatsApp at +1 (809) 999-5904.',
+                supabase: 'The connection to Supabase is not available.',
+                emailjs: 'EmailJS is not available.'
             }
         },
 
-        proof: {
-            kicker: 'Our purpose',
-            title: 'We connect destinations. <span>We bring families together.</span>',
-            slogan: '“Where new opportunities begin.”',
-            description: 'A simple digital experience, personal support and professional coordination to help you organize your next trip.'
-        },
 
-        services: {
-            kicker: 'Our services',
-            title: 'Everything you need to <span class="text-gradient">organize your trip.</span>',
-            description: 'Solutions designed to support you throughout every stage.',
+        /* =========================
+           FRANÇAIS
+           ========================= */
+        fr: {
 
-            one: {
-                title: 'Trip planning',
-                description: 'Routes, dates, connections and itineraries organized according to your needs.',
-                button: 'Plan now →'
+            nav: {
+                home: 'Accueil',
+                services: 'Services',
+                process: 'Comment ça marche',
+                about: 'À propos',
+                faq: 'FAQ',
+                other: 'Autres services',
+                plan: 'Planifier mon voyage →'
             },
 
-            two: {
-                title: 'Family travel',
-                description: 'Personal support for people who want to reunite with their loved ones.',
-                button: 'Learn more →'
+            hero: {
+                eyebrow: '✦ Une nouvelle façon d’organiser votre voyage en famille',
+                title: 'Les kilomètres ne devraient pas séparer les <span>familles.</span>',
+                slogan: '« Là où commencent de nouvelles opportunités. »',
+                description: 'Nous planifions et coordonnons votre voyage afin que vous puissiez vous concentrer sur l’essentiel : <b>être à nouveau proche de ceux que vous aimez.</b>',
+                plan: 'Planifier mon voyage →',
+                process: 'Voir comment ça marche',
+                trust1: 'Assistance humaine',
+                trust2: 'Processus clair',
+                trust3: 'Accompagnement',
+                globe: '🌍 <strong>Faites tourner</strong> · <strong>Cliquez</strong> sur un pays'
             },
 
-            three: {
-                title: 'Document guidance',
-                description: 'Clear information about documents, requirements and important steps to consider.',
-                button: 'Ask us →'
-            },
+            planner: {
+                kicker: 'Planifiez votre voyage',
+                title: 'Dites-nous <span class="text-gradient">d’où vous partez et où vous allez</span>',
+                description: 'Remplissez les informations et nous nous occupons du reste.',
 
-            four: {
-                title: 'Accommodation & transportation',
-                description: 'We coordinate accommodation and transportation options to make your trip easier.',
-                button: 'View options →'
-            }
-        },
-
-        process: {
-            kicker: 'Customer experience',
-            title: 'Simple from the first <span class="text-gradient">message.</span>',
-            description: 'We designed the process to reduce uncertainty, unnecessary steps and friction.',
-
-            one: {
-                title: 'Tell us your situation',
-                description: 'Complete a short request with your trip information.'
-            },
-
-            two: {
-                title: 'We analyze your options',
-                description: 'Our team reviews your situation and the available alternatives.'
-            },
-
-            three: {
-                title: 'You receive your proposal',
-                description: 'We explain the options, steps and relevant information.'
-            },
-
-            four: {
-                title: 'We support you',
-                description: 'We coordinate the process and guide you throughout each stage.'
-            }
-        },
-
-        about: {
-            kicker: 'GÉNESIS GLOBAL',
-            title: 'A brand created to <span class="text-gradient">bring people closer.</span>',
-            description: 'We want to build a modern, human and trustworthy company that makes travel planning easier and helps people stay closer to those they love.',
-            slogan: '“Where new opportunities begin.”',
-            trust: 'Trust',
-            transparency: 'Transparency',
-            closeness: 'Closeness',
-            professionalism: 'Professionalism'
-        },
-
-        faq: {
-            kicker: 'Frequently asked questions',
-            title: 'Clarity before you <span class="text-gradient">decide.</span>',
-
-            one: {
-                question: 'Does GÉNESIS GLOBAL sell visas?',
-                answer: 'No. The company can provide guidance regarding applicable requirements and coordinate with authorized professionals when necessary. Immigration decisions are made by the competent authorities.'
-            },
-
-            two: {
-                question: 'Can I request help traveling to Cuba?',
-                answer: 'Yes. The concept includes people living in Brazil or other countries who want to organize a trip to Cuba to visit their families, subject to current regulations.'
-            },
-
-            three: {
-                question: 'Can trips from Cuba also be organized?',
-                answer: 'Yes. Travel planning from Cuba to Brazil or other destinations may be considered depending on requirements and available services.'
-            },
-
-            four: {
-                question: 'How do I get started?',
-                answer: 'Complete the guidance form. A member of our team can review your request and explain the next steps.'
-            }
-        },
-
-        footer: {
-            slogan: 'Where new opportunities begin.',
-            statement: 'We connect destinations. We bring families together.',
-
-            company: 'Company',
-            about: 'About us',
-            services: 'Services',
-            faq: 'FAQ',
-
-            attention: 'Support',
-            personalized: 'Personal guidance',
-            whatsapp: 'WhatsApp Business',
-            form: 'Request form',
-
-            copyright: '© 2026 GÉNESIS GLOBAL — Where new opportunities begin.',
-
-            privacy: 'Privacy Policy',
-            terms: 'Terms & Conditions',
-            cookies: 'Cookie Policy'
-        }
-    },
-
-
-    /* =====================================================
-       FRANÇAIS
-    ===================================================== */
-
-    fr: {
-
-        language: {
-            code: 'FR',
-            name: 'Français',
-            selector: 'Choisir la langue'
-        },
-
-        nav: {
-            home: 'Accueil',
-            services: 'Services',
-            process: 'Comment ça marche',
-            about: 'À propos',
-            faq: 'FAQ',
-            otherServices: 'Autres services',
-            plan: 'Planifier mon voyage →'
-        },
-
-        hero: {
-            eyebrow: '✦ Une nouvelle façon d’organiser votre voyage en famille',
-            title: 'Les kilomètres ne devraient jamais séparer les <span>familles.</span>',
-            slogan: '« Là où commencent de nouvelles opportunités. »',
-            description: 'Nous planifions et coordonnons votre voyage afin que vous puissiez vous concentrer sur l’essentiel : <b>être à nouveau près de ceux que vous aimez.</b>',
-            plan: 'Planifier mon voyage →',
-            seeProcess: 'Voir comment ça marche',
-            human: 'Accompagnement humain',
-            clear: 'Processus clair',
-            support: 'Accompagnement personnalisé',
-            globe: '🌍 <strong>Faites tourner</strong> · <strong>Cliquez</strong> sur un pays'
-        },
-
-        planner: {
-
-            kicker: 'Planifiez votre voyage',
-
-            title: 'Dites-nous <span class="text-gradient">d’où vous venez et où vous allez</span>',
-
-            description: 'Remplissez les informations et nous nous occuperons du reste.',
-
-            step1: {
-                title: '1. Itinéraire du voyage',
-
-                origin: '🇧🇷 Depuis où voyagez-vous ?',
-
+                originLabel: '🇧🇷 D’où voyagez-vous ?',
                 originPlaceholder: 'Ex. : Brésil, Cuba, Espagne...',
 
-                destination: '🇨🇺 Où souhaitez-vous voyager ?',
-
+                destinationLabel: '🇨🇺 Où souhaitez-vous voyager ?',
                 destinationPlaceholder: 'Ex. : Cuba, Brésil, Mexique...',
 
                 continue: 'Continuer →',
+                hint: '💡 Vous pouvez également cliquer sur un pays du globe pour le sélectionner comme destination.',
 
-                tip: '💡 Vous pouvez également cliquer sur un pays du globe pour le sélectionner comme destination.'
-            },
-
-            step2: {
-                title: '2. Détails du voyage',
-
-                departure: '📅 Date approximative du voyage',
-
-                return: '📅 Date de retour (facultative)',
-
+                dateDeparture: '📅 Date approximative du voyage',
+                dateReturn: '📅 Date de retour (facultative)',
                 adults: '👥 Nombre d’adultes',
-
                 children: '👶 Nombre d’enfants',
+                tripType: '❤️ Type de voyage',
 
-                type: '❤️ Type de voyage',
-
-                typePlaceholder: 'Sélectionnez une option',
-
-                family: 'Visite familiale',
-
+                familyVisit: 'Visite familiale',
                 personal: 'Voyage personnel',
-
                 tourism: 'Tourisme',
-
                 other: 'Autre',
 
                 back: '← Retour',
 
-                continue: 'Continuer →'
-            },
-
-            step3: {
-
-                title: '3. Vos informations',
-
-                name: '👤 Nom complet',
-
-                namePlaceholder: 'Votre nom complet',
+                fullName: '👤 Nom complet',
+                fullNamePlaceholder: 'Votre nom complet',
 
                 whatsapp: '📱 WhatsApp',
-
                 whatsappPlaceholder: '+54 9 11 1234 5678',
 
                 email: '📧 Adresse e-mail',
-
-                emailPlaceholder: 'votremail@exemple.com',
+                emailPlaceholder: 'votre@email.com',
 
                 residence: '🌍 Pays où vous résidez actuellement',
-
                 residencePlaceholder: 'Ex. : Brésil, Argentine, Espagne...',
 
                 comments: '💬 Commentaires supplémentaires',
-
                 commentsPlaceholder: 'Dites-nous ce dont vous avez besoin...',
 
-                back: '← Retour',
+                summary: 'Voir le résumé',
+                edit: '← Modifier',
+                send: 'Envoyer la demande →',
 
-                summary: 'Voir le résumé'
+                summaryDate: '📅 Date du voyage :',
+                summaryReturn: '📅 Retour :',
+                summaryTravelers: '👥 Voyageurs :',
+                summaryReason: '❤️ Motif :',
+                summaryName: '👤 Nom :',
+                summaryWhatsapp: '📱 WhatsApp :',
+                summaryEmail: '📧 E-mail :',
+                summaryResidence: '🌍 Résidence :',
+                summaryComments: '💬 Commentaires :',
+                unspecified: 'Non précisée',
+                adultsText: 'adultes',
+                childrenText: 'enfants',
+                none: 'Aucun'
             },
 
-            step4: {
+            proof: {
+                kicker: 'Notre objectif',
+                title: 'Nous connectons les destinations. <span class="text-gradient">Nous réunissons les familles.</span>',
+                slogan: '« Là où commencent de nouvelles opportunités. »',
+                description: 'Une expérience numérique simple, une attention personnalisée et une coordination professionnelle pour vous aider à organiser votre prochain voyage.'
+            },
 
-                title: '4. Vérifiez votre demande',
+            services: {
+                kicker: 'Services',
+                title: 'Tout ce qui est essentiel, <span class="text-gradient">en un seul endroit.</span>',
+                description: 'Nous commençons avec des services clairs et humains conçus pour réduire l’incertitude et simplifier chaque étape.',
 
-                edit: '← Modifier',
+                s1Title: 'Planification de voyages',
+                s1Text: 'Itinéraires, dates, correspondances et programmes organisés selon votre situation.',
+                s2Title: 'Voyages en famille',
+                s2Text: 'Un accompagnement pensé pour ceux qui souhaitent retrouver leurs proches.',
+                s3Title: 'Orientation documentaire',
+                s3Text: 'Des informations claires sur les exigences applicables et une coordination avec des professionnels autorisés.',
+                s4Title: 'Hébergement et transport',
+                s4Text: 'Nous coordonnons des options complémentaires pour simplifier votre voyage.',
 
-                send: 'Envoyer la demande →'
+                plan: 'Planifier maintenant →'
+            },
+
+            process: {
+                kicker: 'Expérience client',
+                title: 'Simple dès le premier <span class="text-gradient">message.</span>',
+                description: 'Nous avons conçu le processus pour réduire les questions, les étapes inutiles et les difficultés.',
+
+                p1Title: 'Expliquez-nous votre situation',
+                p1Text: 'Remplissez une courte demande et indiquez-nous d’où vous partez, où vous souhaitez aller et ce dont vous avez besoin.',
+
+                p2Title: 'Nous analysons vos options',
+                p2Text: 'Notre équipe examine les itinéraires, les services et les exigences applicables.',
+
+                p3Title: 'Recevez votre proposition',
+                p3Text: 'Nous vous expliquons les options, les coûts et les prochaines étapes avant de continuer.',
+
+                p4Title: 'Nous vous accompagnons',
+                p4Text: 'Nous coordonnons le processus choisi et restons en communication avec vous.'
+            },
+
+            about: {
+                kicker: 'GÉNESIS GLOBAL',
+                title: 'Une marque créée pour <span class="text-gradient">rapprocher les personnes.</span>',
+                description: 'Nous voulons construire une entreprise moderne, humaine et transparente. Notre technologie doit faciliter le travail de l’équipe et surtout permettre au client de comprendre ce qui se passe à chaque étape.',
+                slogan: '« Là où commencent de nouvelles opportunités. »',
+                trust1: 'Confiance',
+                trust2: 'Transparence',
+                trust3: 'Proximité',
+                trust4: 'Professionnalisme'
+            },
+
+            faq: {
+                kicker: 'Questions fréquentes',
+                title: 'De la clarté avant de <span class="text-gradient">décider.</span>',
+
+                q1: 'GÉNESIS GLOBAL vend-elle des visas ?',
+                a1: 'Non. L’entreprise peut fournir des informations sur les exigences applicables et coordonner avec des professionnels autorisés lorsque cela est nécessaire. Les décisions migratoires relèvent des autorités compétentes.',
+
+                q2: 'Puis-je demander de l’aide pour voyager à Cuba ?',
+                a2: 'Oui. Le concept comprend les personnes vivant au Brésil ou dans d’autres pays qui souhaitent organiser un voyage à Cuba pour rendre visite à leur famille, sous réserve des réglementations en vigueur.',
+
+                q3: 'Peut-on également organiser des voyages depuis Cuba ?',
+                a3: 'Oui. La planification de voyages depuis Cuba vers le Brésil ou d’autres destinations peut être envisagée selon les exigences et les services disponibles.',
+
+                q4: 'Comment commencer ?',
+                a4: 'Remplissez le formulaire d’orientation. Un membre de l’équipe pourra examiner votre demande et vous expliquer les prochaines étapes.'
+            },
+
+            footer: {
+                slogan: 'Là où commencent de nouvelles opportunités.',
+                description: 'Nous connectons les destinations. Nous réunissons les familles.',
+                company: 'Entreprise',
+                attention: 'Assistance',
+                about: 'À propos',
+                services: 'Services',
+                personalized: 'Orientation personnalisée',
+                whatsapp: 'WhatsApp Business',
+                form: 'Formulaire de demande',
+                privacy: 'Politique de confidentialité',
+                terms: 'Conditions générales',
+                cookies: 'Politique des cookies',
+                copyright: '© 2026 GÉNESIS GLOBAL — Là où commencent de nouvelles opportunités.'
             },
 
             alerts: {
-                route: 'Veuillez sélectionner votre origine et votre destination.',
-                personal: 'Veuillez compléter toutes vos informations personnelles.',
-                success: '✅ Votre demande a été envoyée avec succès !\n\n📧 Un e-mail a été envoyé à GÉNESIS GLOBAL.\n📱 WhatsApp va s’ouvrir pour contacter un conseiller.',
-                error: '❌ Une erreur est survenue lors de l’envoi de votre demande.\n\nVeuillez réessayer ou nous contacter directement sur WhatsApp au +1 (809) 999-5904.'
-            },
-
-            summary: {
-                travelDate: '📅 Date du voyage :',
-                returnDate: '📅 Retour :',
-                travelers: '👥 Voyageurs :',
-                adults: 'adultes',
-                children: 'enfants',
-                reason: '❤️ Motif :',
-                name: '👤 Nom :',
-                whatsapp: '📱 WhatsApp :',
-                email: '📧 E-mail :',
-                residence: '🌍 Résidence :',
-                comments: '💬 Commentaires :',
-                unspecified: 'Non précisée',
-                none: 'Aucun'
+                originDestination: 'Veuillez sélectionner votre origine et votre destination.',
+                personalData: 'Veuillez compléter toutes les informations personnelles.',
+                required: '⚠️ Veuillez compléter toutes les informations obligatoires.',
+                saving: 'Enregistrement de la demande...',
+                sending: 'Envoi de la demande...',
+                success: '✅ Demande envoyée avec succès !\n\nVotre demande a été enregistrée et notre équipe recevra les informations.\n\nWhatsApp va maintenant s’ouvrir pour poursuivre la conversation.',
+                error: '❌ Nous n’avons pas pu traiter votre demande.\n\nVeuillez réessayer ou nous contacter directement sur WhatsApp au +1 (809) 999-5904.',
+                supabase: 'La connexion à Supabase n’est pas disponible.',
+                emailjs: 'EmailJS n’est pas disponible.'
             }
         },
 
-        proof: {
-            kicker: 'Notre objectif',
-            title: 'Nous connectons les destinations. <span>Nous réunissons les familles.</span>',
-            slogan: '« Là où commencent de nouvelles opportunités. »',
-            description: 'Une expérience numérique simple, un accompagnement humain et une coordination professionnelle pour vous aider à organiser votre prochain voyage.'
-        },
 
-        services: {
-            kicker: 'Nos services',
-            title: 'Tout ce dont vous avez besoin pour <span class="text-gradient">organiser votre voyage.</span>',
-            description: 'Des solutions conçues pour vous accompagner à chaque étape.',
+        /* =========================
+           PORTUGUÊS
+           ========================= */
+        pt: {
 
-            one: {
-                title: 'Planification de voyages',
-                description: 'Itinéraires, dates, correspondances et programmes organisés selon vos besoins.',
-                button: 'Planifier maintenant →'
+            nav: {
+                home: 'Início',
+                services: 'Serviços',
+                process: 'Como funciona',
+                about: 'Sobre nós',
+                faq: 'FAQ',
+                other: 'Outros Serviços',
+                plan: 'Planejar minha viagem →'
             },
 
-            two: {
-                title: 'Voyages en famille',
-                description: 'Un accompagnement pensé pour ceux qui souhaitent retrouver leurs proches.',
-                button: 'En savoir plus →'
+            hero: {
+                eyebrow: '✦ Uma nova forma de organizar sua viagem em família',
+                title: 'Os quilômetros não deveriam separar as <span>famílias.</span>',
+                slogan: '“Onde começam novas oportunidades.”',
+                description: 'Planejamos e coordenamos sua viagem para que você possa se concentrar no que realmente importa: <b>estar novamente perto de quem você ama.</b>',
+                plan: 'Planejar minha viagem →',
+                process: 'Veja como funciona',
+                trust1: 'Atendimento humano',
+                trust2: 'Processo claro',
+                trust3: 'Acompanhamento',
+                globe: '🌍 <strong>Gire</strong> · <strong>Clique</strong> em um país'
             },
 
-            three: {
-                title: 'Orientation documentaire',
-                description: 'Des informations claires sur les documents, les exigences et les étapes importantes.',
-                button: 'Consulter →'
-            },
+            planner: {
+                kicker: 'Planeje sua viagem',
+                title: 'Conte-nos <span class="text-gradient">de onde você vem e para onde vai</span>',
+                description: 'Preencha os dados e nós organizaremos o restante.',
 
-            four: {
-                title: 'Hébergement et transport',
-                description: 'Nous coordonnons des options d’hébergement et de transport pour faciliter votre voyage.',
-                button: 'Voir les options →'
-            }
-        },
-
-        process: {
-            kicker: 'Expérience client',
-            title: 'Simple dès le premier <span class="text-gradient">message.</span>',
-            description: 'Nous avons conçu le processus pour réduire les doutes, les étapes inutiles et les difficultés.',
-
-            one: {
-                title: 'Expliquez-nous votre situation',
-                description: 'Remplissez une courte demande avec les informations de votre voyage.'
-            },
-
-            two: {
-                title: 'Nous analysons vos options',
-                description: 'Notre équipe examine votre situation et les alternatives disponibles.'
-            },
-
-            three: {
-                title: 'Vous recevez votre proposition',
-                description: 'Nous vous expliquons les options, les étapes et les informations importantes.'
-            },
-
-            four: {
-                title: 'Nous vous accompagnons',
-                description: 'Nous coordonnons le processus et vous guidons à chaque étape.'
-            }
-        },
-
-        about: {
-            kicker: 'GÉNESIS GLOBAL',
-            title: 'Une marque créée pour <span class="text-gradient">rapprocher les personnes.</span>',
-            description: 'Nous souhaitons construire une entreprise moderne, humaine et fiable qui facilite la planification des voyages et aide les personnes à rester proches de ceux qu’elles aiment.',
-            slogan: '« Là où commencent de nouvelles opportunités. »',
-            trust: 'Confiance',
-            transparency: 'Transparence',
-            closeness: 'Proximité',
-            professionalism: 'Professionnalisme'
-        },
-
-        faq: {
-            kicker: 'Questions fréquentes',
-            title: 'La clarté avant de <span class="text-gradient">décider.</span>',
-
-            one: {
-                question: 'GÉNESIS GLOBAL vend-elle des visas ?',
-                answer: 'Non. L’entreprise peut fournir des informations sur les exigences applicables et coordonner avec des professionnels autorisés lorsque cela est nécessaire. Les décisions migratoires relèvent des autorités compétentes.'
-            },
-
-            two: {
-                question: 'Puis-je demander de l’aide pour voyager vers Cuba ?',
-                answer: 'Oui. Le concept comprend les personnes vivant au Brésil ou dans d’autres pays qui souhaitent organiser un voyage à Cuba pour rendre visite à leur famille, sous réserve des réglementations en vigueur.'
-            },
-
-            three: {
-                question: 'Est-il également possible d’organiser des voyages depuis Cuba ?',
-                answer: 'Oui. La planification de voyages depuis Cuba vers le Brésil ou d’autres destinations peut être envisagée selon les exigences et les services disponibles.'
-            },
-
-            four: {
-                question: 'Comment commencer ?',
-                answer: 'Remplissez le formulaire d’orientation. Un membre de notre équipe pourra examiner votre demande et vous expliquer les prochaines étapes.'
-            }
-        },
-
-        footer: {
-            slogan: 'Là où commencent de nouvelles opportunités.',
-            statement: 'Nous connectons les destinations. Nous réunissons les familles.',
-
-            company: 'Entreprise',
-            about: 'À propos',
-            services: 'Services',
-            faq: 'FAQ',
-
-            attention: 'Assistance',
-            personalized: 'Orientation personnalisée',
-            whatsapp: 'WhatsApp Business',
-            form: 'Formulaire de demande',
-
-            copyright: '© 2026 GÉNESIS GLOBAL — Là où commencent de nouvelles opportunités.',
-
-            privacy: 'Politique de confidentialité',
-            terms: 'Conditions générales',
-            cookies: 'Politique relative aux cookies'
-        }
-    },
-
-
-    /* =====================================================
-       PORTUGUÊS
-    ===================================================== */
-
-    pt: {
-
-        language: {
-            code: 'PT',
-            name: 'Português',
-            selector: 'Selecionar idioma'
-        },
-
-        nav: {
-            home: 'Início',
-            services: 'Serviços',
-            process: 'Como funciona',
-            about: 'Sobre nós',
-            faq: 'FAQ',
-            otherServices: 'Outros Serviços',
-            plan: 'Planejar minha viagem →'
-        },
-
-        hero: {
-            eyebrow: '✦ Uma nova forma de organizar sua viagem em família',
-            title: 'Os quilômetros não deveriam separar as <span>famílias.</span>',
-            slogan: '“Onde começam novas oportunidades.”',
-            description: 'Planejamos e coordenamos sua viagem para que você possa se concentrar no que realmente importa: <b>estar novamente perto de quem você ama.</b>',
-            plan: 'Planejar minha viagem →',
-            seeProcess: 'Ver como funciona',
-            human: 'Atendimento humano',
-            clear: 'Processo claro',
-            support: 'Acompanhamento',
-            globe: '🌍 <strong>Gire</strong> · <strong>Clique</strong> em um país'
-        },
-
-        planner: {
-
-            kicker: 'Planeje sua viagem',
-
-            title: 'Conte-nos <span class="text-gradient">de onde você vem e para onde vai</span>',
-
-            description: 'Preencha os dados e nós cuidaremos do restante.',
-
-            step1: {
-                title: '1. Rota da viagem',
-
-                origin: '🇧🇷 De onde você está viajando?',
-
+                originLabel: '🇧🇷 De onde você está viajando?',
                 originPlaceholder: 'Ex.: Brasil, Cuba, Espanha...',
 
-                destination: '🇨🇺 Para onde você quer viajar?',
-
+                destinationLabel: '🇨🇺 Para onde você quer viajar?',
                 destinationPlaceholder: 'Ex.: Cuba, Brasil, México...',
 
                 continue: 'Continuar →',
+                hint: '💡 Você também pode clicar em um país no globo para selecioná-lo como destino.',
 
-                tip: '💡 Você também pode clicar em um país no globo para selecioná-lo como destino.'
-            },
-
-            step2: {
-                title: '2. Detalhes da viagem',
-
-                departure: '📅 Data aproximada da viagem',
-
-                return: '📅 Data de retorno (opcional)',
-
+                dateDeparture: '📅 Data aproximada da viagem',
+                dateReturn: '📅 Data de retorno (opcional)',
                 adults: '👥 Número de adultos',
-
                 children: '👶 Número de crianças',
+                tripType: '❤️ Tipo de viagem',
 
-                type: '❤️ Tipo de viagem',
-
-                typePlaceholder: 'Selecione uma opção',
-
-                family: 'Visita familiar',
-
+                familyVisit: 'Visita familiar',
                 personal: 'Viagem pessoal',
-
                 tourism: 'Turismo',
-
                 other: 'Outro',
 
                 back: '← Voltar',
 
-                continue: 'Continuar →'
-            },
-
-            step3: {
-
-                title: '3. Seus dados',
-
-                name: '👤 Nome completo',
-
-                namePlaceholder: 'Seu nome completo',
+                fullName: '👤 Nome completo',
+                fullNamePlaceholder: 'Seu nome completo',
 
                 whatsapp: '📱 WhatsApp',
-
                 whatsappPlaceholder: '+54 9 11 1234 5678',
 
                 email: '📧 E-mail',
+                emailPlaceholder: 'seu@email.com',
 
-                emailPlaceholder: 'seuemail@exemplo.com',
-
-                residence: '🌍 País onde você mora atualmente',
-
+                residence: '🌍 País onde você reside atualmente',
                 residencePlaceholder: 'Ex.: Brasil, Argentina, Espanha...',
 
                 comments: '💬 Comentários adicionais',
+                commentsPlaceholder: 'Conte-nos algo mais de que você precise...',
 
-                commentsPlaceholder: 'Conte-nos algo mais que você precise...',
+                summary: 'Ver resumo',
+                edit: '← Editar',
+                send: 'Enviar solicitação →',
 
-                back: '← Voltar',
-
-                summary: 'Ver resumo'
+                summaryDate: '📅 Data da viagem:',
+                summaryReturn: '📅 Retorno:',
+                summaryTravelers: '👥 Viajantes:',
+                summaryReason: '❤️ Motivo:',
+                summaryName: '👤 Nome:',
+                summaryWhatsapp: '📱 WhatsApp:',
+                summaryEmail: '📧 E-mail:',
+                summaryResidence: '🌍 Residência:',
+                summaryComments: '💬 Comentários:',
+                unspecified: 'Não especificada',
+                adultsText: 'adultos',
+                childrenText: 'crianças',
+                none: 'Nenhum'
             },
 
-            step4: {
+            proof: {
+                kicker: 'Nosso propósito',
+                title: 'Conectamos destinos. <span class="text-gradient">Reunimos famílias.</span>',
+                slogan: '“Onde começam novas oportunidades.”',
+                description: 'Uma experiência digital simples, atendimento próximo e coordenação profissional para ajudar você a organizar sua próxima viagem.'
+            },
 
-                title: '4. Revise sua solicitação',
+            services: {
+                kicker: 'Serviços',
+                title: 'Tudo o que é essencial, <span class="text-gradient">em um só lugar.</span>',
+                description: 'Começamos com serviços claros e humanos, projetados para reduzir a incerteza e simplificar cada etapa.',
 
-                edit: '← Editar',
+                s1Title: 'Planejamento de viagens',
+                s1Text: 'Rotas, datas, conexões e itinerários organizados de acordo com sua situação.',
+                s2Title: 'Viagens em família',
+                s2Text: 'Acompanhamento pensado para quem deseja reencontrar seus familiares.',
+                s3Title: 'Orientação documental',
+                s3Text: 'Informações claras sobre os requisitos aplicáveis e coordenação com profissionais autorizados.',
+                s4Title: 'Hospedagem e transporte',
+                s4Text: 'Coordenamos opções complementares para tornar sua viagem mais simples.',
 
-                send: 'Enviar solicitação →'
+                plan: 'Planejar agora →'
+            },
+
+            process: {
+                kicker: 'Experiência do cliente',
+                title: 'Simples desde a primeira <span class="text-gradient">mensagem.</span>',
+                description: 'Projetamos o processo para reduzir dúvidas, etapas desnecessárias e dificuldades.',
+
+                p1Title: 'Conte-nos sua situação',
+                p1Text: 'Preencha uma solicitação breve e informe de onde você viaja, para onde deseja ir e do que precisa.',
+
+                p2Title: 'Analisamos suas opções',
+                p2Text: 'Nossa equipe analisa rotas, serviços e requisitos aplicáveis.',
+
+                p3Title: 'Você recebe sua proposta',
+                p3Text: 'Explicamos opções, custos e próximos passos antes de continuar.',
+
+                p4Title: 'Acompanhamos você',
+                p4Text: 'Coordenamos o processo contratado e mantemos a comunicação com você.'
+            },
+
+            about: {
+                kicker: 'GÉNESIS GLOBAL',
+                title: 'Uma marca criada para <span class="text-gradient">aproximar pessoas.</span>',
+                description: 'Queremos construir uma empresa moderna, humana e transparente. Nossa tecnologia deve facilitar o trabalho da equipe e, acima de tudo, fazer com que o cliente entenda o que acontece em cada etapa.',
+                slogan: '“Onde começam novas oportunidades.”',
+                trust1: 'Confiança',
+                trust2: 'Transparência',
+                trust3: 'Proximidade',
+                trust4: 'Profissionalismo'
+            },
+
+            faq: {
+                kicker: 'Perguntas frequentes',
+                title: 'Clareza antes de <span class="text-gradient">decidir.</span>',
+
+                q1: 'A GÉNESIS GLOBAL vende vistos?',
+                a1: 'Não. A empresa pode orientar sobre os requisitos aplicáveis e coordenar com profissionais autorizados quando necessário. As decisões migratórias são de responsabilidade das autoridades competentes.',
+
+                q2: 'Posso solicitar ajuda para viajar para Cuba?',
+                a2: 'Sim. O conceito contempla pessoas que vivem no Brasil ou em outros países e desejam organizar uma viagem a Cuba para visitar seus familiares, sujeita às normas vigentes.',
+
+                q3: 'Também é possível organizar viagens saindo de Cuba?',
+                a3: 'Sim. O planejamento de viagens de Cuba para o Brasil ou outros destinos pode ser considerado, dependendo dos requisitos e serviços disponíveis.',
+
+                q4: 'Como começo?',
+                a4: 'Preencha o formulário de orientação. Um membro da equipe poderá analisar sua solicitação e explicar os próximos passos.'
+            },
+
+            footer: {
+                slogan: 'Onde começam novas oportunidades.',
+                description: 'Conectamos destinos. Reunimos famílias.',
+                company: 'Empresa',
+                attention: 'Atendimento',
+                about: 'Sobre nós',
+                services: 'Serviços',
+                personalized: 'Orientação personalizada',
+                whatsapp: 'WhatsApp Business',
+                form: 'Formulário de solicitação',
+                privacy: 'Política de Privacidade',
+                terms: 'Termos e Condições',
+                cookies: 'Política de Cookies',
+                copyright: '© 2026 GÉNESIS GLOBAL — Onde começam novas oportunidades.'
             },
 
             alerts: {
-                route: 'Por favor, selecione sua origem e destino.',
-                personal: 'Por favor, preencha todos os seus dados pessoais.',
-                success: '✅ Sua solicitação foi enviada com sucesso!\n\n📧 Um e-mail foi enviado para a GÉNESIS GLOBAL.\n📱 O WhatsApp será aberto para entrar em contato com um consultor.',
-                error: '❌ Ocorreu um erro ao enviar sua solicitação.\n\nTente novamente ou entre em contato diretamente pelo WhatsApp: +1 (809) 999-5904.'
-            },
-
-            summary: {
-                travelDate: '📅 Data da viagem:',
-                returnDate: '📅 Retorno:',
-                travelers: '👥 Viajantes:',
-                adults: 'adultos',
-                children: 'crianças',
-                reason: '❤️ Motivo:',
-                name: '👤 Nome:',
-                whatsapp: '📱 WhatsApp:',
-                email: '📧 E-mail:',
-                residence: '🌍 Residência:',
-                comments: '💬 Comentários:',
-                unspecified: 'Não especificada',
-                none: 'Nenhum'
+                originDestination: 'Por favor, selecione sua origem e seu destino.',
+                personalData: 'Por favor, preencha todos os dados pessoais.',
+                required: '⚠️ Por favor, preencha todos os dados obrigatórios.',
+                saving: 'Salvando solicitação...',
+                sending: 'Enviando solicitação...',
+                success: '✅ Solicitação enviada com sucesso!\n\nSua solicitação foi registrada e nossa equipe receberá as informações.\n\nO WhatsApp será aberto agora para continuar o atendimento.',
+                error: '❌ Não foi possível concluir sua solicitação.\n\nTente novamente ou entre em contato conosco diretamente pelo WhatsApp +1 (809) 999-5904.',
+                supabase: 'A conexão com o Supabase não está disponível.',
+                emailjs: 'O EmailJS não está disponível.'
             }
-        },
+        }
+    };
 
-        proof: {
-            kicker: 'Nosso propósito',
-            title: 'Conectamos destinos. <span>Reunimos famílias.</span>',
-            slogan: '“Onde começam novas oportunidades.”',
-            description: 'Uma experiência digital simples, atendimento próximo e coordenação profissional para ajudar você a organizar sua próxima viagem.'
-        },
 
-        services: {
-            kicker: 'Nossos serviços',
-            title: 'Tudo o que você precisa para <span class="text-gradient">organizar sua viagem.</span>',
-            description: 'Soluções pensadas para acompanhar você em cada etapa.',
+    /* ============================================================
+       FUNCIÓN PARA OBTENER TRADUCCIONES
+       ============================================================ */
 
-            one: {
-                title: 'Planejamento de viagens',
-                description: 'Rotas, datas, conexões e itinerários organizados de acordo com suas necessidades.',
-                button: 'Planejar agora →'
-            },
+    function get(path) {
+        const parts = path.split('.');
+        let value = translations[currentLanguage];
 
-            two: {
-                title: 'Viagens em família',
-                description: 'Acompanhamento pensado para quem deseja reencontrar seus entes queridos.',
-                button: 'Saiba mais →'
-            },
-
-            three: {
-                title: 'Orientação documental',
-                description: 'Informações claras sobre documentos, requisitos e etapas importantes.',
-                button: 'Consultar →'
-            },
-
-            four: {
-                title: 'Hospedagem e transporte',
-                description: 'Coordenamos opções de hospedagem e transporte para facilitar sua viagem.',
-                button: 'Ver opções →'
+        for (const part of parts) {
+            if (value && Object.prototype.hasOwnProperty.call(value, part)) {
+                value = value[part];
+            } else {
+                return '';
             }
-        },
+        }
 
-        process: {
-            kicker: 'Experiência do cliente',
-            title: 'Simples desde a primeira <span class="text-gradient">mensagem.</span>',
-            description: 'Criamos o processo para reduzir dúvidas, etapas desnecessárias e dificuldades.',
+        return value;
+    }
 
-            one: {
-                title: 'Conte-nos sua situação',
-                description: 'Preencha uma solicitação breve com as informações da sua viagem.'
-            },
 
-            two: {
-                title: 'Analisamos suas opções',
-                description: 'Nossa equipe analisa sua situação e as alternativas disponíveis.'
-            },
+    /* ============================================================
+       CAMBIAR CONTENIDO
+       ============================================================ */
 
-            three: {
-                title: 'Você recebe sua proposta',
-                description: 'Explicamos as opções, os passos e as informações importantes.'
-            },
+    function setHTML(selector, value) {
+        const element = document.querySelector(selector);
 
-            four: {
-                title: 'Acompanhamos você',
-                description: 'Coordenamos o processo e orientamos você durante cada etapa.'
-            }
-        },
-
-        about: {
-            kicker: 'GÉNESIS GLOBAL',
-            title: 'Uma marca criada para <span class="text-gradient">aproximar pessoas.</span>',
-            description: 'Queremos construir uma empresa moderna, humana e confiável que facilite o planejamento de viagens e ajude as pessoas a ficarem mais próximas de quem amam.',
-            slogan: '“Onde começam novas oportunidades.”',
-            trust: 'Confiança',
-            transparency: 'Transparência',
-            closeness: 'Proximidade',
-            professionalism: 'Profissionalismo'
-        },
-
-        faq: {
-            kicker: 'Perguntas frequentes',
-            title: 'Clareza antes de <span class="text-gradient">decidir.</span>',
-
-            one: {
-                question: 'A GÉNESIS GLOBAL vende vistos?',
-                answer: 'Não. A empresa pode orientar sobre os requisitos aplicáveis e coordenar com profissionais autorizados quando necessário. As decisões migratórias são de responsabilidade das autoridades competentes.'
-            },
-
-            two: {
-                question: 'Posso solicitar ajuda para viajar para Cuba?',
-                answer: 'Sim. O conceito contempla pessoas que vivem no Brasil ou em outros países e desejam organizar uma viagem a Cuba para visitar seus familiares, de acordo com as normas vigentes.'
-            },
-
-            three: {
-                question: 'Também é possível organizar viagens a partir de Cuba?',
-                answer: 'Sim. O planejamento de viagens de Cuba para o Brasil ou outros destinos pode ser considerado dependendo dos requisitos e serviços disponíveis.'
-            },
-
-            four: {
-                question: 'Como começo?',
-                answer: 'Preencha o formulário de orientação. Um membro da nossa equipe poderá analisar sua solicitação e explicar os próximos passos.'
-            }
-        },
-
-        footer: {
-            slogan: 'Onde começam novas oportunidades.',
-            statement: 'Conectamos destinos. Reunimos famílias.',
-
-            company: 'Empresa',
-            about: 'Sobre nós',
-            services: 'Serviços',
-            faq: 'FAQ',
-
-            attention: 'Atendimento',
-            personalized: 'Orientação personalizada',
-            whatsapp: 'WhatsApp Business',
-            form: 'Formulário de solicitação',
-
-            copyright: '© 2026 GÉNESIS GLOBAL — Onde começam novas oportunidades.',
-
-            privacy: 'Política de Privacidade',
-            terms: 'Termos e Condições',
-            cookies: 'Política de Cookies'
+        if (element && value !== undefined) {
+            element.innerHTML = value;
         }
     }
 
-};
-
-
-/* =========================================================
-   ESTADO
-========================================================= */
-
-let genesisCurrentLanguage = 'es';
-
-
-/* =========================================================
-   OBTENER TRADUCCIÓN
-========================================================= */
-
-function genesisGetTranslation(path, language = genesisCurrentLanguage) {
-
-    const dictionary =
-        GENESIS_TRANSLATIONS[language] ||
-        GENESIS_TRANSLATIONS.es;
-
-    return path.split('.').reduce((obj, key) => {
-
-        return obj &&
-            Object.prototype.hasOwnProperty.call(obj, key)
-            ? obj[key]
-            : undefined;
-
-    }, dictionary);
-}
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function genesisSetText(selector, value) {
-
+   function setText(selector, text) {
     const element = document.querySelector(selector);
 
-    if (!element || value === undefined || value === null) {
+    if (!element) {
         return;
     }
 
-    element.innerHTML = value;
+    element.textContent = text;
 }
-
-
-function genesisSetPlaceholder(selector, value) {
-
-    const element = document.querySelector(selector);
-
-    if (!element || value === undefined || value === null) {
-        return;
     }
 
-    element.setAttribute('placeholder', value);
-}
 
+    /* ============================================================
+       APLICAR IDIOMA
+       ============================================================ */
 
-function genesisSetTextAll(selector, values) {
+    function applyGenesisLanguage(language) {
 
-    const elements = document.querySelectorAll(selector);
-
-    if (!elements.length || !Array.isArray(values)) {
-        return;
-    }
-
-    elements.forEach((element, index) => {
-
-        if (values[index] !== undefined) {
-            element.innerHTML = values[index];
+        if (!translations[language]) {
+            language = 'es';
         }
 
-    });
-}
+        currentLanguage = language;
+
+        const t = translations[language];
+
+        /* =========================
+           HTML LANG
+           ========================= */
+
+        document.documentElement.lang = language;
 
 
-/* =========================================================
-   APLICAR IDIOMA
-========================================================= */
+        /* =========================
+           NAVBAR
+           ========================= */
 
-function applyGenesisLanguage(language) {
-
-    /*
-     * Solo aceptamos idiomas disponibles.
-     */
-
-    if (!GENESIS_TRANSLATIONS[language]) {
-        language = 'es';
-    }
-
-    genesisCurrentLanguage = language;
-
-    const t = GENESIS_TRANSLATIONS[language];
+        setText('.links button:nth-child(1)', t.nav.home);
+        setText('.links button:nth-child(2)', t.nav.services);
+        setText('.links button:nth-child(3)', t.nav.process);
+        setText('.links button:nth-child(4)', t.nav.about);
+        setText('.links button:nth-child(5)', t.nav.faq);
+        setText('.links button:nth-child(6)', t.nav.other);
+        setText('.links .cta', t.nav.plan);
 
 
-    /* =====================================================
-       HTML LANG
-    ===================================================== */
+        /* =========================
+           HERO
+           ========================= */
 
-    document.documentElement.lang = language;
+        setText('.hero .eyebrow', t.hero.eyebrow);
+        setHTML('.hero h1', t.hero.title);
+        setText('.hero .slogan', t.hero.slogan);
+        setHTML('.hero-copy > p', t.hero.description);
 
+        setText('.hero .actions .primary', t.hero.plan);
+        setText('.hero .actions .secondary', t.hero.process);
 
-    /* =====================================================
-       TITLE
-    ===================================================== */
+        const trust = document.querySelectorAll('.hero .trust span');
 
-    document.title =
-        language === 'es'
-            ? 'GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.'
-            : language === 'en'
-                ? 'GÉNESIS GLOBAL — Where new opportunities begin.'
-                : language === 'fr'
-                    ? 'GÉNESIS GLOBAL — Là où commencent de nouvelles opportunités.'
-                    : 'GÉNESIS GLOBAL — Onde começam novas oportunidades.';
+        if (trust[0]) trust[0].textContent = t.hero.trust1;
+        if (trust[1]) trust[1].textContent = t.hero.trust2;
+        if (trust[2]) trust[2].textContent = t.hero.trust3;
 
-
-    /* =====================================================
-       NAVBAR
-    ===================================================== */
-
-    const navButtons =
-        document.querySelectorAll('#links > button');
-
-    if (navButtons.length >= 7) {
-
-        navButtons[0].innerHTML = t.nav.home;
-        navButtons[1].innerHTML = t.nav.services;
-        navButtons[2].innerHTML = t.nav.process;
-        navButtons[3].innerHTML = t.nav.about;
-        navButtons[4].innerHTML = t.nav.faq;
-        navButtons[5].innerHTML = t.nav.otherServices;
-        navButtons[6].innerHTML = t.nav.plan;
-
-    }
+        setHTML('.globe-label', t.hero.globe);
 
 
-    /* =====================================================
-       BRAND
-    ===================================================== */
+        /* =========================
+           PLANNER
+           ========================= */
 
-    document
-        .querySelectorAll('.brand small')
-        .forEach(element => {
+        setText('#planner .kicker', t.planner.kicker);
+        setHTML('#planner .section-title', t.planner.title);
 
-            element.textContent = t.footer.slogan;
+        const plannerDescription = document.querySelector(
+            '#planner .head > p'
+        );
 
-        });
-
-
-    /* =====================================================
-       HERO
-    ===================================================== */
-
-    genesisSetText('.hero .eyebrow', t.hero.eyebrow);
-
-    genesisSetText('.hero h1', t.hero.title);
-
-    genesisSetText('.hero .slogan', t.hero.slogan);
-
-    genesisSetText('.hero-copy > p', t.hero.description);
-
-
-    const heroButtons =
-        document.querySelectorAll('.hero-copy .actions button');
-
-    if (heroButtons.length >= 2) {
-
-        heroButtons[0].innerHTML = t.hero.plan;
-
-        heroButtons[1].innerHTML = t.hero.seeProcess;
-
-    }
-
-
-    const trustItems =
-        document.querySelectorAll('.hero-copy .trust span');
-
-    if (trustItems.length >= 3) {
-
-        trustItems[0].textContent = t.hero.human;
-        trustItems[1].textContent = t.hero.clear;
-        trustItems[2].textContent = t.hero.support;
-
-    }
-
-
-    genesisSetText('#globe-container .globe-label', t.hero.globe);
-
-
-    /* =====================================================
-       PLANNER — HEADER
-    ===================================================== */
-
-    genesisSetText('.planner-section .kicker', t.planner.kicker);
-
-    genesisSetText('.planner-section .section-title', t.planner.title);
-
-    genesisSetText('.planner-section > .planner-card > p', t.planner.description);
-
-
-    /* =====================================================
-       PLANNER — STEP 1
-    ===================================================== */
-
-    const step1 = document.getElementById('step1');
-
-    if (step1) {
-
-        const labels = step1.querySelectorAll('label');
-
-        if (labels.length >= 2) {
-
-            labels[0].innerHTML = t.planner.step1.origin;
-            labels[1].innerHTML = t.planner.step1.destination;
-
+        if (plannerDescription) {
+            plannerDescription.textContent = t.planner.description;
         }
 
-        genesisSetPlaceholder(
+
+        /* STEP 1 */
+
+        const labelsStep1 = document.querySelectorAll(
+            '#step1 .search-field label'
+        );
+
+        if (labelsStep1[0]) {
+            labelsStep1[0].textContent = t.planner.originLabel;
+        }
+
+        if (labelsStep1[1]) {
+            labelsStep1[1].textContent = t.planner.destinationLabel;
+        }
+
+        setPlaceholder(
             '#origenInput',
-            t.planner.step1.originPlaceholder
+            t.planner.originPlaceholder
         );
 
-        genesisSetPlaceholder(
+        setPlaceholder(
             '#destinoInput',
-            t.planner.step1.destinationPlaceholder
+            t.planner.destinationPlaceholder
         );
 
-        const button =
-            step1.querySelector('.btn-continuar');
+        setText(
+            '#step1 .btn-continuar',
+            t.planner.continue
+        );
 
-        if (button) {
-            button.innerHTML = t.planner.step1.continue;
+        const plannerHint = document.querySelector(
+            '#step1 > div:last-child'
+        );
+
+        if (plannerHint) {
+            plannerHint.textContent = t.planner.hint;
         }
 
-        const tip =
-            step1.querySelector('.tip');
 
-        if (tip) {
-            tip.innerHTML = t.planner.step1.tip;
-        }
+        /* STEP 2 */
 
-    }
+        const step2Labels = document.querySelectorAll(
+            '#step2 .detail-field label'
+        );
 
+        if (step2Labels[0]) step2Labels[0].textContent = t.planner.dateDeparture;
+        if (step2Labels[1]) step2Labels[1].textContent = t.planner.dateReturn;
+        if (step2Labels[2]) step2Labels[2].textContent = t.planner.adults;
+        if (step2Labels[3]) step2Labels[3].textContent = t.planner.children;
+        if (step2Labels[4]) step2Labels[4].textContent = t.planner.tripType;
 
-    /* =====================================================
-       PLANNER — STEP 2
-    ===================================================== */
+        const tripOptions = document.querySelectorAll(
+            '#tipoViaje option'
+        );
 
-    const step2 = document.getElementById('step2');
+        if (tripOptions[0]) tripOptions[0].textContent = t.planner.familyVisit;
+        if (tripOptions[1]) tripOptions[1].textContent = t.planner.personal;
+        if (tripOptions[2]) tripOptions[2].textContent = t.planner.tourism;
+        if (tripOptions[3]) tripOptions[3].textContent = t.planner.other;
 
-    if (step2) {
-
-        const labels = step2.querySelectorAll('label');
-
-        if (labels.length >= 5) {
-
-            labels[0].innerHTML = t.planner.step2.departure;
-            labels[1].innerHTML = t.planner.step2.return;
-            labels[2].innerHTML = t.planner.step2.adults;
-            labels[3].innerHTML = t.planner.step2.children;
-            labels[4].innerHTML = t.planner.step2.type;
-
-        }
-
-        const select =
-            document.getElementById('tipoViaje');
-
-        if (select) {
-
-            const options = select.querySelectorAll('option');
-
-            if (options.length >= 5) {
-
-                options[0].textContent =
-                    t.planner.step2.typePlaceholder;
-
-                options[1].textContent =
-                    t.planner.step2.family;
-
-                options[2].textContent =
-                    t.planner.step2.personal;
-
-                options[3].textContent =
-                    t.planner.step2.tourism;
-
-                options[4].textContent =
-                    t.planner.step2.other;
-
-            }
-
-        }
-
-        const buttons =
-            step2.querySelectorAll('button');
-
-        buttons.forEach(button => {
-
-            if (
-                button.classList.contains('btn-back') ||
-                button.classList.contains('back')
-            ) {
-                button.innerHTML =
-                    t.planner.step2.back;
-            }
-
-            if (
-                button.classList.contains('btn-continuar') ||
-                button.classList.contains('continue')
-            ) {
-                button.innerHTML =
-                    t.planner.step2.continue;
-            }
-
-        });
-
-    }
+        setText('#step2 .secondary', t.planner.back);
+        setText('#step2 .primary', t.planner.continue);
 
 
-    /* =====================================================
-       PLANNER — STEP 3
-    ===================================================== */
+        /* STEP 3 */
 
-    const step3 = document.getElementById('step3');
+        const step3Labels = document.querySelectorAll(
+            '#step3 .detail-field label'
+        );
 
-    if (step3) {
+        if (step3Labels[0]) step3Labels[0].textContent = t.planner.fullName;
+        if (step3Labels[1]) step3Labels[1].textContent = t.planner.whatsapp;
+        if (step3Labels[2]) step3Labels[2].textContent = t.planner.email;
+        if (step3Labels[3]) step3Labels[3].textContent = t.planner.residence;
+        if (step3Labels[4]) step3Labels[4].textContent = t.planner.comments;
 
-        const labels = step3.querySelectorAll('label');
-
-        if (labels.length >= 5) {
-
-            labels[0].innerHTML = t.planner.step3.name;
-            labels[1].innerHTML = t.planner.step3.whatsapp;
-            labels[2].innerHTML = t.planner.step3.email;
-            labels[3].innerHTML = t.planner.step3.residence;
-            labels[4].innerHTML = t.planner.step3.comments;
-
-        }
-
-        genesisSetPlaceholder(
+        setPlaceholder(
             '#nombre',
-            t.planner.step3.namePlaceholder
+            t.planner.fullNamePlaceholder
         );
 
-        genesisSetPlaceholder(
+        setPlaceholder(
             '#whatsapp',
-            t.planner.step3.whatsappPlaceholder
+            t.planner.whatsappPlaceholder
         );
 
-        genesisSetPlaceholder(
+        setPlaceholder(
             '#email',
-            t.planner.step3.emailPlaceholder
+            t.planner.emailPlaceholder
         );
 
-        genesisSetPlaceholder(
+        setPlaceholder(
             '#residencia',
-            t.planner.step3.residencePlaceholder
+            t.planner.residencePlaceholder
         );
 
-        genesisSetPlaceholder(
+        setPlaceholder(
             '#comentarios',
-            t.planner.step3.commentsPlaceholder
+            t.planner.commentsPlaceholder
         );
 
-        const buttons =
-            step3.querySelectorAll('button');
+        const step3Buttons = document.querySelectorAll(
+            '#step3 button'
+        );
 
-        buttons.forEach(button => {
+        if (step3Buttons[0]) {
+            step3Buttons[0].textContent = t.planner.back;
+        }
 
-            const text =
-                button.textContent.trim().toLowerCase();
+        if (step3Buttons[1]) {
+            step3Buttons[1].textContent = t.planner.summary;
+        }
 
-            if (
-                text.includes('atrás') ||
-                text.includes('back') ||
-                text.includes('retour') ||
-                text.includes('voltar')
-            ) {
-                button.innerHTML =
-                    t.planner.step3.back;
+
+        /* STEP 4 */
+
+        const step4Buttons = document.querySelectorAll(
+            '#step4 button'
+        );
+
+        if (step4Buttons[0]) {
+            step4Buttons[0].textContent = t.planner.edit;
+        }
+
+        if (step4Buttons[1] && !step4Buttons[1].disabled) {
+            step4Buttons[1].textContent = t.planner.send;
+        }
+
+
+        /* =========================
+           PROOF
+           ========================= */
+
+        const proof = document.querySelector('.proof');
+
+        if (proof) {
+            setText('.proof .kicker', t.proof.kicker);
+            setHTML('.proof h2', t.proof.title);
+
+            const proofSlogan = proof.querySelector(
+                'div[style*="color:#82a9ff"]'
+            );
+
+            if (proofSlogan) {
+                proofSlogan.textContent = t.proof.slogan;
             }
 
-            if (
-                text.includes('resumen') ||
-                text.includes('summary') ||
-                text.includes('résumé') ||
-                text.includes('resumo')
-            ) {
-                button.innerHTML =
-                    t.planner.step3.summary;
+            const proofParagraph = proof.querySelector('.proof-card > p');
+
+            if (proofParagraph) {
+                proofParagraph.textContent = t.proof.description;
+            }
+        }
+
+
+        /* =========================
+           SERVICES
+           ========================= */
+
+        const services = document.querySelector('#servicios');
+
+        if (services) {
+
+            setText(
+                '#servicios .kicker',
+                t.services.kicker
+            );
+
+            setHTML(
+                '#servicios .section-title',
+                t.services.title
+            );
+
+            setText(
+                '#servicios .head > p',
+                t.services.description
+            );
+
+            const cards = document.querySelectorAll(
+                '#servicios .card'
+            );
+
+            if (cards[0]) {
+                setText('h3', t.services.s1Title, cards[0]);
             }
 
-        });
-
-    }
-
-
-    /* =====================================================
-       PLANNER — STEP 4
-    ===================================================== */
-
-    const step4 = document.getElementById('step4');
-
-    if (step4) {
-
-        const title =
-            step4.querySelector('h3, h2, .step-title');
-
-        if (title) {
-            title.innerHTML = t.planner.step4.title;
-        }
-
-        const buttons =
-            step4.querySelectorAll('button');
-
-        buttons.forEach(button => {
-
-            const text =
-                button.textContent.trim().toLowerCase();
-
-            if (
-                text.includes('editar') ||
-                text.includes('edit') ||
-                text.includes('modifier') ||
-                text.includes('editar')
-            ) {
-                button.innerHTML =
-                    t.planner.step4.edit;
+            if (cards[1]) {
+                setText('h3', t.services.s2Title, cards[1]);
             }
 
-            if (
-                text.includes('enviar') ||
-                text.includes('send') ||
-                text.includes('envoyer')
-            ) {
-                button.innerHTML =
-                    t.planner.step4.send;
+            if (cards[2]) {
+                setText('h3', t.services.s3Title, cards[2]);
             }
 
-        });
-
-    }
-
-
-    /* =====================================================
-       PROOF / PURPOSE
-    ===================================================== */
-
-    const proof =
-        document.querySelector('.proof-card');
-
-    if (proof) {
-
-        const kicker =
-            proof.querySelector('.kicker');
-
-        const title =
-            proof.querySelector('h2');
-
-        const slogan =
-            proof.querySelector('.slogan');
-
-        const paragraph =
-            proof.querySelector('p');
-
-        if (kicker) {
-            kicker.innerHTML = t.proof.kicker;
-        }
-
-        if (title) {
-            title.innerHTML = t.proof.title;
-        }
-
-        if (slogan) {
-            slogan.innerHTML = t.proof.slogan;
-        }
-
-        if (paragraph) {
-            paragraph.innerHTML = t.proof.description;
-        }
-
-    }
-
-
-    /* =====================================================
-       SERVICES
-    ===================================================== */
-
-    const servicesSection =
-        document.getElementById('servicios');
-
-    if (servicesSection) {
-
-        const kicker =
-            servicesSection.querySelector('.kicker');
-
-        const title =
-            servicesSection.querySelector('h2');
-
-        const description =
-            servicesSection.querySelector('.head p');
-
-        if (kicker) {
-            kicker.innerHTML = t.services.kicker;
-        }
-
-        if (title) {
-            title.innerHTML = t.services.title;
-        }
-
-        if (description) {
-            description.innerHTML = t.services.description;
-        }
-
-        const cards =
-            servicesSection.querySelectorAll('.card');
-
-        const serviceData = [
-            t.services.one,
-            t.services.two,
-            t.services.three,
-            t.services.four
-        ];
-
-        cards.forEach((card, index) => {
-
-            const data = serviceData[index];
-
-            if (!data) {
-                return;
+            if (cards[3]) {
+                setText('h3', t.services.s4Title, cards[3]);
             }
 
-            const titleElement =
-                card.querySelector('h3');
+            cards.forEach(card => {
+                const button = card.querySelector('.link');
 
-            const paragraph =
-                card.querySelector('p');
+                if (button) {
+                    button.textContent = t.services.plan;
+                }
+            });
 
-            const button =
-                card.querySelector('.link');
-
-            if (titleElement) {
-                titleElement.innerHTML = data.title;
+            if (cards[0]) {
+                const p = cards[0].querySelector('p');
+                if (p) p.textContent = t.services.s1Text;
             }
 
-            if (paragraph) {
-                paragraph.innerHTML = data.description;
+            if (cards[1]) {
+                const p = cards[1].querySelector('p');
+                if (p) p.textContent = t.services.s2Text;
             }
 
-            if (button) {
-                button.innerHTML = data.button;
+            if (cards[2]) {
+                const p = cards[2].querySelector('p');
+                if (p) p.textContent = t.services.s3Text;
             }
 
-        });
-
-    }
-
-
-    /* =====================================================
-       PROCESS
-    ===================================================== */
-
-    const processSection =
-        document.getElementById('proceso');
-
-    if (processSection) {
-
-        const kicker =
-            processSection.querySelector('.kicker');
-
-        const title =
-            processSection.querySelector('h2');
-
-        const description =
-            processSection.querySelector('.head p');
-
-        if (kicker) {
-            kicker.innerHTML = t.process.kicker;
+            if (cards[3]) {
+                const p = cards[3].querySelector('p');
+                if (p) p.textContent = t.services.s4Text;
+            }
         }
 
-        if (title) {
-            title.innerHTML = t.process.title;
-        }
 
-        if (description) {
-            description.innerHTML = t.process.description;
-        }
+        /* =========================
+           PROCESS
+           ========================= */
 
-        const steps =
-            processSection.querySelectorAll('.step');
+        setText(
+            '#proceso .kicker',
+            t.process.kicker
+        );
+
+        setHTML(
+            '#proceso .section-title',
+            t.process.title
+        );
+
+        setText(
+            '#proceso .head > p',
+            t.process.description
+        );
+
+        const steps = document.querySelectorAll(
+            '#proceso .step'
+        );
 
         const processData = [
-            t.process.one,
-            t.process.two,
-            t.process.three,
-            t.process.four
+            [t.process.p1Title, t.process.p1Text],
+            [t.process.p2Title, t.process.p2Text],
+            [t.process.p3Title, t.process.p3Text],
+            [t.process.p4Title, t.process.p4Text]
         ];
 
         steps.forEach((step, index) => {
 
-            const data = processData[index];
+            if (!processData[index]) return;
 
-            if (!data) {
-                return;
-            }
+            const title = step.querySelector('h3');
+            const text = step.querySelector('p');
 
-            const titleElement =
-                step.querySelector('h3');
-
-            const paragraph =
-                step.querySelector('p');
-
-            if (titleElement) {
-                titleElement.innerHTML = data.title;
-            }
-
-            if (paragraph) {
-                paragraph.innerHTML = data.description;
-            }
+            if (title) title.textContent = processData[index][0];
+            if (text) text.textContent = processData[index][1];
 
         });
 
-    }
 
+        /* =========================
+           ABOUT
+           ========================= */
 
-    /* =====================================================
-       ABOUT / NOSOTROS
-    ===================================================== */
+        setText(
+            '#nosotros .kicker',
+            t.about.kicker
+        );
 
-    const about =
-        document.getElementById('nosotros');
+        setHTML(
+            '#nosotros .section-title',
+            t.about.title
+        );
 
-    if (about) {
+        const aboutParagraph = document.querySelector(
+            '#nosotros .about p'
+        );
 
-        const kicker =
-            about.querySelector('.kicker');
-
-        const title =
-            about.querySelector('h2');
-
-        const paragraphs =
-            about.querySelectorAll('p');
-
-        const slogan =
-            about.querySelector('.about > div:last-child');
-
-        if (kicker) {
-            kicker.innerHTML = t.about.kicker;
+        if (aboutParagraph) {
+            aboutParagraph.textContent = t.about.description;
         }
 
-        if (title) {
-            title.innerHTML = t.about.title;
+        const aboutSlogan = document.querySelector(
+            '#nosotros .about div[style*="color:#82a9ff"]'
+        );
+
+        if (aboutSlogan) {
+            aboutSlogan.textContent = t.about.slogan;
         }
 
-        if (paragraphs.length) {
-            paragraphs[paragraphs.length - 1].innerHTML =
-                t.about.description;
-        }
+        const pills = document.querySelectorAll(
+            '#nosotros .pill'
+        );
 
-        const pills =
-            about.querySelectorAll('.pill');
-
-        if (pills.length >= 4) {
-
-            pills[0].textContent =
-                t.about.trust;
-
-            pills[1].textContent =
-                t.about.transparency;
-
-            pills[2].textContent =
-                t.about.closeness;
-
-            pills[3].textContent =
-                t.about.professionalism;
-
-        }
-
-    }
+        if (pills[0]) pills[0].textContent = t.about.trust1;
+        if (pills[1]) pills[1].textContent = t.about.trust2;
+        if (pills[2]) pills[2].textContent = t.about.trust3;
+        if (pills[3]) pills[3].textContent = t.about.trust4;
 
 
-    /* =====================================================
-       FAQ
-    ===================================================== */
+        /* =========================
+           FAQ
+           ========================= */
 
-    const faqSection =
-        document.getElementById('faq');
+        setText(
+            '#faq .kicker',
+            t.faq.kicker
+        );
 
-    if (faqSection) {
+        setHTML(
+            '#faq .section-title',
+            t.faq.title
+        );
 
-        const kicker =
-            faqSection.querySelector('.kicker');
-
-        const title =
-            faqSection.querySelector('h2');
-
-        if (kicker) {
-            kicker.innerHTML = t.faq.kicker;
-        }
-
-        if (title) {
-            title.innerHTML = t.faq.title;
-        }
-
-        const rows =
-            faqSection.querySelectorAll('.faq-row');
+        const faqRows = document.querySelectorAll(
+            '#faq .faq-row'
+        );
 
         const faqData = [
-            t.faq.one,
-            t.faq.two,
-            t.faq.three,
-            t.faq.four
+            [t.faq.q1, t.faq.a1],
+            [t.faq.q2, t.faq.a2],
+            [t.faq.q3, t.faq.a3],
+            [t.faq.q4, t.faq.a4]
         ];
 
-        rows.forEach((row, index) => {
+        faqRows.forEach((row, index) => {
 
-            const data = faqData[index];
+            if (!faqData[index]) return;
 
-            if (!data) {
-                return;
-            }
-
-            const question =
-                row.querySelector('.faq-q');
-
-            const answer =
-                row.querySelector('.faq-a');
+            const question = row.querySelector('.faq-q');
+            const answer = row.querySelector('.faq-a');
 
             if (question) {
-
-                const arrow =
-                    question.querySelector('span');
+                const arrow = question.querySelector('span:last-child');
 
                 question.innerHTML =
-                    data.question + ' ';
-
-                if (arrow) {
-                    question.appendChild(arrow);
-                } else {
-                    question.insertAdjacentHTML(
-                        'beforeend',
-                        '<span>⌄</span>'
-                    );
-                }
-
+                    faqData[index][0] +
+                    (arrow ? ' <span>⌄</span>' : '');
             }
 
             if (answer) {
-                answer.innerHTML = data.answer;
+                answer.textContent = faqData[index][1];
             }
 
         });
 
-    }
 
+        /* =========================
+           FOOTER
+           ========================= */
 
-    /* =====================================================
-       FOOTER
-    ===================================================== */
+        const footer = document.querySelector('.footer');
 
-    const footer =
-        document.querySelector('.footer');
+        if (footer) {
 
-    if (footer) {
+            const footerBrandSmall = footer.querySelector(
+                '.brand small'
+            );
 
-        const footerParagraph =
-            footer.querySelector(
+            if (footerBrandSmall) {
+                footerBrandSmall.textContent = t.footer.slogan;
+            }
+
+            const footerDescription = footer.querySelector(
                 '.footer-grid > div:first-child p'
             );
 
-        if (footerParagraph) {
-            footerParagraph.innerHTML =
-                t.footer.statement;
-        }
-
-        const footerColumns =
-            footer.querySelectorAll('.footer-grid > div');
-
-        if (footerColumns.length >= 3) {
-
-            const companyTitle =
-                footerColumns[1].querySelector('h4');
-
-            const attentionTitle =
-                footerColumns[2].querySelector('h4');
-
-            if (companyTitle) {
-                companyTitle.innerHTML =
-                    t.footer.company;
+            if (footerDescription) {
+                footerDescription.textContent = t.footer.description;
             }
 
-            if (attentionTitle) {
-                attentionTitle.innerHTML =
-                    t.footer.attention;
+            const footerColumns = footer.querySelectorAll(
+                '.footer-grid > div'
+            );
+
+            if (footerColumns[1]) {
+
+                const h4 = footerColumns[1].querySelector('h4');
+                const buttons = footerColumns[1].querySelectorAll('button');
+
+                if (h4) h4.textContent = t.footer.company;
+
+                if (buttons[0]) buttons[0].textContent = t.footer.about;
+                if (buttons[1]) buttons[1].textContent = t.footer.services;
+                if (buttons[2]) buttons[2].textContent = t.faq.kicker.replace('Preguntas frecuentes', 'FAQ');
             }
 
-            const companyButtons =
-                footerColumns[1].querySelectorAll('button');
+            if (footerColumns[2]) {
 
-            if (companyButtons.length >= 3) {
+                const h4 = footerColumns[2].querySelector('h4');
+                const spans = footerColumns[2].querySelectorAll('span');
+                const whatsapp = footerColumns[2].querySelector('.whatsapp-link');
 
-                companyButtons[0].innerHTML =
-                    t.footer.about;
+                if (h4) h4.textContent = t.footer.attention;
 
-                companyButtons[1].innerHTML =
-                    t.footer.services;
-
-                companyButtons[2].innerHTML =
-                    t.footer.faq;
-
+                if (spans[0]) spans[0].textContent = t.footer.personalized;
+                if (whatsapp) whatsapp.textContent = t.footer.whatsapp;
+                if (spans[1]) spans[1].textContent = t.footer.form;
             }
 
-            const attentionItems =
-                footerColumns[2].children;
+            const copy = footer.querySelector('.copy');
 
-            Array.from(attentionItems).forEach(element => {
+            if (copy) {
 
-                if (
-                    element.tagName === 'SPAN' &&
-                    element.textContent.includes('Orientación')
-                ) {
-                    element.textContent =
-                        t.footer.personalized;
+                const spans = copy.querySelectorAll(':scope > span');
+
+                if (spans[0]) {
+                    spans[0].textContent = t.footer.copyright;
                 }
 
-                if (
-                    element.tagName === 'SPAN' &&
-                    element.textContent.includes('Formulario')
-                ) {
-                    element.textContent =
-                        t.footer.form;
-                }
+                const links = copy.querySelectorAll('a');
 
-            });
-
+                if (links[0]) links[0].textContent = t.footer.privacy;
+                if (links[1]) links[1].textContent = t.footer.terms;
+                if (links[2]) links[2].textContent = t.footer.cookies;
+            }
         }
 
-        const copy =
-            footer.querySelector('.copy');
 
-        if (copy) {
+        /* =========================
+           SELECTOR DE IDIOMA
+           ========================= */
 
-            const copySpans =
-                copy.querySelectorAll('span');
-
-            if (copySpans.length >= 1) {
-                copySpans[0].textContent =
-                    t.footer.copyright;
-            }
-
-            const policyLinks =
-                copy.querySelectorAll('a');
-
-            if (policyLinks.length >= 3) {
-
-                policyLinks[0].textContent =
-                    t.footer.privacy;
-
-                policyLinks[1].textContent =
-                    t.footer.terms;
-
-                policyLinks[2].textContent =
-                    t.footer.cookies;
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       SELECTOR DE IDIOMA
-    ===================================================== */
-
-    const currentCode =
-        document.getElementById('languageCurrentCode');
-
-    if (currentCode) {
-        currentCode.textContent =
-            t.language.code;
-    }
-
-
-    const currentButton =
-        document.getElementById('languageCurrent');
-
-    if (currentButton) {
-
-        currentButton.setAttribute(
-            'aria-label',
-            t.language.selector
+        const currentCode = document.getElementById(
+            'languageCurrentCode'
         );
 
+        if (currentCode) {
+            currentCode.textContent = LANGUAGES[language];
+        }
+
+        document
+            .querySelectorAll('.language-option')
+            .forEach(option => {
+
+                const isActive =
+                    option.dataset.language === language;
+
+                option.classList.toggle(
+                    'active',
+                    isActive
+                );
+
+                option.setAttribute(
+                    'aria-selected',
+                    isActive ? 'true' : 'false'
+                );
+            });
+
+
+        /* =========================
+           TÍTULO DEL DOCUMENTO
+           ========================= */
+
+        document.title =
+            language === 'es'
+                ? 'GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.'
+                : language === 'en'
+                    ? 'GÉNESIS GLOBAL — Where new opportunities begin.'
+                    : language === 'fr'
+                        ? 'GÉNESIS GLOBAL — Là où commencent de nouvelles opportunités.'
+                        : 'GÉNESIS GLOBAL — Onde começam novas oportunidades.';
+
+
+        console.log(
+            `🌐 GÉNESIS GLOBAL — Idioma cambiado a: ${LANGUAGES[language]}`
+        );
     }
 
 
-    document
-        .querySelectorAll('.language-option')
-        .forEach(option => {
+    /* ============================================================
+       SELECTOR
+       ============================================================ */
 
-            option.classList.toggle(
-                'active',
-                option.dataset.language === language
+    function setupLanguageSelector() {
+
+        const switcher = document.getElementById(
+            'languageSwitcher'
+        );
+
+        const currentButton = document.getElementById(
+            'languageCurrent'
+        );
+
+        const menu = document.getElementById(
+            'languageMenu'
+        );
+
+        if (!switcher || !currentButton || !menu) {
+            console.error(
+                '❌ No se encontró el selector de idiomas.'
             );
+            return;
+        }
 
-            option.setAttribute(
-                'aria-selected',
-                String(option.dataset.language === language)
+
+        /* ABRIR / CERRAR */
+
+        currentButton.addEventListener('click', function (event) {
+
+            event.stopPropagation();
+
+            const isOpen =
+                switcher.classList.toggle('open');
+
+            currentButton.setAttribute(
+                'aria-expanded',
+                isOpen ? 'true' : 'false'
             );
-
         });
 
 
-    /*
-     * =====================================================
-     * FIN DE applyGenesisLanguage()
-     * =====================================================
-     */
+        /* SELECCIONAR IDIOMA */
 
-}
+        menu.querySelectorAll('.language-option')
+            .forEach(option => {
 
+                option.addEventListener('click', function (event) {
 
-/* =========================================================
-   API GLOBAL
-========================================================= */
+                    event.stopPropagation();
 
-window.genesisI18n = {
+                    const language =
+                        this.dataset.language;
 
-    get(path) {
-        return genesisGetTranslation(path);
-    },
-
-    getLanguage() {
-        return genesisCurrentLanguage;
-    },
-
-    setLanguage(language) {
-        applyGenesisLanguage(language);
-    },
-
-    translations: GENESIS_TRANSLATIONS
-
-};
-
-
-/* =========================================================
-   FUNCIÓN GLOBAL
-========================================================= */
-
-window.translatePage = function(language) {
-
-    applyGenesisLanguage(language);
-
-};
-
-
-/* =========================================================
-   SELECTOR — ABRIR / CERRAR
-========================================================= */
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    const switcher =
-        document.getElementById('languageSwitcher');
-
-    const currentButton =
-        document.getElementById('languageCurrent');
-
-    if (!switcher || !currentButton) {
-        return;
-    }
-
-
-    /* -----------------------------------------------------
-       ABRIR / CERRAR AL HACER CLICK
-    ----------------------------------------------------- */
-
-    currentButton.addEventListener('click', event => {
-
-        event.stopPropagation();
-
-        const isOpen =
-            switcher.classList.toggle('open');
-
-        currentButton.setAttribute(
-            'aria-expanded',
-            String(isOpen)
-        );
-
-    });
-
-
-    /* -----------------------------------------------------
-       CAMBIAR IDIOMA
-    ----------------------------------------------------- */
-
-    document
-        .querySelectorAll('.language-option')
-        .forEach(option => {
-
-            option.addEventListener('click', event => {
-
-                event.stopPropagation();
-
-                const language =
-                    option.dataset.language;
-
-                if (
-                    language &&
-                    GENESIS_TRANSLATIONS[language]
-                ) {
+                    if (!translations[language]) {
+                        return;
+                    }
 
                     applyGenesisLanguage(language);
 
-                }
+                    switcher.classList.remove('open');
+
+                    currentButton.setAttribute(
+                        'aria-expanded',
+                        'false'
+                    );
+                });
+
+            });
+
+
+        /* CERRAR AL HACER CLICK FUERA */
+
+        document.addEventListener('click', function (event) {
+
+            if (!switcher.contains(event.target)) {
 
                 switcher.classList.remove('open');
 
@@ -2134,68 +1512,89 @@ document.addEventListener('DOMContentLoaded', () => {
                     'aria-expanded',
                     'false'
                 );
-
-            });
+            }
 
         });
 
 
-    /* -----------------------------------------------------
-       CERRAR AL HACER CLICK FUERA
-    ----------------------------------------------------- */
+        /* ESC */
 
-    document.addEventListener('click', event => {
+        document.addEventListener('keydown', function (event) {
 
-        if (!switcher.contains(event.target)) {
+            if (event.key === 'Escape') {
 
-            switcher.classList.remove('open');
+                switcher.classList.remove('open');
 
-            currentButton.setAttribute(
-                'aria-expanded',
-                'false'
-            );
+                currentButton.setAttribute(
+                    'aria-expanded',
+                    'false'
+                );
+            }
 
+        });
+
+    }
+
+
+    /* ============================================================
+       API GLOBAL
+       ============================================================ */
+
+    window.GenesisI18n = {
+
+        setLanguage: function (language) {
+            applyGenesisLanguage(language);
+        },
+
+        getLanguage: function () {
+            return currentLanguage;
+        },
+
+        translate: function (path) {
+            return get(path);
         }
 
-    });
+    };
 
 
-    /* -----------------------------------------------------
-       CERRAR CON ESC
-    ----------------------------------------------------- */
+    /* ============================================================
+       INICIO
+       ============================================================ */
 
-    document.addEventListener('keydown', event => {
+    function initializeGenesisI18n() {
 
-        if (event.key === 'Escape') {
+        /*
+         * MUY IMPORTANTE:
+         * Siempre empezamos en español.
+         *
+         * NO localStorage.
+         * NO cookies.
+         * NO idioma del navegador.
+         */
 
-            switcher.classList.remove('open');
+        currentLanguage = 'es';
 
-            currentButton.setAttribute(
-                'aria-expanded',
-                'false'
-            );
+        setupLanguageSelector();
 
-        }
+        applyGenesisLanguage('es');
 
-    });
-
-});
+        console.log(
+            '✅ GÉNESIS GLOBAL — Sistema de idiomas iniciado en Español'
+        );
+    }
 
 
-/* =========================================================
-   INICIO
-========================================================= */
+    if (document.readyState === 'loading') {
 
-document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener(
+            'DOMContentLoaded',
+            initializeGenesisI18n
+        );
 
-    /*
-     * SIEMPRE iniciamos en español.
-     *
-     * NO localStorage.
-     * NO sessionStorage.
-     * NO idioma guardado.
-     */
+    } else {
 
-    applyGenesisLanguage('es');
+        initializeGenesisI18n();
 
-});
+    }
+
+})();
