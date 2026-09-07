@@ -1565,6 +1565,7 @@
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
         container.appendChild(renderer.domElement);
 
         const controls = new OrbitControls(camera, renderer.domElement);
@@ -1572,12 +1573,12 @@
         controls.dampingFactor = 0.05;
         controls.rotateSpeed = 0.8;
         controls.enableZoom = true;
-        controls.zoomSpeed = 0.6;
+        controls.zoomSpeed = 0.9;
         controls.autoRotate = true;
         controls.autoRotateSpeed = 1.0;
         controls.enablePan = false;
-        controls.minDistance = 1.8;
-        controls.maxDistance = 4.5;
+        controls.minDistance = 1.15;
+        controls.maxDistance = 5.5;
         controls.target.set(0, 0, 0);
 
         const ambientLight = new THREE.AmbientLight(0x404060);
