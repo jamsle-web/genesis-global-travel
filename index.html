@@ -1598,7 +1598,9 @@
         scene.add(backLight);
 
         const textureLoader = new THREE.TextureLoader();
-        const earthMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+        const earthMap = textureLoader.load(
+    'https://threejs.org/examples/textures/planets/earth_atmos_4096.jpg'
+);
 
         const earthGeo = new THREE.SphereGeometry(1, 64, 64);
         const earthMat = new THREE.MeshPhongMaterial({
