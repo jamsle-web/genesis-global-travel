@@ -1954,34 +1954,20 @@ fetch(GEOJSON_URL)
             }
         }
 
-        function onPointerMove(event) {
-            const rect = renderer.domElement.getBoundingClientRect();
-            const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-            const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-            pointer.set(x, y);
-            raycaster.setFromCamera(pointer, camera);
-            const intersects = raycaster.intersectObject(earth);
-            if (intersects.length > 0) {
-                const point = intersects[0].point;
-                const country = getCountryFromPosition(point);
-                if (country) {
-                    hoveredCountry = country;
-                    tooltip.textContent = `${country.flag} ${country.name}`;
-                    tooltip.style.display = 'block';
-                    tooltip.style.left = (event.clientX - rect.left + 10) + 'px';
-                    tooltip.style.top = (event.clientY - rect.top - 10) + 'px';
-                    renderer.domElement.style.cursor = 'pointer';
-                } else {
-                    hoveredCountry = null;
-                    tooltip.style.display = 'none';
-                    renderer.domElement.style.cursor = 'grab';
-                }
-            } else {
-                hoveredCountry = null;
-                tooltip.style.display = 'none';
-                renderer.domElement.style.cursor = 'grab';
-            }
-            updateMarkerColors();
+       function onPointerMove(event) {
+
+    // No mostrar ningún país al mover el mouse
+    tooltip.style.display = 'none';
+
+    // No mantener ningún país en estado hover
+    hoveredCountry = null;
+
+    // Cursor normal de interacción con el globo
+    renderer.domElement.style.cursor = 'grab';
+
+    // Actualizar únicamente los marcadores seleccionados
+    updateMarkerColors();
+}
         }
 
         function updateMarkerColors() {
