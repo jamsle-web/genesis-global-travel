@@ -1954,7 +1954,7 @@ fetch(GEOJSON_URL)
             }
         }
 
-       function onPointerMove(event) {
+ function onPointerMove(event) {
 
     // No mostrar ningún país al mover el mouse
     tooltip.style.display = 'none';
@@ -1968,7 +1968,6 @@ fetch(GEOJSON_URL)
     // Actualizar únicamente los marcadores seleccionados
     updateMarkerColors();
 }
-        }
 
         function updateMarkerColors() {
             const colors = new Float32Array(countryData.length * 3);
