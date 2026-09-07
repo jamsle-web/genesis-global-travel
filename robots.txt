@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jamsle-web.github.io/genesis-global-travel/sitemap.xml
