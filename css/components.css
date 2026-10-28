@@ -109,3 +109,60 @@
     .footer-grid { grid-template-columns: 1fr; }
     .copy { flex-direction: column; text-align: center; }
 }
+/* ===== NEWSLETTER POPUP ===== */
+.nl-popup-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(6, 16, 29, 0.8); backdrop-filter: blur(8px);
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: all 0.4s ease;
+}
+.nl-popup-overlay.show { opacity: 1; visibility: visible; }
+
+.nl-popup-content {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+    border: 1px solid var(--border); border-radius: 30px;
+    padding: 40px; max-width: 500px; width: 90%; text-align: center;
+    position: relative; box-shadow: 0 30px 90px rgba(0,0,0,0.5);
+    transform: translateY(30px) scale(0.95); transition: all 0.4s var(--ease);
+    background-color: #0a1727;
+}
+.nl-popup-overlay.show .nl-popup-content { transform: translateY(0) scale(1); }
+
+.nl-close {
+    position: absolute; top: 15px; right: 20px; background: none; border: 0;
+    color: var(--text-soft); font-size: 30px; cursor: pointer; transition: color 0.3s;
+}
+.nl-close:hover { color: #fff; }
+
+.nl-icon {
+    width: 60px; height: 60px; background: rgba(102, 230, 196, 0.1);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 30px; margin: 0 auto 20px;
+}
+
+.nl-popup-content h2 { font-size: 28px; margin-bottom: 10px; }
+.nl-popup-content p { color: var(--text-soft); font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
+
+.nl-form { display: flex; flex-direction: column; gap: 15px; }
+.nl-form input[type="text"], .nl-form input[type="email"] {
+    width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px; color: #fff; font-family: inherit; outline: none;
+}
+.nl-form input:focus { border-color: var(--accent); }
+
+.nl-interests {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; margin: 10px 0;
+}
+.nl-interests label {
+    font-size: 13px; color: var(--text-soft); display: flex; align-items: center; gap: 8px; cursor: pointer;
+}
+.nl-interests input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+.nl-message { margin-top: 10px; font-size: 13px; font-weight: 600; display: none; }
+.nl-message.success { color: var(--accent); display: block; }
+.nl-message.error { color: #ff6b6b; display: block; }
+
+@media (max-width: 600px) {
+    .nl-interests { grid-template-columns: 1fr; }
+    .nl-popup-content { padding: 30px 20px; }
+}
