@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Preguntas Frecuentes | GÉNESIS GLOBAL</title>
+    <meta name="description" content="Respuestas a las dudas más comunes sobre nuestros servicios.">
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <style>
+        .hero-page { padding: 140px 0 60px; text-align: center; }
+        .hero-page h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
+        
+        .faq-container { max-width: 800px; margin: 0 auto; padding-bottom: 100px; }
+        
+        .faq-row {
+            border-bottom: 1px solid var(--border);
+        }
+        .faq-q {
+            width: 100%; background: none; border: 0; color: #fff;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 0; text-align: left; font-weight: 700; cursor: pointer;
+            font-family: inherit; font-size: 18px; transition: color 0.3s;
+        }
+        .faq-q:hover { color: var(--accent); }
+        .faq-a {
+            display: none; color: var(--text-soft); line-height: 1.8; font-size: 16px;
+            padding-bottom: 24px;
+        }
+        .faq-row.open .faq-a { display: block; }
+        .faq-q span { transition: transform 0.3s; font-size: 24px; color: var(--accent); }
+        .faq-row.open .faq-q span { transform: rotate(180deg); }
+
+        @media (max-width: 900px) {
+            .hero-page { padding: 120px 0 40px; }
+            .faq-q { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav shell" id="nav">
+        <a href="index.html" class="brand">
+            <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+            <span>
+                <b>GÉNESIS GLOBAL</b>
+                <small>Donde comienzan nuevas oportunidades.</small>
+            </span>
+        </a>
+        <div id="links" class="links">
+            <a href="index.html">Inicio</a>
+            <a href="servicios.html">Servicios</a>
+            <a href="como-funciona.html">Cómo funciona</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="faq.html" style="color: var(--accent);">FAQ</a>
+            <a href="otros-servicios.html">Otros Servicios</a>
+        </div>
+        <div class="nav-actions">
+            <a href="index.html#planner" class="cta">Planificar mi viaje</a>
+        </div>
+        <button class="menu" onclick="toggleMenu()">☰</button>
+    </nav>
+
+    <section class="hero-page shell reveal">
+        <span class="kicker">Preguntas Frecuentes</span>
+        <h1>Claridad antes de <br><span class="text-gradient">decidir.</span></h1>
+    </section>
+
+    <section class="shell reveal">
+        <div class="faq-container">
+            <div class="faq-row">
+                <button class="faq-q">¿GÉNESIS GLOBAL vende visas? <span>⌄</span></button>
+                <div class="faq-a">No. La empresa puede orientar sobre requisitos aplicables y coordinar con profesionales autorizados cuando un caso lo requiera. Las decisiones migratorias corresponden a las autoridades competentes.</div>
+            </div>
+            <div class="faq-row">
+                <button class="faq-q">¿Puedo solicitar ayuda para viajar hacia Cuba? <span>⌄</span></button>
+                <div class="faq-a">Sí. El concepto contempla personas que viven en Brasil, Guyana u otros países y quieren organizar un viaje a Cuba para visitar a sus familiares, sujeto a las normas vigentes.</div>
+            </div>
+            <div class="faq-row">
+                <button class="faq-q">¿También se pueden organizar viajes desde Cuba? <span>⌄</span></button>
+                <div class="faq-a">Sí. Puede contemplarse la planificación de viajes desde Cuba hacia Brasil, Guyana u otros destinos, dependiendo de requisitos y servicios disponibles.</div>
+            </div>
+            <div class="faq-row">
+                <button class="faq-q">¿Ofrecen servicios de remesas o recargas? <span>⌄</span></button>
+                <div class="faq-a">Sí, contamos con una sección de "Otros Servicios" donde puede gestionar recargas telefónicas, envíos de remesas y compra de productos para sus familiares.</div>
+            </div>
+            <div class="faq-row">
+                <button class="faq-q">¿Cómo empiezo? <span>⌄</span></button>
+                <div class="faq-a">Completa el formulario de orientación en nuestra página de inicio o contáctanos directamente por WhatsApp. Un miembro del equipo podrá revisar tu solicitud y explicarte los próximos pasos.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="shell footer-grid">
+            <div>
+                <div class="brand" style="cursor:default;">
+                    <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+                    <span>
+                        <b>GÉNESIS GLOBAL</b>
+                        <small>Donde comienzan nuevas oportunidades.</small>
+                    </span>
+                </div>
+                <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
+            </div>
+            <div>
+                <h4>Empresa</h4>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">FAQ</a>
+            </div>
+            <div>
+                <h4>Atención</h4>
+                <span>Orientación personalizada</span>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank" rel="noopener noreferrer">WhatsApp Business</a>
+                <span>Formulario de solicitud</span>
+            </div>
+        </div>
+        <div class="shell copy">
+            <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
+            <span>
+                <a href="#">Política de Privacidad</a> &middot;
+                <a href="#">Términos y Condiciones</a> &middot;
+                <a href="#">Política de Cookies</a>
+            </span>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
+        
+        // Lógica del acordeón para el FAQ
+        document.querySelectorAll('.faq-q').forEach(q => {
+            q.addEventListener('click', function() {
+                this.parentElement.classList.toggle('open');
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
