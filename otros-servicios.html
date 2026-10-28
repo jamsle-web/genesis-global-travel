@@ -25,93 +25,26 @@
         .hero-page h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
         .hero-page p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
         
-        /* Grid de Servicios Principales */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            padding-bottom: 60px;
-        }
-
-        .service-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            text-align: center;
-            transition: transform 0.4s var(--ease);
-            position: relative;
-            overflow: hidden;
-        }
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-bottom: 60px; }
+        .service-card { background: var(--glass); border: 1px solid var(--border); border-radius: 24px; padding: 30px; text-align: center; transition: transform 0.4s var(--ease); position: relative; overflow: hidden; }
         .service-card:hover { transform: translateY(-10px); border-color: rgba(102, 230, 196, 0.4); }
-        
-        .service-card .icon-box {
-            width: 60px; height: 60px;
-            background: linear-gradient(135deg, rgba(102,230,196,0.15), rgba(130,169,255,0.1));
-            border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 20px; color: var(--accent);
-        }
+        .service-card .icon-box { width: 60px; height: 60px; background: linear-gradient(135deg, rgba(102,230,196,0.15), rgba(130,169,255,0.1)); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: var(--accent); }
         .service-card h3 { font-size: 22px; margin-bottom: 10px; }
         .service-card p { color: var(--text-soft); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
-        
-        .service-card .btn-action {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 10px 20px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            transition: all 0.3s;
-            display: inline-block;
-        }
+        .service-card .btn-action { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text); padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 13px; transition: all 0.3s; display: inline-block; }
         .service-card .btn-action:hover { background: var(--accent); color: #07111f; }
 
-        /* Sección de Productos con Imágenes y Precios */
         .products-section { padding: 60px 0 100px; }
         .products-section .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
         .products-section h2 { font-size: 32px; }
-        
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-        
-        .product-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .product-card { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: transform 0.3s; }
         .product-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        
-        .product-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background: #0a1727;
-        }
-        
+        .product-image { width: 100%; height: 180px; object-fit: cover; background: #0a1727; }
         .product-info { padding: 20px; }
         .product-info h4 { font-size: 16px; margin-bottom: 8px; color: var(--text); }
         .product-info .price { font-size: 20px; font-weight: 800; color: var(--accent); margin-bottom: 15px; display: block; }
-        .product-info .btn-buy {
-            display: block;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 10px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            transition: 0.3s;
-        }
+        .product-info .btn-buy { display: block; text-align: center; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.3s; }
         .product-info .btn-buy:hover { background: var(--accent); color: #07111f; }
 
         @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } .product-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -120,7 +53,6 @@
 </head>
 <body>
 
-    <!-- ===== NAV ===== -->
     <nav class="nav shell" id="nav">
         <a href="index.html" class="brand">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
@@ -131,26 +63,22 @@
             <a href="servicios.html">Servicios</a>
             <a href="como-funciona.html">Cómo funciona</a>
             <a href="nosotros.html">Nosotros</a>
-            
             <a href="otros-servicios.html" style="color: var(--accent);">Otros Servicios</a>
         </div>
         <div class="nav-actions">
-            <a href="index.html#planner" class="cta">Planificar mi viaje</a>
+          <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
         </div>
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
 
-    <!-- ===== HERO ===== -->
     <section class="hero-page shell reveal">
         <span class="kicker">Más que Viajes</span>
         <h1>Apoya a tu familia <br><span class="text-gradient">sin importar la distancia.</span></h1>
         <p>Envía recargas, remesas o compra productos reales para tus seres queridos en Cuba.</p>
     </section>
 
-    <!-- ===== SERVICIOS PRINCIPALES (Recargas, Remesas, Cambios) ===== -->
     <section class="shell reveal">
         <div class="services-grid">
-            <!-- Recargas -->
             <article class="service-card">
                 <div class="icon-box">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
@@ -159,8 +87,6 @@
                 <p>Mantén la comunicación fluida. Recarga el saldo móvil de tus familiares en Cuba al instante.</p>
                 <a href="https://wa.me/5359508420?text=Hola,%20quiero%20hacer%20una%20recarga%20telef%C3%B3nica." class="btn-action" target="_blank">Recargar Ahora →</a>
             </article>
-
-            <!-- Remesas -->
             <article class="service-card">
                 <div class="icon-box">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
@@ -169,8 +95,6 @@
                 <p>Envía dinero a tu familia de manera segura. Coordinamos la entrega con total transparencia.</p>
                 <a href="https://wa.me/5359508420?text=Hola,%20quiero%20enviar%20dinero%20a%20mi%20familia." class="btn-action" target="_blank">Enviar Dinero →</a>
             </article>
-
-            <!-- Cambios de Productos -->
             <article class="service-card">
                 <div class="icon-box">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
@@ -182,7 +106,6 @@
         </div>
     </section>
 
-    <!-- ===== SECCIÓN DE PRODUCTOS CON IMÁGENES Y PRECIOS ===== -->
     <section id="productos" class="products-section shell reveal">
         <div class="section-header">
             <div>
@@ -193,7 +116,6 @@
         </div>
 
         <div class="product-grid">
-            <!-- Producto 1 -->
             <article class="product-card">
                 <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=400&auto=format&fit=crop" alt="Saco de Arroz" class="product-image">
                 <div class="product-info">
@@ -202,8 +124,6 @@
                     <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Arroz%20de%205kg" class="btn-buy" target="_blank">Comprar</a>
                 </div>
             </article>
-
-            <!-- Producto 2 -->
             <article class="product-card">
                 <img src="https://images.unsplash.com/photo-1620707005438-6b8c3b3b7d8d?q=80&w=400&auto=format&fit=crop" alt="Aceite de Cocina" class="product-image">
                 <div class="product-info">
@@ -212,8 +132,6 @@
                     <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Aceite%20de%201L" class="btn-buy" target="_blank">Comprar</a>
                 </div>
             </article>
-
-            <!-- Producto 3 -->
             <article class="product-card">
                 <img src="https://images.unsplash.com/photo-1594385208974-2e75f8d7bb48?q=80&w=400&auto=format&fit=crop" alt="Frijoles Negros" class="product-image">
                 <div class="product-info">
@@ -222,8 +140,6 @@
                     <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Frijoles%20Negros" class="btn-buy" target="_blank">Comprar</a>
                 </div>
             </article>
-
-            <!-- Producto 4 -->
             <article class="product-card">
                 <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=400&auto=format&fit=crop" alt="Leche en Polvo" class="product-image">
                 <div class="product-info">
@@ -235,7 +151,6 @@
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="shell footer-grid">
             <div>
@@ -260,12 +175,13 @@
         </div>
         <div class="shell copy">
             <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
-                       <span>
+            <span>
                 <a href="faq.html">FAQ</a> &middot;
                 <a href="help-center.html">Help Center</a> &middot;
-                <a href="privacidad.html">Política de Privacidad</a> &middot;
-                <a href="terminos.html">Términos y Condiciones</a> &middot;
-                <a href="cookies.html" style="color: var(--accent);">Política de Cookies</a>
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a> &middot;
+                <a href="newsletter.html">Newsletter</a>
             </span>
         </div>
     </footer>

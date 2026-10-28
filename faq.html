@@ -53,6 +53,7 @@
 </head>
 <body>
 
+    <!-- ===== NAV ===== -->
     <nav class="nav shell" id="nav">
         <a href="index.html" class="brand">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
@@ -61,20 +62,22 @@
                 <small>Donde comienzan nuevas oportunidades.</small>
             </span>
         </a>
+        
         <div id="links" class="links">
             <a href="index.html">Inicio</a>
             <a href="servicios.html">Servicios</a>
             <a href="como-funciona.html">Cómo funciona</a>
             <a href="nosotros.html">Nosotros</a>
-            <a href="faq.html" style="color: var(--accent);">FAQ</a>
             <a href="otros-servicios.html">Otros Servicios</a>
         </div>
+        
         <div class="nav-actions">
-            <a href="index.html#planner" class="cta">Planificar mi viaje</a>
+             <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
         </div>
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
 
+    <!-- ===== CONTENIDO FAQ ===== -->
     <section class="hero-page shell reveal">
         <span class="kicker">Preguntas Frecuentes</span>
         <h1>Claridad antes de <br><span class="text-gradient">decidir.</span></h1>
@@ -105,6 +108,7 @@
         </div>
     </section>
 
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="shell footer-grid">
             <div>
@@ -124,22 +128,26 @@
                 <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">FAQ</a>
             </div>
             <div>
-                <h4>Atención</h4>
-                <span>Orientación personalizada</span>
-                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank" rel="noopener noreferrer">WhatsApp Business</a>
-                <span>Formulario de solicitud</span>
+                <h4>Contacto Directo</h4>
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
             </div>
         </div>
         <div class="shell copy">
             <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
             <span>
-                <a href="#">Política de Privacidad</a> &middot;
-                <a href="#">Términos y Condiciones</a> &middot;
-                <a href="#">Política de Cookies</a>
+                <a href="faq.html" style="color: var(--accent);">FAQ</a> &middot;
+                <a href="help-center.html">Help Center</a> &middot;
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a> &middot;
+                <a href="newsletter.html">Newsletter</a>
             </span>
         </div>
     </footer>
 
+    <!-- SCRIPTS -->
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         
