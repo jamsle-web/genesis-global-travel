@@ -28,13 +28,12 @@
         .hero-flights h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
         .hero-flights p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
 
-        /* Caja de búsqueda estilo Aerolínea */
         .search-box {
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 24px;
             padding: 40px;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: -30px auto 60px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.4);
             position: relative;
@@ -43,7 +42,7 @@
         
         .search-form {
             display: grid;
-            grid-template-columns: 1.5fr 1.5fr 1fr 1fr auto;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
             gap: 15px;
             align-items: end;
         }
@@ -52,6 +51,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            width: 100%;
         }
         .input-group label {
             font-size: 11px;
@@ -72,6 +72,7 @@
             font-size: 15px;
             outline: none;
             transition: all 0.3s;
+            width: 100%;
         }
         .input-group input:focus, .input-group select:focus {
             border-color: var(--accent);
@@ -96,9 +97,9 @@
             font-size: 16px;
             border-radius: 12px;
             margin-bottom: 1px;
+            white-space: nowrap;
         }
 
-        /* Sección de beneficios */
         .features {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -117,11 +118,15 @@
         .feature-card h3 { font-size: 18px; margin-bottom: 10px; }
         .feature-card p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1024px) {
+            .search-form { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
             .search-form { grid-template-columns: 1fr; }
-            .search-form button { width: 100%; }
+            .search-form button { width: 100%; margin-top: 10px; }
             .features { grid-template-columns: 1fr; }
-            .search-box { margin: 0 20px 40px; padding: 30px 20px; }
+            .search-box { margin: -30px 20px 40px; padding: 30px 20px; }
+            .hero-flights { padding: 120px 20px 40px; }
         }
     </style>
 </head>
@@ -151,18 +156,17 @@
         <p>Comparamos cientos de aerolíneas para que encuentres la ruta perfecta hacia tu familia.</p>
     </section>
 
-    <!-- Formulario de Búsqueda -->
     <section class="shell reveal">
         <div class="search-box">
             <form class="search-form" id="flightSearchForm">
                 <div class="input-group">
-                    <label>Origen</label>
-                    <input type="text" id="origin" placeholder="Ciudad o País" required>
+                    <label>Origen (Código IATA)</label>
+                    <input type="text" id="origin" placeholder="Ej: HAV, GRU, MIA" required maxlength="3" style="text-transform: uppercase;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
                 </div>
                 <div class="input-group">
-                    <label>Destino</label>
-                    <input type="text" id="destination" placeholder="Ciudad o País" required>
+                    <label>Destino (Código IATA)</label>
+                    <input type="text" id="destination" placeholder="Ej: HAV, GRU, MIA" required maxlength="3" style="text-transform: uppercase;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
                 </div>
                 <div class="input-group">
@@ -177,10 +181,10 @@
                 </div>
                 <button type="submit" class="primary">Buscar Vuelos</button>
             </form>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 15px; text-align: center;">Usa códigos de aeropuerto (ej. HAV para La Habana, GRU para São Paulo).</p>
         </div>
     </section>
 
-    <!-- Beneficios -->
     <section class="shell reveal">
         <div class="features">
             <div class="feature-card">
@@ -201,7 +205,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="shell footer-grid">
             <div>
@@ -237,7 +240,6 @@
         </div>
     </footer>
 
-    <!-- Script para el menú y animaciones -->
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         const observer = new IntersectionObserver((entries) => {
@@ -246,31 +248,33 @@
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 
-    <!-- SCRIPT DE BÚSQUEDA REAL (Skyscanner) -->
+    <!-- SCRIPT CORREGIDO: Usando el generador oficial de enlaces de Skyscanner -->
     <script>
         document.getElementById('flightSearchForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const origin = document.getElementById('origin').value.trim();
-            const destination = document.getElementById('destination').value.trim();
+            // IMPORTANTE: Skyscanner requiere códigos IATA (3 letras). 
+            // Ej: La Habana = HAV, Sao Paulo = GRU, Miami = MIA.
+            const origin = document.getElementById('origin').value.trim().toUpperCase();
+            const destination = document.getElementById('destination').value.trim().toUpperCase();
             const departDate = document.getElementById('departDate').value;
             const returnDate = document.getElementById('returnDate').value;
 
-            // Formatear fechas a YYMMDD (formato que usa Skyscanner)
-            const formatDate = (dateString) => {
-                if (!dateString) return '';
-                const parts = dateString.split('-');
-                return parts[0].substring(2) + parts[1] + parts[2];
-            };
+            // Validar que sean códigos de 3 letras
+            if (origin.length !== 3 || destination.length !== 3) {
+                alert("Por favor, usa códigos de aeropuerto de 3 letras (Ej: HAV, GRU, MIA).");
+                return;
+            }
 
-            const dep = formatDate(departDate);
-            const ret = formatDate(returnDate);
+            // El ID de afiliado de ejemplo. Si te registras en el programa de afiliados de Skyscanner, puedes cambiarlo por el tuyo.
+            const associateId = "genesis-global-demo"; 
 
-            // Construir la URL de búsqueda de Skyscanner
-            let skyscannerUrl = `https://www.skyscanner.net/transport/flights/${origin}/${destination}/${dep}/`;
+            // Construir la URL usando el generador de enlaces seguro (Shallow Link) de Skyscanner
+            // Esto evita el bloqueo de "Press & Hold"
+            let skyscannerUrl = `https://partners.api.skyscanner.net/refer/flights/live/dayview?origin=${origin}&destination=${destination}&departuredate=${departDate}&userlanguage=es&usercountry=ES&associateid=${associateId}`;
             
-            if (ret) {
-                skyscannerUrl += `${ret}/`;
+            if (returnDate) {
+                skyscannerUrl += `&returndate=${returnDate}`;
             }
 
             // Abrir en una nueva pestaña
