@@ -46,6 +46,23 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/index.css">
+    
+    <style>
+        /* Estilos para los iconos dentro del formulario */
+        .input-with-icon { position: relative; }
+        .input-with-icon svg {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            width: 18px; height: 18px; stroke: var(--text-muted);
+            pointer-events: none; transition: stroke 0.3s;
+        }
+        .input-with-icon input, .input-with-icon select, .input-with-icon textarea {
+            padding-left: 40px !important;
+        }
+        .input-with-icon input:focus + svg, .input-with-icon select:focus + svg, .input-with-icon textarea:focus + svg {
+            stroke: var(--accent);
+        }
+        .input-with-icon.textarea-icon svg { top: 16px; transform: none; }
+    </style>
 </head>
 <body>
 
@@ -64,7 +81,6 @@
             <a href="servicios.html">Servicios</a>
             <a href="como-funciona.html">Cómo funciona</a>
             <a href="nosotros.html">Nosotros</a>
-           
             <a href="otros-servicios.html">Otros Servicios</a>
         </div>
 
@@ -82,7 +98,7 @@
                     <button type="button" class="language-option" data-language="pt"><span class="language-flag">PT</span><span class="language-name">Português</span><span class="language-check">✓</span></button>
                 </div>
             </div>
-             <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
+            <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
         </div>
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
@@ -92,7 +108,8 @@
         <div class="hero-grid">
             <div class="hero-copy">
                 <div class="eyebrow" style="display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(102,230,196,0.25);background:rgba(102,230,196,0.06);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#66e6c4;">
-                    ✦ Una nueva forma de organizar tu viaje familiar
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    Una nueva forma de organizar tu viaje familiar
                 </div>
                 <h1>Los kilómetros no deberían separar a las <span>familias.</span></h1>
                 <div class="slogan">“Donde comienzan nuevas oportunidades.”</div>
@@ -108,7 +125,10 @@
                 </div>
             </div>
             <div id="globe-container">
-                <div class="globe-label">🌍 <strong>Gira</strong> · <strong>Haz clic</strong> en un país</div>
+                <div class="globe-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    <strong>Gira</strong> · <strong>Haz clic</strong> en un país
+                </div>
                 <div id="country-tooltip"></div>
             </div>
         </div>
@@ -125,48 +145,57 @@
                 <p style="color:#9db0c7;max-width:350px;">Completa los datos y nosotros organizamos el resto.</p>
             </div>
 
+            <!-- PASO 1 -->
             <div id="step1" class="planner-step active">
                 <div class="search-row">
-                    <div class="search-field">
-                        <label>🇧🇷 ¿Desde dónde viajas?</label>
+                    <div class="search-field input-with-icon">
+                        <label>¿Desde dónde viajas?</label>
                         <input type="text" id="origenInput" placeholder="Ej: Brasil, Cuba, España..." autocomplete="off">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
                         <div class="autocomplete-list" id="origenList"></div>
                     </div>
-                    <div class="search-field">
-                        <label>🇨🇺 ¿A dónde quieres viajar?</label>
+                    <div class="search-field input-with-icon">
+                        <label>¿A dónde quieres viajar?</label>
                         <input type="text" id="destinoInput" placeholder="Ej: Cuba, Brasil, México..." autocomplete="off">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
                         <div class="autocomplete-list" id="destinoList"></div>
                     </div>
                     <button class="btn-continuar" onclick="goToStep2()">Continuar →</button>
                 </div>
             </div>
 
+            <!-- PASO 2 -->
             <div id="step2" class="planner-step">
                 <div class="detail-grid">
-                    <div class="detail-field">
-                        <label>📅 Fecha aproximada de viaje</label>
+                    <div class="detail-field input-with-icon">
+                        <label>Fecha aproximada de viaje</label>
                         <input type="date" id="fechaViaje">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                     </div>
-                    <div class="detail-field">
-                        <label>📅 Fecha de regreso (opcional)</label>
+                    <div class="detail-field input-with-icon">
+                        <label>Fecha de regreso (opcional)</label>
                         <input type="date" id="fechaRegreso">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                     </div>
-                    <div class="detail-field">
-                        <label>👥 Número de adultos</label>
+                    <div class="detail-field input-with-icon">
+                        <label>Número de adultos</label>
                         <input type="number" id="adultos" min="1" value="1">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     </div>
-                    <div class="detail-field">
-                        <label>👶 Número de niños</label>
+                    <div class="detail-field input-with-icon">
+                        <label>Número de niños</label>
                         <input type="number" id="ninos" min="0" value="0">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M9 21v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
                     </div>
-                    <div class="detail-field full">
-                        <label>❤️ Tipo de viaje</label>
+                    <div class="detail-field full input-with-icon">
+                        <label>Tipo de viaje</label>
                         <select id="tipoViaje">
                             <option value="visita-familiar">Visita familiar</option>
                             <option value="personal">Viaje personal</option>
                             <option value="turismo">Turismo</option>
                             <option value="otro">Otro</option>
                         </select>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                     </div>
                 </div>
                 <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
@@ -175,27 +204,33 @@
                 </div>
             </div>
 
+            <!-- PASO 3 -->
             <div id="step3" class="planner-step">
                 <div class="detail-grid">
-                    <div class="detail-field full">
-                        <label>👤 Nombre completo</label>
+                    <div class="detail-field full input-with-icon">
+                        <label>Nombre completo</label>
                         <input type="text" id="nombre" placeholder="Tu nombre completo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     </div>
-                    <div class="detail-field">
-                        <label>📱 WhatsApp</label>
+                    <div class="detail-field input-with-icon">
+                        <label>WhatsApp</label>
                         <input type="tel" id="whatsapp" placeholder="+54 9 11 1234 5678">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     </div>
-                    <div class="detail-field">
-                        <label>📧 Correo electrónico</label>
+                    <div class="detail-field input-with-icon">
+                        <label>Correo electrónico</label>
                         <input type="email" id="email" placeholder="tucorreo@ejemplo.com">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                     </div>
-                    <div class="detail-field full">
-                        <label>🌍 País donde resides actualmente</label>
+                    <div class="detail-field full input-with-icon">
+                        <label>País donde resides actualmente</label>
                         <input type="text" id="residencia" placeholder="Ej: Brasil, Argentina, España...">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                     </div>
-                    <div class="detail-field full">
-                        <label>💬 Comentarios adicionales</label>
+                    <div class="detail-field full input-with-icon textarea-icon">
+                        <label>Comentarios adicionales</label>
                         <textarea id="comentarios" placeholder="Cuéntanos algo más que necesites..."></textarea>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     </div>
                 </div>
                 <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
@@ -204,6 +239,7 @@
                 </div>
             </div>
 
+            <!-- PASO 4 -->
             <div id="step4" class="planner-step">
                 <div class="summary-card" id="summaryContent"></div>
                 <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
@@ -214,130 +250,15 @@
         </div>
     </section>
 
-    <!-- ===== PROOF ===== -->
-    <section class="proof shell reveal">
-        <div class="proof-card glass">
+    <!-- ===== ENLACE A SERVICIOS ===== -->
+    <section class="shell reveal" style="padding: 60px 0 100px;">
+        <div class="glass" style="padding: 50px; border-radius: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; background: linear-gradient(135deg, rgba(102,230,196,0.05), rgba(130,169,255,0.05));">
             <div>
-                <span class="kicker">Nuestro propósito</span>
-                <h2>Conectamos destinos. <span class="text-gradient">Reunimos familias.</span></h2>
-                <div style="font-size:18px;font-weight:600;color:#82a9ff;margin-top:10px;">“Donde comienzan nuevas oportunidades.”</div>
+                <span class="kicker">Descubre más</span>
+                <h2 class="section-title" style="margin: 10px 0; font-size: 32px;">Todo lo que podemos hacer por ti.</h2>
+                <p style="color: var(--text-soft);">Vuelos, hoteles, remesas, recargas y más en un solo lugar.</p>
             </div>
-            <p>Una experiencia digital sencilla, atención cercana y coordinación profesional para ayudarte a organizar tu próximo viaje.</p>
-        </div>
-    </section>
-
-    <!-- ===== SERVICES ===== -->
-    <section id="servicios" class="section shell reveal">
-        <div class="head">
-            <div>
-                <span class="kicker">Servicios</span>
-                <h2 class="section-title">Todo lo esencial, <span class="text-gradient">en un solo lugar.</span></h2>
-            </div>
-            <p>Empezamos con servicios claros y humanos, diseñados para reducir la incertidumbre y simplificar cada etapa.</p>
-        </div>
-        <div class="cards">
-            <article class="card glass">
-                <span class="num">01</span>
-                <div class="icon-wrap">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                </div>
-                <h3>Planificación de viajes</h3>
-                <p>Rutas, fechas, conexiones e itinerarios organizados según tu situación.</p>
-                <a href="servicios.html" class="link">Leer más →</a>
-            </article>
-            <article class="card glass">
-                <span class="num">02</span>
-                <div class="icon-wrap">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </div>
-                <h3>Viajes familiares</h3>
-                <p>Acompañamiento pensado para quienes quieren volver a encontrarse con los suyos.</p>
-                <a href="servicios.html" class="link">Leer más →</a>
-            </article>
-            <article class="card glass">
-                <span class="num">03</span>
-                <div class="icon-wrap">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                </div>
-                <h3>Orientación documental</h3>
-                <p>Información clara sobre requisitos aplicables y coordinación con profesionales autorizados.</p>
-                <a href="servicios.html" class="link">Leer más →</a>
-            </article>
-            <article class="card glass">
-                <span class="num">04</span>
-                <div class="icon-wrap">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </div>
-                <h3>Alojamiento y transporte</h3>
-                <p>Coordinamos opciones complementarias para que tengas un viaje más sencillo.</p>
-                <a href="servicios.html" class="link">Leer más →</a>
-            </article>
-        </div>
-    </section>
-
-    <!-- ===== PROCESS ===== -->
-    <section id="proceso" class="section dark reveal">
-        <div class="head shell">
-            <div>
-                <span class="kicker">Experiencia del cliente</span>
-                <h2 class="section-title">Simple desde el primer <span class="text-gradient">mensaje.</span></h2>
-            </div>
-            <p>Diseñamos el proceso para reducir dudas, pasos innecesarios y fricción.</p>
-        </div>
-        <div class="steps shell">
-            <div class="step"><strong>01</strong><h3>Cuéntanos tu situación</h3><p>Completa una solicitud breve y dinos desde dónde viajas, hacia dónde quieres ir y qué necesitas.</p></div>
-            <div class="step"><strong>02</strong><h3>Analizamos tus opciones</h3><p>Nuestro equipo revisa rutas, servicios y requisitos aplicables.</p></div>
-            <div class="step"><strong>03</strong><h3>Recibes tu propuesta</h3><p>Te explicamos opciones, costes y próximos pasos antes de continuar.</p></div>
-            <div class="step"><strong>04</strong><h3>Te acompañamos</h3><p>Coordinamos el proceso contratado y mantenemos la comunicación contigo.</p></div>
-        </div>
-    </section>
-
-    <!-- ===== ABOUT ===== -->
-    <section id="nosotros" class="section shell reveal">
-        <div class="about glass">
-            <div class="badge">
-                <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
-            </div>
-            <div>
-                <span class="kicker">GÉNESIS GLOBAL</span>
-                <h2 class="section-title">Una marca creada para <span class="text-gradient">acercar personas.</span></h2>
-                <p style="color:#9db0c7;line-height:1.7;">Queremos construir una empresa moderna, humana y transparente. Nuestra tecnología debe facilitar el trabajo del equipo y, sobre todo, hacer que el cliente entienda qué ocurre en cada etapa.</p>
-                <div style="font-size:16px;font-weight:600;color:#82a9ff;margin-top:10px;">“Donde comienzan nuevas oportunidades.”</div>
-                <div class="pills">
-                    <span class="pill">Confianza</span>
-                    <span class="pill">Transparencia</span>
-                    <span class="pill">Cercanía</span>
-                    <span class="pill">Profesionalismo</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== FAQ ===== -->
-    <section id="faq" class="section shell reveal">
-        <div class="head">
-            <div>
-                <span class="kicker">Preguntas frecuentes</span>
-                <h2 class="section-title">Claridad antes de <span class="text-gradient">decidir.</span></h2>
-            </div>
-        </div>
-        <div class="faq">
-            <div class="faq-row">
-                <button class="faq-q">¿GÉNESIS GLOBAL vende visas? <span>⌄</span></button>
-                <div class="faq-a">No. La empresa puede orientar sobre requisitos aplicables y coordinar con profesionales autorizados cuando un caso lo requiera. Las decisiones migratorias corresponden a las autoridades competentes.</div>
-            </div>
-            <div class="faq-row">
-                <button class="faq-q">¿Puedo solicitar ayuda para viajar hacia Cuba? <span>⌄</span></button>
-                <div class="faq-a">Sí. El concepto contempla personas que viven en Brasil u otros países y quieren organizar un viaje a Cuba para visitar a sus familiares, sujeto a las normas vigentes.</div>
-            </div>
-            <div class="faq-row">
-                <button class="faq-q">¿También se pueden organizar viajes desde Cuba? <span>⌄</span></button>
-                <div class="faq-a">Sí. Puede contemplarse la planificación de viajes desde Cuba hacia Brasil u otros destinos, dependiendo de requisitos y servicios disponibles.</div>
-            </div>
-            <div class="faq-row">
-                <button class="faq-q">¿Cómo empiezo? <span>⌄</span></button>
-                <div class="faq-a">Completa el formulario de orientación. Un miembro del equipo podrá revisar tu solicitud y explicarte los próximos pasos.</div>
-            </div>
+            <a href="servicios.html" class="primary" style="padding: 16px 32px; font-size: 16px;">Ver Servicios →</a>
         </div>
     </section>
 
@@ -369,18 +290,19 @@
         </div>
         <div class="shell copy">
             <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
-                       <span>
+            <span>
                 <a href="faq.html">FAQ</a> &middot;
                 <a href="help-center.html">Help Center</a> &middot;
-                <a href="privacidad.html">Política de Privacidad</a> &middot;
-                <a href="terminos.html">Términos y Condiciones</a> &middot;
-                <a href="cookies.html" style="color: var(--accent);">Política de Cookies</a>
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a> &middot;
+                <a href="newsletter.html">Newsletter</a>
             </span>
         </div>
     </footer>
 
     <!-- ============================================================ -->
-    <!-- SCRIPTS -->
+    <!-- SCRIPT DEL GLOBO 3D (INCLUIDO) -->
     <script type="module">
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -726,7 +648,7 @@
         window.countryData = countryData;
     </script>
 
-    <!-- SCRIPTS DE LA UI -->
+    <!-- SCRIPTS DE LA UI Y SCROLL -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof emailjs !== 'undefined') {
@@ -744,11 +666,18 @@
         window.toggleMenu = function() {
             document.getElementById('links').classList.toggle('open');
         };
-
-        document.querySelectorAll('.faq-q').forEach(q => {
-            q.addEventListener('click', function() {
-                this.parentElement.classList.toggle('open');
-            });
+        
+        // Scroll suave si venimos de otra página buscando el planner
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('scroll') === 'planner') {
+                const planner = document.getElementById('planner');
+                if (planner) {
+                    setTimeout(() => {
+                        planner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+            }
         });
 
         const observer = new IntersectionObserver((entries) => {
@@ -759,22 +688,8 @@
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
     
-    <!-- NUEVO PLANNER -->
+    <!-- NUEVO PLANNER Y NEWSLETTER -->
     <script src="js/planner.js"></script>
-        <script src="js/newsletter.js"></script>
-        <script>
-        // Hacer scroll suave si venimos de otra página buscando el planner
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('scroll') === 'planner') {
-                const planner = document.getElementById('planner');
-                if (planner) {
-                    setTimeout(() => {
-                        planner.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100); // Pequeño retraso para que la página cargue bien
-                }
-            }
-        });
-    </script>
+    <script src="js/newsletter.js"></script>
 </body>
 </html>
