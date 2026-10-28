@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cómo funciona | GÉNESIS GLOBAL</title>
+    <meta name="description" content="Conoce el proceso paso a paso para planificar tu viaje con GÉNESIS GLOBAL.">
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <style>
+        .hero-page { padding: 140px 0 60px; text-align: center; position: relative; }
+        .hero-page h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
+        .hero-page p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
+        
+        .steps-page {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding-bottom: 100px;
+        }
+        .step-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        .step-card:hover { transform: translateY(-5px); border-color: rgba(102, 230, 196, 0.3); }
+        .step-card .num { color: var(--accent); font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 14px; margin-bottom: 15px; display: block; }
+        .step-card h3 { font-size: 20px; margin-bottom: 10px; }
+        .step-card p { color: var(--text-soft); font-size: 14px; line-height: 1.6; }
+
+        @media (max-width: 900px) {
+            .steps-page { grid-template-columns: 1fr; }
+            .hero-page { padding: 120px 0 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav class="nav shell" id="nav">
+        <a href="index.html" class="brand">
+            <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+            <span>
+                <b>GÉNESIS GLOBAL</b>
+                <small>Donde comienzan nuevas oportunidades.</small>
+            </span>
+        </a>
+        <div id="links" class="links">
+            <a href="index.html">Inicio</a>
+            <a href="servicios.html">Servicios</a>
+            <a href="como-funciona.html" style="color: var(--accent);">Cómo funciona</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="faq.html">FAQ</a>
+            <a href="otros-servicios.html">Otros Servicios</a>
+        </div>
+        <div class="nav-actions">
+            <a href="index.html#planner" class="cta">Planificar mi viaje</a>
+        </div>
+        <button class="menu" onclick="toggleMenu()">☰</button>
+    </nav>
+
+    <section class="hero-page shell reveal">
+        <span class="kicker">Experiencia del cliente</span>
+        <h1>Simple desde el primer <br><span class="text-gradient">mensaje.</span></h1>
+        <p>Diseñamos el proceso para reducir dudas, pasos innecesarios y fricción. Así trabajamos para ti.</p>
+    </section>
+
+    <section class="shell reveal">
+        <div class="steps-page">
+            <div class="step-card">
+                <span class="num">PASO 01</span>
+                <h3>Cuéntanos tu situación</h3>
+                <p>Completa una solicitud breve y dinos desde dónde viajas, hacia dónde quieres ir y qué necesitas.</p>
+            </div>
+            <div class="step-card">
+                <span class="num">PASO 02</span>
+                <h3>Analizamos tus opciones</h3>
+                <p>Nuestro equipo revisa rutas, servicios y requisitos aplicables para tu caso específico.</p>
+            </div>
+            <div class="step-card">
+                <span class="num">PASO 03</span>
+                <h3>Recibes tu propuesta</h3>
+                <p>Te explicamos opciones, costes y próximos pasos antes de que tomes cualquier decisión.</p>
+            </div>
+            <div class="step-card">
+                <span class="num">PASO 04</span>
+                <h3>Te acompañamos</h3>
+                <p>Coordinamos el proceso contratado y mantenemos la comunicación contigo en todo momento.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="shell footer-grid">
+            <div>
+                <div class="brand" style="cursor:default;">
+                    <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+                    <span>
+                        <b>GÉNESIS GLOBAL</b>
+                        <small>Donde comienzan nuevas oportunidades.</small>
+                    </span>
+                </div>
+                <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
+            </div>
+            <div>
+                <h4>Empresa</h4>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">FAQ</a>
+            </div>
+            <div>
+                <h4>Atención</h4>
+                <span>Orientación personalizada</span>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank" rel="noopener noreferrer">WhatsApp Business</a>
+                <span>Formulario de solicitud</span>
+            </div>
+        </div>
+        <div class="shell copy">
+            <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
+            <span>
+                <a href="#">Política de Privacidad</a> &middot;
+                <a href="#">Términos y Condiciones</a> &middot;
+                <a href="#">Política de Cookies</a>
+            </span>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
