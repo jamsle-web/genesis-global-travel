@@ -762,5 +762,19 @@
     <!-- NUEVO PLANNER -->
     <script src="js/planner.js"></script>
         <script src="js/newsletter.js"></script>
+        <script>
+        // Hacer scroll suave si venimos de otra página buscando el planner
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('scroll') === 'planner') {
+                const planner = document.getElementById('planner');
+                if (planner) {
+                    setTimeout(() => {
+                        planner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100); // Pequeño retraso para que la página cargue bien
+                }
+            }
+        });
+    </script>
 </body>
 </html>
