@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Newsletter | GÉNESIS GLOBAL</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <style>
+        .newsletter-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px 60px;
+        }
+        .newsletter-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 60px 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .newsletter-card::before {
+            content: ""; position: absolute; top: -50px; right: -50px;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(102,230,196,0.15), transparent 70%);
+            border-radius: 50%; pointer-events: none;
+        }
+        .newsletter-card h1 { font-size: 36px; margin-bottom: 15px; }
+        .newsletter-card p { color: var(--text-soft); font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
+        
+        .newsletter-form { display: flex; flex-direction: column; gap: 15px; }
+        .newsletter-form input {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .newsletter-form input:focus { border-color: var(--accent); }
+        .newsletter-form .primary { padding: 16px; font-size: 16px; }
+        
+        .message { margin-top: 15px; font-size: 14px; font-weight: 600; display: none; }
+        .message.success { color: var(--accent); display: block; }
+        .message.error { color: #ff6b6b; display: block; }
+    </style>
+</head>
+<body>
+
+    <nav class="nav shell" id="nav">
+        <a href="index.html" class="brand">
+            <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+            <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
+        </a>
+        <div id="links" class="links">
+            <a href="index.html">Inicio</a>
+            <a href="servicios.html">Servicios</a>
+            <a href="como-funciona.html">Cómo funciona</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="otros-servicios.html">Otros Servicios</a>
+        </div>
+        <div class="nav-actions">
+            <a href="index.html#planner" class="cta">Planificar mi viaje</a>
+        </div>
+        <button class="menu" onclick="toggleMenu()">☰</button>
+    </nav>
+
+    <section class="newsletter-section shell">
+        <div class="newsletter-card reveal">
+            <span class="kicker">Mantente cerca</span>
+            <h1>Recibe nuestras <span class="text-gradient">mejores ofertas.</span></h1>
+            <p>Suscríbete a nuestro boletín para recibir ofertas exclusivas de vuelos, paquetes familiares y novedades de GÉNESIS GLOBAL.</p>
+            
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="text" id="subName" placeholder="Tu nombre (opcional)">
+                <input type="email" id="subEmail" placeholder="Tu correo electrónico" required>
+                <button type="submit" class="primary" id="subBtn">Suscribirme ahora →</button>
+                <div id="subMessage" class="message"></div>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="shell footer-grid">
+            <div>
+                <div class="brand" style="cursor:default;">
+                    <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+                    <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
+                </div>
+                <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
+            </div>
+            <div>
+                <h4>Empresa</h4>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
+            </div>
+            <div>
+                <h4>Contacto Directo</h4>
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
+            </div>
+        </div>
+        <div class="shell copy">
+            <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
+            <span>
+                <a href="faq.html">FAQ</a> &middot;
+                <a href="help-center.html">Help Center</a> &middot;
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a>
+            </span>
+        </div>
+    </footer>
+
+    <!-- Script para el menú y animaciones -->
+    <script>
+        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Lógica del Newsletter con Supabase
+        document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('subName').value.trim();
+            const email = document.getElementById('subEmail').value.trim();
+            const btn = document.getElementById('subBtn');
+            const msg = document.getElementById('subMessage');
+
+            btn.textContent = 'Guardando...';
+            btn.disabled = true;
+            msg.className = 'message';
+
+            try {
+                // Conectar con Supabase (window.genesisSupabase está definido en supabase-client.js)
+                if (typeof window.genesisSupabase === 'undefined') {
+                    throw new Error('Supabase no está configurado.');
+                }
+
+                const { error } = await window.genesisSupabase
+                    .from('newsletter_subscribers')
+                    .insert([{ name: name || null, email: email }]);
+
+                if (error) {
+                    if (error.code === '23505') { // Código de error de correo duplicado
+                        throw new Error('Este correo ya está suscrito.');
+                    }
+                    throw error;
+                }
+
+                msg.textContent = '✅ ¡Gracias por suscribirte! Revisa tu correo pronto.';
+                msg.classList.add('success');
+                document.getElementById('newsletterForm').reset();
+
+            } catch (error) {
+                console.error(error);
+                msg.textContent = '❌ ' + (error.message || 'Hubo un error al suscribirse. Intenta de nuevo.');
+                msg.classList.add('error');
+            } finally {
+                btn.textContent = 'Suscribirme ahora →';
+                btn.disabled = false;
+            }
+        });
+    </script>
+    
+    <!-- Supabase y lógica base -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+</body>
+</html>
