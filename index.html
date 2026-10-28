@@ -145,7 +145,7 @@
                 <p style="color:#9db0c7;max-width:350px;">Completa los datos y nosotros organizamos el resto.</p>
             </div>
 
-            <!-- PASO 1 -->
+            <!-- PASO 1: Origen y Destino -->
             <div id="step1" class="planner-step active">
                 <div class="search-row">
                     <div class="search-field input-with-icon">
@@ -162,9 +162,13 @@
                     </div>
                     <button class="btn-continuar" onclick="goToStep2()">Continuar →</button>
                 </div>
+                <div style="margin-top:12px;font-size:12px;color:#667c96;text-align:center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:middle; margin-right:4px; color:var(--accent);"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+                    También puedes hacer clic en un país del globo para seleccionarlo como destino.
+                </div>
             </div>
 
-            <!-- PASO 2 -->
+            <!-- PASO 2: Detalles del viaje -->
             <div id="step2" class="planner-step">
                 <div class="detail-grid">
                     <div class="detail-field input-with-icon">
@@ -204,7 +208,7 @@
                 </div>
             </div>
 
-            <!-- PASO 3 -->
+            <!-- PASO 3: Datos Personales -->
             <div id="step3" class="planner-step">
                 <div class="detail-grid">
                     <div class="detail-field full input-with-icon">
@@ -239,7 +243,7 @@
                 </div>
             </div>
 
-            <!-- PASO 4 -->
+            <!-- PASO 4: Resumen -->
             <div id="step4" class="planner-step">
                 <div class="summary-card" id="summaryContent"></div>
                 <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
