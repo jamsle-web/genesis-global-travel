@@ -20,44 +20,108 @@
     <link rel="stylesheet" href="css/components.css">
     
     <style>
-        .flight-search-box {
+        .hero-flights {
+            padding: 140px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-flights h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
+        .hero-flights p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
+
+        /* Caja de búsqueda estilo Aerolínea */
+        .search-box {
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 30px;
-            max-width: 900px;
-            margin: 0 auto;
+            padding: 40px;
+            max-width: 1000px;
+            margin: -30px auto 60px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 10;
         }
-        .flight-form {
+        
+        .search-form {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 1.5fr 1.5fr 1fr 1fr auto;
             gap: 15px;
             align-items: end;
         }
-        .flight-form .form-group { display: flex; flex-direction: column; }
-        .flight-form label { font-size: 12px; color: var(--text-soft); margin-bottom: 6px; font-weight: 600; }
-        .flight-form input, .flight-form select {
-            background: rgba(0,0,0,0.2);
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .input-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            margin-left: 10px;
+        }
+        .input-group input, .input-group select {
+            background: rgba(0,0,0,0.3);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 12px;
+            padding: 16px 16px 16px 45px;
             color: #fff;
             font-family: inherit;
+            font-size: 15px;
             outline: none;
+            transition: all 0.3s;
         }
-        .flight-form input:focus, .flight-form select:focus { border-color: var(--accent); }
-        
-        .results-area {
-            margin-top: 40px;
-            padding: 40px;
-            text-align: center;
-            border: 1px dashed var(--border);
-            border-radius: 20px;
-            color: var(--text-soft);
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--accent);
+            background: rgba(102, 230, 196, 0.05);
+        }
+        .input-group svg {
+            position: absolute;
+            left: 15px;
+            bottom: 16px;
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-muted);
+            pointer-events: none;
+        }
+        .input-group input:focus + svg, .input-group select:focus + svg {
+            stroke: var(--accent);
         }
 
-        @media (max-width: 768px) {
-            .flight-form { grid-template-columns: 1fr; }
+        .search-form button {
+            height: 54px;
+            padding: 0 30px;
+            font-size: 16px;
+            border-radius: 12px;
+            margin-bottom: 1px;
+        }
+
+        /* Sección de beneficios */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto 100px;
+        }
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+        .feature-card svg { width: 40px; height: 40px; stroke: var(--accent); margin-bottom: 15px; }
+        .feature-card h3 { font-size: 18px; margin-bottom: 10px; }
+        .feature-card p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
+
+        @media (max-width: 900px) {
+            .search-form { grid-template-columns: 1fr; }
+            .search-form button { width: 100%; }
+            .features { grid-template-columns: 1fr; }
+            .search-box { margin: 0 20px 40px; padding: 30px 20px; }
         }
     </style>
 </head>
@@ -81,35 +145,63 @@
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
 
-    <section class="shell" style="padding: 140px 0 60px; text-align: center;">
+    <section class="hero-flights shell reveal">
         <span class="kicker">Vuelos</span>
-        <h1 style="font-size: clamp(36px, 5vw, 56px); margin: 20px 0;">Encuentra tu <span class="text-gradient">próximo vuelo.</span></h1>
-        <p style="color: var(--text-soft); max-width: 600px; margin: 0 auto 40px;">Busca vuelos desde Cuba, Brasil, Guyana y otros destinos. Te ayudamos a encontrar la mejor conexión.</p>
+        <h1>Encuentra los mejores <span class="text-gradient">vuelos.</span></h1>
+        <p>Comparamos cientos de aerolíneas para que encuentres la ruta perfecta hacia tu familia.</p>
+    </section>
 
-        <div class="flight-search-box reveal">
-            <form class="flight-form" onsubmit="event.preventDefault(); alert('La búsqueda en tiempo real se conectará con una API de vuelos. Por ahora, usa el planificador principal o contáctanos por WhatsApp.');">
-                <div class="form-group">
+    <!-- Formulario de Búsqueda -->
+    <section class="shell reveal">
+        <div class="search-box">
+            <form class="search-form" id="flightSearchForm">
+                <div class="input-group">
                     <label>Origen</label>
-                    <input type="text" placeholder="Ej: La Habana (HAV)">
+                    <input type="text" id="origin" placeholder="Ciudad o País" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
                 </div>
-                <div class="form-group">
+                <div class="input-group">
                     <label>Destino</label>
-                    <input type="text" placeholder="Ej: São Paulo (GRU)">
+                    <input type="text" id="destination" placeholder="Ciudad o País" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
                 </div>
-                <div class="form-group">
-                    <label>Fecha de Salida</label>
-                    <input type="date">
+                <div class="input-group">
+                    <label>Salida</label>
+                    <input type="date" id="departDate" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                 </div>
-                <button type="submit" class="primary" style="padding: 12px;">Buscar Vuelos</button>
+                <div class="input-group">
+                    <label>Regreso (Opc.)</label>
+                    <input type="date" id="returnDate">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <button type="submit" class="primary">Buscar Vuelos</button>
             </form>
-        </div>
-
-        <div class="results-area reveal">
-            <p>🔍 Los resultados de vuelos en tiempo real aparecerán aquí.</p>
-            <p style="font-size: 13px; margin-top: 10px;">Nota: Para mostrar precios reales, se requiere conectar una API de vuelos como Amadeus o Google Flights.</p>
         </div>
     </section>
 
+    <!-- Beneficios -->
+    <section class="shell reveal">
+        <div class="features">
+            <div class="feature-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <h3>Precios Reales</h3>
+                <p>Conectamos con Skyscanner para mostrarte tarifas actualizadas de cientos de aerolíneas.</p>
+            </div>
+            <div class="feature-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <h3>Búsqueda Segura</h3>
+                <p>Te redirigimos a la plataforma oficial para que realices tu reserva con total confianza.</p>
+            </div>
+            <div class="feature-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <h3>Atención Humana</h3>
+                <p>Si tienes dudas con tu vuelo, nuestro equipo en Cuba y Brasil está para ayudarte.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="shell footer-grid">
             <div>
@@ -145,12 +237,45 @@
         </div>
     </footer>
 
+    <!-- Script para el menú y animaciones -->
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- SCRIPT DE BÚSQUEDA REAL (Skyscanner) -->
+    <script>
+        document.getElementById('flightSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const origin = document.getElementById('origin').value.trim();
+            const destination = document.getElementById('destination').value.trim();
+            const departDate = document.getElementById('departDate').value;
+            const returnDate = document.getElementById('returnDate').value;
+
+            // Formatear fechas a YYMMDD (formato que usa Skyscanner)
+            const formatDate = (dateString) => {
+                if (!dateString) return '';
+                const parts = dateString.split('-');
+                return parts[0].substring(2) + parts[1] + parts[2];
+            };
+
+            const dep = formatDate(departDate);
+            const ret = formatDate(returnDate);
+
+            // Construir la URL de búsqueda de Skyscanner
+            let skyscannerUrl = `https://www.skyscanner.net/transport/flights/${origin}/${destination}/${dep}/`;
+            
+            if (ret) {
+                skyscannerUrl += `${ret}/`;
+            }
+
+            // Abrir en una nueva pestaña
+            window.open(skyscannerUrl, '_blank');
+        });
     </script>
 </body>
 </html>
