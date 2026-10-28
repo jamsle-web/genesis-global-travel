@@ -6,119 +6,39 @@
     <title>Servicios de Viaje | GÉNESIS GLOBAL</title>
     <meta name="description" content="Vuelos, hoteles, planificación de viajes familiares y más. Descubre todo lo que GÉNESIS GLOBAL tiene para ti.">
     
-    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Estilos -->
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     
     <style>
-        /* Estilos exclusivos de la página de Servicios */
-        .hero-services {
-            padding: 140px 0 60px;
-            text-align: center;
-            position: relative;
-        }
-        .hero-services h1 {
-            font-size: clamp(40px, 6vw, 70px);
-            margin: 20px 0;
-            letter-spacing: -0.05em;
-        }
-        .hero-services p {
-            color: var(--text-soft);
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 18px;
-            line-height: 1.7;
-        }
-
-        .services-grid-page {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            padding-bottom: 100px;
-        }
-        
-        .service-box {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.4s var(--ease), border-color 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-        .service-box:hover {
-            transform: translateY(-8px);
-            border-color: rgba(102, 230, 196, 0.3);
-        }
-        .service-box::before {
-            content: "";
-            position: absolute;
-            top: -50px; right: -50px;
-            width: 150px; height: 150px;
-            background: radial-gradient(circle, rgba(102,230,196,0.1), transparent 70%);
-            border-radius: 50%;
-        }
-        
-        .service-box .icon-wrap {
-            width: 60px; height: 60px;
-            background: rgba(102, 230, 196, 0.1);
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--accent);
-            margin-bottom: 24px;
-        }
-        .service-box h2 {
-            font-size: 24px;
-            margin-bottom: 16px;
-            font-family: 'Manrope', sans-serif;
-        }
-        .service-box p {
-            color: var(--text-soft);
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 30px;
-            flex-grow: 1;
-        }
-        .service-box ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 30px 0;
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 1.8;
-        }
-        .service-box ul li {
-            display: flex; align-items: center; gap: 8px;
-        }
-        .service-box ul li::before {
-            content: "✓"; color: var(--accent); font-weight: bold;
-        }
-        
-        @media (max-width: 900px) {
-            .services-grid-page { grid-template-columns: 1fr; gap: 20px; }
-            .hero-services { padding: 120px 0 40px; }
-            .service-box { padding: 30px; }
-        }
+        .hero-services { padding: 140px 0 60px; text-align: center; position: relative; }
+        .hero-services h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
+        .hero-services p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
+        .services-grid-page { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; padding-bottom: 100px; }
+        .service-box { background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)); border: 1px solid var(--border); border-radius: 30px; padding: 40px; display: flex; flex-direction: column; transition: transform 0.4s var(--ease), border-color 0.4s; position: relative; overflow: hidden; }
+        .service-box:hover { transform: translateY(-8px); border-color: rgba(102, 230, 196, 0.3); }
+        .service-box::before { content: ""; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(102,230,196,0.1), transparent 70%); border-radius: 50%; }
+        .service-box .icon-wrap { width: 60px; height: 60px; background: rgba(102, 230, 196, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--accent); margin-bottom: 24px; }
+        .service-box h2 { font-size: 24px; margin-bottom: 16px; font-family: 'Manrope', sans-serif; }
+        .service-box p { color: var(--text-soft); font-size: 15px; line-height: 1.7; margin-bottom: 30px; flex-grow: 1; }
+        .service-box ul { list-style: none; padding: 0; margin: 0 0 30px 0; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+        .service-box ul li { display: flex; align-items: center; gap: 8px; }
+        .service-box ul li::before { content: "✓"; color: var(--accent); font-weight: bold; }
+        @media (max-width: 900px) { .services-grid-page { grid-template-columns: 1fr; gap: 20px; } .hero-services { padding: 120px 0 40px; } .service-box { padding: 30px; } }
     </style>
 </head>
 <body>
 
-    <!-- ===== NAV (Barra de navegación actualizada) ===== -->
     <nav class="nav shell" id="nav">
         <a href="index.html" class="brand">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
@@ -140,18 +60,14 @@
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
 
-    <!-- ===== HERO SERVICIOS ===== -->
     <section class="hero-services shell reveal">
         <span class="kicker">Nuestra Agencia</span>
         <h1>Servicios diseñados para <br><span class="text-gradient">conectar distancias.</span></h1>
         <p>No solo organizamos viajes; creamos puentes para que vuelvas a abrazar a los tuyos. Descubre todo lo que podemos hacer por ti.</p>
     </section>
 
-    <!-- ===== GRID DE SERVICIOS ===== -->
     <section class="shell reveal">
         <div class="services-grid-page">
-            
-            <!-- Vuelos -->
             <article class="service-box">
                 <div class="icon-wrap">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
@@ -165,8 +81,6 @@
                 </ul>
                <a href="vuelos.html" class="primary" style="width: 100%;">Buscar Vuelos</a>
             </article>
-
-            <!-- Hoteles -->
             <article class="service-box">
                 <div class="icon-wrap">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4 8 4v14"/><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M9 14h.01"/><path d="M15 14h.01"/></svg>
@@ -178,10 +92,8 @@
                     <li>Opciones para familias</li>
                     <li>Ubicaciones estratégicas</li>
                 </ul>
-                <a href="index.html#planner" class="secondary" style="width: 100%;">Buscar Alojamiento</a>
+                <a href="index.html?scroll=planner" class="secondary" style="width: 100%;">Buscar Alojamiento</a>
             </article>
-
-            <!-- Viajes Familiares -->
             <article class="service-box">
                 <div class="icon-wrap">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -193,10 +105,8 @@
                     <li>Acompañamiento en cada etapa</li>
                     <li>Asistencia con trámites</li>
                 </ul>
-                <a href="index.html#planner" class="secondary" style="width: 100%;">Planificar Reencuentro</a>
+                <a href="index.html?scroll=planner" class="secondary" style="width: 100%;">Planificar Reencuentro</a>
             </article>
-
-            <!-- Orientación Documental -->
             <article class="service-box">
                 <div class="icon-wrap">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -208,13 +118,11 @@
                     <li>Coordinación con expertos legales</li>
                     <li>Acompañamiento en el proceso</li>
                 </ul>
-                <a href="index.html#planner" class="secondary" style="width: 100%;">Consultar Requisitos</a>
+                <a href="index.html?scroll=planner" class="secondary" style="width: 100%;">Consultar Requisitos</a>
             </article>
-
         </div>
     </section>
 
-    <!-- ===== SECCIÓN OTROS SERVICIOS (Redirección) ===== -->
     <section class="shell reveal" style="padding-bottom: 100px;">
         <div class="glass" style="padding: 50px; border-radius: 30px; text-align: center; background: linear-gradient(135deg, rgba(102,230,196,0.1), rgba(130,169,255,0.05));">
             <span class="kicker">Más que viajes</span>
@@ -224,7 +132,6 @@
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="shell footer-grid">
             <div>
@@ -244,25 +151,25 @@
                 <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">FAQ</a>
             </div>
             <div>
-                <h4>Atención</h4>
-                <span>Orientación personalizada</span>
-                <a href="https://wa.me/18099995904?text=Hola%2C%20G%C3%89NESIS%20GLOBAL.%20Me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre%20sus%20servicios." class="whatsapp-link" target="_blank" rel="noopener noreferrer">WhatsApp Business</a>
-                <span>Formulario de solicitud</span>
+                <h4>Contacto Directo</h4>
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
             </div>
         </div>
         <div class="shell copy">
             <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
-                       <span>
+            <span>
                 <a href="faq.html">FAQ</a> &middot;
                 <a href="help-center.html">Help Center</a> &middot;
-                <a href="privacidad.html">Política de Privacidad</a> &middot;
-                <a href="terminos.html">Términos y Condiciones</a> &middot;
-                <a href="cookies.html" style="color: var(--accent);">Política de Cookies</a>
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a> &middot;
+                <a href="newsletter.html">Newsletter</a>
             </span>
         </div>
     </footer>
 
-    <!-- Script para el menú móvil y animaciones -->
     <script>
         function toggleMenu() {
             document.getElementById('links').classList.toggle('open');
