@@ -1,0 +1,78 @@
+/* =========================================================
+   GÉNESIS GLOBAL — BASE & UTILIDADES
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: radial-gradient(circle at 12% 12%, rgba(102, 230, 196, 0.12), transparent 28%),
+        radial-gradient(circle at 88% 32%, rgba(130, 169, 255, 0.12), transparent 28%),
+        linear-gradient(180deg, #06101d, #081524 55%, #050c16);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #0a1727;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(102, 230, 196, 0.5);
+    border-radius: 999px;
+}
+
+/* ===== UTILIDADES ===== */
+.shell {
+    width: min(var(--max-width), calc(100% - 40px));
+    margin: 0 auto;
+}
+
+.glass {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow: var(--shadow);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--accent), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.kicker {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
