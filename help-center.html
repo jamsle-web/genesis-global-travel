@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Centro de Ayuda | GÉNESIS GLOBAL</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <style>
+        .help-section { padding: 140px 0 100px; max-width: 900px; margin: 0 auto; text-align: center; }
+        .help-section h1 { font-size: clamp(32px, 5vw, 50px); margin-bottom: 20px; }
+        .help-section p { color: var(--text-soft); font-size: 18px; margin-bottom: 50px; }
+        
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        .help-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 20px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        .help-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .help-card .icon-box {
+            width: 60px; height: 60px;
+            background: rgba(102, 230, 196, 0.1);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px; color: var(--accent);
+        }
+        .help-card h3 { color: var(--text); font-size: 18px; margin-bottom: 10px; }
+        .help-card p { color: var(--text-soft); font-size: 14px; margin-bottom: 0; }
+
+        .contact-box {
+            background: linear-gradient(135deg, rgba(102,230,196,0.1), rgba(130,169,255,0.05));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+        }
+        .contact-box h2 { font-size: 28px; margin-bottom: 15px; }
+        .contact-box p { color: var(--text-soft); margin-bottom: 30px; }
+
+        @media (max-width: 768px) { .help-grid { grid-template-columns: 1fr; } .help-section { padding: 120px 0 60px; } }
+    </style>
+</head>
+<body>
+
+    <nav class="nav shell" id="nav">
+        <a href="index.html" class="brand">
+            <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+            <span>
+                <b>GÉNESIS GLOBAL</b>
+                <small>Donde comienzan nuevas oportunidades.</small>
+            </span>
+        </a>
+        <div id="links" class="links">
+            <a href="index.html">Inicio</a>
+            <a href="servicios.html">Servicios</a>
+            <a href="como-funciona.html">Cómo funciona</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="faq.html">FAQ</a>
+            <a href="otros-servicios.html">Otros Servicios</a>
+        </div>
+        <div class="nav-actions">
+            <a href="index.html#planner" class="cta">Planificar mi viaje</a>
+        </div>
+        <button class="menu" onclick="toggleMenu()">☰</button>
+    </nav>
+
+    <section class="help-section shell reveal">
+        <span class="kicker">Soporte</span>
+        <h1>¿Cómo podemos <span class="text-gradient">ayudarte?</span></h1>
+        <p>Encuentra respuestas rápidas o contacta directamente con nuestro equipo.</p>
+
+        <div class="help-grid">
+            <a href="faq.html" class="help-card">
+                <div class="icon-box">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <h3>Preguntas Frecuentes</h3>
+                <p>Respuestas a las dudas más comunes sobre viajes y servicios.</p>
+            </a>
+
+            <a href="como-funciona.html" class="help-card">
+                <div class="icon-box">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <h3>Guía de Procesos</h3>
+                <p>Aprende paso a paso cómo planificamos tu viaje.</p>
+            </a>
+
+            <a href="https://wa.me/5359508420" target="_blank" class="help-card">
+                <div class="icon-box">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                </div>
+                <h3>Contacto Directo</h3>
+                <p>Habla con un agente en Cuba o Brasil ahora mismo.</p>
+            </a>
+        </div>
+
+        <div class="contact-box">
+            <h2>¿Aún necesitas ayuda?</h2>
+            <p>Nuestro equipo está disponible para responder cualquier consulta personalizada.</p>
+            <a href="https://wa.me/5359508420" class="primary" target="_blank" style="padding: 16px 32px; font-size: 16px;">Contactar por WhatsApp →</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="shell footer-grid">
+            <div>
+                <div class="brand" style="cursor:default;">
+                    <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+                    <span>
+                        <b>GÉNESIS GLOBAL</b>
+                        <small>Donde comienzan nuevas oportunidades.</small>
+                    </span>
+                </div>
+                <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
+            </div>
+            <div>
+                <h4>Empresa</h4>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
+            </div>
+            <div>
+                <h4>Contacto Directo</h4>
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
+            </div>
+        </div>
+        <div class="shell copy">
+            <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
+            <span>
+                <a href="privacidad.html">Política de Privacidad</a> &middot;
+                <a href="terminos.html">Términos y Condiciones</a> &middot;
+                <a href="cookies.html">Política de Cookies</a>
+            </span>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
