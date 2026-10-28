@@ -6,6 +6,8 @@
     <meta name="google" content="notranslate">
     <title>GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</title>
     <meta name="description" content="Planificación y acompañamiento de viajes familiares.">
+    
+    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
@@ -20,1152 +22,23 @@
         }
     </script>
     <script type="module">
-    import { geoContains } from "https://esm.run/d3-geo@3.1.1";
-
-    window.geoContains = geoContains;
-
-    console.log("🌍 d3-geo cargado correctamente");
-</script>
-
-    <!-- EmailJS - Cargado correctamente -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+        import { geoContains } from "https://esm.run/d3-geo@3.1.1";
+        window.geoContains = geoContains;
     </script>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-client.js"></script>
-    <!-- Sistema de idiomas GÉNESIS GLOBAL -->
-<script src="i18n.js"></script>
+    <!-- Supabase y lógica -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="i18n.js"></script>
     
-    <style>
-        /* ===== RESET & BASE ===== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            background: radial-gradient(circle at 12% 12%, rgba(102, 230, 196, 0.12), transparent 28%),
-                radial-gradient(circle at 88% 32%, rgba(130, 169, 255, 0.12), transparent 28%),
-                linear-gradient(180deg, #06101d, #081524 55%, #050c16);
-            color: #f3f8ff;
-            font-family: 'DM Sans', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a1727;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(102, 230, 196, 0.5);
-            border-radius: 999px;
-        }
-
-        /* ===== UTILIDADES ===== */
-        .shell {
-            width: min(1160px, calc(100% - 40px));
-            margin: 0 auto;
-        }
-        .glass {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.025));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
-        }
-        .text-gradient {
-            background: linear-gradient(135deg, #66e6c4, #82a9ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .kicker {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #66e6c4;
-        }
-
-        /* ===== NAV ===== */
-        .nav {
-            position: sticky;
-            top: 14px;
-            z-index: 30;
-            margin: 14px auto 0;
-            padding: 10px 12px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(6, 16, 29, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: inherit;
-            text-decoration: none;
-            border: 0;
-            background: none;
-            cursor: pointer;
-        }
-        .brand img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(102, 230, 196, 0.3);
-        }
-        .brand b {
-            font: 800 14px 'Manrope', sans-serif;
-            letter-spacing: .14em;
-            display: block;
-            color: #f3f8ff;
-        }
-        .brand small {
-            font-size: 9px;
-            color: #9db0c7;
-            letter-spacing: .28em;
-        }
-        .links {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-        .links button {
-            border: 0;
-            background: none;
-            color: #9db0c7;
-            padding: 11px 12px;
-            cursor: pointer;
-            font-size: 13px;
-            font-family: inherit;
-            transition: color 0.3s;
-        }
-        .links button:hover {
-            color: #fff;
-        }
-        .cta {
-            display: flex !important;
-            gap: 7px;
-            align-items: center;
-            background: #f3f8ff !important;
-            color: #07111f !important;
-            border-radius: 12px !important;
-            font-weight: 700;
-            padding: 11px 16px !important;
-        }
-        .menu {
-            display: none;
-            background: none;
-            border: 0;
-            color: #fff;
-            font-size: 28px;
-            cursor: pointer;
-        }
-
-        /* ===== HERO ===== */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 80px 0 40px;
-            overflow: hidden;
-        }
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            width: 100%;
-            position: relative;
-            z-index: 2;
-        }
-        .hero h1 {
-            font: 800 clamp(50px, 6.2vw, 82px)/0.98 'Manrope', sans-serif;
-            letter-spacing: -0.07em;
-            margin: 20px 0;
-        }
-        .hero h1 span {
-            color: #66e6c4;
-        }
-        .hero p {
-            max-width: 650px;
-            color: #9db0c7;
-            font-size: 18px;
-            line-height: 1.7;
-        }
-        .hero .slogan {
-            font-size: 22px;
-            font-weight: 600;
-            color: #82a9ff;
-            margin-top: 10px;
-            letter-spacing: -0.02em;
-        }
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-        .primary,
-        .secondary {
-            border: 0;
-            border-radius: 14px;
-            padding: 14px 18px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-weight: 700;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        .primary {
-            background: linear-gradient(135deg, #66e6c4, #a2f2df);
-            color: #07111f;
-            box-shadow: 0 15px 45px rgba(102, 230, 196, 0.16);
-        }
-        .primary:hover {
-            transform: scale(1.02);
-            box-shadow: 0 20px 60px rgba(102, 230, 196, 0.25);
-        }
-        .secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-        .secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .trust {
-            display: flex;
-            gap: 18px;
-            flex-wrap: wrap;
-            color: #aebed0;
-            font-size: 12px;
-        }
-        .trust span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .trust span::before {
-            content: "✓";
-            color: #66e6c4;
-        }
-
-        /* Globo 3D */
-        #globe-container {
-            width: 100%;
-            aspect-ratio: 1/1;
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-            border-radius: 30px;
-            overflow: hidden;
-            background: radial-gradient(circle at 30% 30%, rgba(102, 230, 196, 0.08), transparent 70%);
-        }
-        #globe-container canvas {
-            display: block;
-            width: 100% !important;
-            height: 100% !important;
-            cursor: grab;
-        }
-        #globe-container canvas:active {
-            cursor: grabbing;
-        }
-        .globe-label {
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 11px;
-            color: #9db0c7;
-            pointer-events: none;
-            white-space: nowrap;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .globe-label strong {
-            color: #f3f8ff;
-        }
-        #country-tooltip {
-            position: absolute;
-            display: none;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            padding: 6px 12px;
-            border-radius: 999px;
-            font-size: 12px;
-            color: #fff;
-            pointer-events: none;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 10;
-            white-space: nowrap;
-        }
-
-        /* ===== PLANIFICADOR DE VIAJES ===== */
-        .planner-section {
-            padding: 60px 0 80px;
-            scroll-margin-top: 80px;
-        }
-        .planner-card {
-            padding: 40px 48px;
-            border-radius: 32px;
-            transition: all 0.4s;
-        }
-        .planner-step {
-            display: none;
-            animation: fadeSlideUp 0.5s ease both;
-        }
-        .planner-step.active {
-            display: block;
-        }
-        @keyframes fadeSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .search-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 16px;
-            align-items: end;
-        }
-        .search-field {
-            position: relative;
-        }
-        .search-field label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #b8c8db;
-            margin-bottom: 6px;
-        }
-        .search-field input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            padding: 14px 16px;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .search-field input:focus {
-            border-color: rgba(102, 230, 196, 0.5);
-            box-shadow: 0 0 0 3px rgba(102, 230, 196, 0.07);
-        }
-        .search-field input::placeholder {
-            color: #667c96;
-        }
-        .search-field .flag {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            pointer-events: none;
-        }
-        .autocomplete-list {
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
-            background: rgba(10, 23, 39, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 20;
-            display: none;
-            padding: 4px 0;
-        }
-        .autocomplete-list.show {
-            display: block;
-        }
-        .autocomplete-item {
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-size: 14px;
-            color: #f3f8ff;
-        }
-        .autocomplete-item:hover {
-            background: rgba(102, 230, 196, 0.08);
-        }
-        .autocomplete-item .flag {
-            font-size: 20px;
-        }
-
-        .btn-continuar {
-            padding: 14px 32px;
-            background: linear-gradient(135deg, #66e6c4, #82a9ff);
-            border: 0;
-            border-radius: 14px;
-            color: #07111f;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-            height: 52px;
-            white-space: nowrap;
-        }
-        .btn-continuar:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 40px rgba(102, 230, 196, 0.25);
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .detail-grid .full {
-            grid-column: 1 / -1;
-        }
-        .detail-field label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #b8c8db;
-            margin-bottom: 6px;
-        }
-        .detail-field input,
-        .detail-field select,
-        .detail-field textarea {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px 14px;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            font-family: inherit;
-        }
-        .detail-field input:focus,
-        .detail-field select:focus,
-        .detail-field textarea:focus {
-            border-color: rgba(102, 230, 196, 0.5);
-            box-shadow: 0 0 0 3px rgba(102, 230, 196, 0.07);
-        }
-        .detail-field select option {
-            background: #0a1727;
-        }
-        .detail-field textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .summary-card {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-            padding: 24px 28px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            margin: 20px 0;
-        }
-        .summary-card .route {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            font-size: 18px;
-            font-weight: 600;
-        }
-        .summary-card .route .arrow {
-            color: #66e6c4;
-        }
-        .summary-card .details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-            margin-top: 16px;
-            font-size: 14px;
-            color: #b8c8db;
-        }
-        .summary-card .details strong {
-            color: #f3f8ff;
-            font-weight: 600;
-        }
-        .summary-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-            flex-wrap: wrap;
-        }
-
-        /* ===== SECCIONES EXISTENTES ===== */
-        .proof {
-            padding: 25px 0 65px;
-        }
-        .proof-card {
-            padding: 30px 34px;
-            border-radius: 24px;
-            display: flex;
-            justify-content: space-between;
-            gap: 30px;
-            align-items: center;
-        }
-        .proof h2,
-        .section-title {
-            font: 800 clamp(32px, 4vw, 50px)/1.02 'Manrope', sans-serif;
-            letter-spacing: -0.05em;
-            margin: 8px 0;
-        }
-        .proof p {
-            max-width: 500px;
-            color: #9db0c7;
-            line-height: 1.7;
-        }
-        .section {
-            padding: 78px 0;
-        }
-        .head {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 30px;
-            margin-bottom: 35px;
-            flex-wrap: wrap;
-        }
-        .head p {
-            max-width: 400px;
-            color: #9db0c7;
-            line-height: 1.7;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-        }
-        .card {
-            padding: 24px;
-            border-radius: 22px;
-            min-height: 295px;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s;
-            cursor: default;
-            position: relative;
-            transform-style: preserve-3d;
-            perspective: 600px;
-        }
-        .card:hover {
-            transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
-            border-color: rgba(102, 230, 196, 0.35);
-        }
-        .card .icon-wrap {
-            width: 52px;
-            height: 52px;
-            border-radius: 16px;
-            background: rgba(102, 230, 196, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #66e6c4;
-        }
-        .card .icon-wrap svg {
-            width: 26px;
-            height: 26px;
-            stroke-width: 1.8;
-        }
-        .num {
-            float: right;
-            color: #4e637c;
-            font-size: 11px;
-            font-weight: 700;
-        }
-        .card h3 {
-            font: 700 18px 'Manrope', sans-serif;
-            margin: 38px 0 10px;
-        }
-        .card p {
-            color: #9db0c7;
-            font-size: 13px;
-            line-height: 1.65;
-        }
-        .link {
-            border: 0;
-            background: none;
-            color: #fff;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            padding: 0;
-            margin-top: 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            transition: color 0.3s;
-        }
-        .link:hover {
-            color: #66e6c4;
-        }
-
-        .dark {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent);
-            padding-left: max(20px, calc((100% - 1160px)/2));
-            padding-right: max(20px, calc((100% - 1160px)/2));
-        }
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .step {
-            padding: 28px 22px 20px 0;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            margin-right: 22px;
-        }
-        .step:last-child {
-            border: 0;
-            margin-right: 0;
-        }
-        .step strong {
-            color: #66e6c4;
-            font: 700 13px 'Manrope', sans-serif;
-        }
-        .step h3 {
-            font: 700 17px 'Manrope', sans-serif;
-            margin: 28px 0 8px;
-        }
-        .step p {
-            color: #9db0c7;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-        .about {
-            padding: 46px;
-            border-radius: 30px;
-            display: grid;
-            grid-template-columns: 180px 1fr;
-            gap: 45px;
-            align-items: center;
-        }
-        .badge {
-            height: 180px;
-            border-radius: 38px;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, rgba(102, 230, 196, 0.18), rgba(130, 169, 255, 0.14));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font: 800 40px 'Manrope', sans-serif;
-            color: #66e6c4;
-            transition: transform 0.4s ease;
-        }
-        .badge:hover {
-            transform: rotateY(5deg) scale(1.02);
-        }
-        .badge img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .pill {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 8px 11px;
-            border-radius: 999px;
-            color: #bed0e3;
-            font-size: 11px;
-        }
-
-        .faq {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .faq-row {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .faq-q {
-            width: 100%;
-            background: none;
-            border: 0;
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 22px 4px;
-            text-align: left;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: color 0.3s;
-        }
-        .faq-q:hover {
-            color: #66e6c4;
-        }
-        .faq-a {
-            display: none;
-            color: #9db0c7;
-            line-height: 1.7;
-            font-size: 14px;
-            padding: 0 35px 22px 4px;
-        }
-        .faq-row.open .faq-a {
-            display: block;
-        }
-        .faq-q span:last-child {
-            transition: 0.25s;
-            display: inline-block;
-        }
-        .faq-row.open .faq-q span:last-child {
-            transform: rotate(180deg);
-        }
-
-        .footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 45px 0 20px;
-            background: rgba(0, 0, 0, 0.13);
-            margin-top: 40px;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 30px;
-        }
-        .footer h4 {
-            margin: 0 0 12px;
-            color: #f3f8ff;
-            font-size: 14px;
-        }
-        .footer p,
-        .footer span {
-            display: block;
-            color: #9db0c7;
-            font-size: 12px;
-            line-height: 1.7;
-        }
-        .footer .brand img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(102, 230, 196, 0.3);
-        }
-        .footer a.whatsapp-link {
-            display: block;
-            color: #9db0c7;
-            text-decoration: none;
-            font-size: 12px;
-            line-height: 1.7;
-            transition: color 0.3s;
-        }
-        .footer a.whatsapp-link:hover {
-            color: #f3f8ff;
-        }
-        .footer button {
-            display: block;
-            border: 0;
-            background: none;
-            color: #9db0c7;
-            padding: 4px 0;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 12px;
-            transition: color 0.3s;
-        }
-        .footer button:hover {
-            color: #fff;
-        }
-        .copy {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 30px;
-            padding-top: 18px;
-            color: #5f748c;
-            font-size: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
-        .copy a {
-            color: #5f748c;
-            text-decoration: none;
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-        .copy a:hover {
-            color: #f3f8ff;
-        }
-
-        /* ===== REVEAL ===== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px) scale(0.97);
-            transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .reveal.show {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        /* ===== SELECTOR DE IDIOMA PROFESIONAL ===== */
-
-.language-switcher {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin: 0 8px;
-    z-index: 100;
-}
-
-.language-current {
-    height: 42px;
-    min-width: 76px;
-    padding: 0 11px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.055);
-    color: #f3f8ff;
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: .06em;
-    cursor: pointer;
-    transition:
-        background .25s ease,
-        border-color .25s ease,
-        transform .25s ease,
-        box-shadow .25s ease;
-}
-
-.language-current:hover,
-.language-switcher.open .language-current {
-    background: rgba(102, 230, 196, 0.09);
-    border-color: rgba(102, 230, 196, 0.28);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
-}
-
-.language-current svg:first-child {
-    width: 17px;
-    height: 17px;
-    fill: none;
-    stroke: #66e6c4;
-    stroke-width: 1.7;
-}
-
-.language-chevron {
-    width: 13px;
-    height: 13px;
-    fill: none;
-    stroke: #9db0c7;
-    stroke-width: 2;
-    transition: transform .25s ease;
-}
-
-.language-switcher.open .language-chevron {
-    transform: rotate(180deg);
-}
-
-.language-menu {
-    position: absolute;
-    top: calc(100% + 9px);
-    right: 0;
-    width: 190px;
-    padding: 7px;
-    border: 1px solid rgba(255, 255, 255, 0.11);
-    border-radius: 16px;
-    background: rgba(6, 16, 29, 0.96);
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-    box-shadow: 0 24px 70px rgba(0, 0, 0, .38);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-7px) scale(.97);
-    transform-origin: top right;
-    transition:
-        opacity .2s ease,
-        transform .2s ease,
-        visibility .2s ease;
-}
-
-.language-switcher.open .language-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
-}
-
-.language-option {
-    width: 100%;
-    min-height: 43px;
-    display: grid;
-    grid-template-columns: 34px 1fr 18px;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 9px;
-    border: 0;
-    border-radius: 10px;
-    background: transparent;
-    color: #b8c8db;
-    font-family: inherit;
-    font-size: 13px;
-    text-align: left;
-    cursor: pointer;
-    transition:
-        background .2s ease,
-        color .2s ease;
-}
-
-.language-option:hover {
-    background: rgba(255, 255, 255, .055);
-    color: #fff;
-}
-
-.language-option.active {
-    background: rgba(102, 230, 196, .08);
-    color: #f3f8ff;
-}
-
-.language-flag {
-    width: 30px;
-    height: 24px;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(255, 255, 255, .12);
-    border-radius: 7px;
-    background: rgba(255, 255, 255, .05);
-    color: #66e6c4;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: .04em;
-}
-
-.language-name {
-    white-space: nowrap;
-}
-
-.language-check {
-    color: #66e6c4;
-    font-size: 14px;
-    opacity: 0;
-    transform: scale(.7);
-    transition:
-        opacity .2s ease,
-        transform .2s ease;
-}
-
-.language-option.active .language-check {
-    opacity: 1;
-    transform: scale(1);
-}
-        @media (max-width: 1024px) {
-            .cards {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .steps {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .step:nth-child(2) {
-                border-right: 0;
-            }
-            .about {
-                grid-template-columns: 1fr;
-                padding: 28px;
-            }
-            .badge {
-                height: 130px;
-            }
-            .hero-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            #globe-container {
-                max-width: 450px;
-            }
-            .search-row {
-                grid-template-columns: 1fr 1fr;
-            }
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-            .planner-card {
-                padding: 28px 20px;
-            }
-        }
-        @media (max-width: 900px) {
-            .hero {
-                padding-top: 40px;
-            }
-            .head {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .proof-card {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .links {
-                display: none;
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 67px;
-                padding: 12px;
-                border-radius: 18px;
-                background: rgba(6, 16, 29, 0.97);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                flex-direction: column;
-                align-items: stretch;
-                backdrop-filter: blur(20px);
-            }
-            .links.open {
-                display: flex;
-            }
-            .links button {
-                text-align: left;
-                padding: 12px 14px;
-            }
-            .cta {
-                justify-content: center;
-            }
-            .menu {
-                display: block;
-            }
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .search-row {
-                grid-template-columns: 1fr;
-            }
-            .btn-continuar {
-                width: 100%;
-                justify-content: center;
-            }
-            .language-switcher {
-    margin: 4px 0;
-}
-
-.language-current {
-    height: 40px;
-    min-width: 70px;
-}
-
-.language-menu {
-    right: 0;
-}
-        }
-        @media (max-width: 600px) {
-            .shell {
-                width: calc(100% - 28px);
-            }
-            .nav {
-                width: calc(100% - 28px);
-                margin-left: auto;
-                margin-right: auto;
-            }
-            .hero h1 {
-                font-size: 42px;
-            }
-            .cards,
-            .steps {
-                grid-template-columns: 1fr;
-            }
-            .step {
-                border-right: 0;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                margin-right: 0;
-                padding-right: 0;
-            }
-            .step:last-child {
-                border-bottom: 0;
-            }
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-            .actions {
-                flex-direction: column;
-            }
-            .primary,
-            .secondary {
-                width: 100%;
-                justify-content: center;
-            }
-            .copy {
-                flex-direction: column;
-                text-align: center;
-            }
-            #globe-container {
-                max-width: 100%;
-            }
-            .planner-card {
-                padding: 20px 16px;
-            }
-            .summary-card .route {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            .about {
-                padding: 20px;
-            }
-            .badge img {
-                width: 70px;
-                height: 70px;
-            }
-            .language-switcher {
-    margin: 4px 0;
-}
-
-.language-current {
-    min-width: 66px;
-    height: 38px;
-    padding: 0 9px;
-    gap: 6px;
-}
-
-.language-current svg:first-child {
-    width: 16px;
-    height: 16px;
-}
-
-.language-menu {
-    width: 180px;
-}
-        }
-    </style>
+    <!-- NUEVOS ESTILOS MODULARES -->
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 
@@ -1184,61 +57,47 @@
             <button onclick="scrollToId('proceso')">Cómo funciona</button>
             <button onclick="scrollToId('nosotros')">Nosotros</button>
             <button onclick="scrollToId('faq')">FAQ</button>
-            <button onclick="window.location.href='otros-servicios.html'">
-    Otros Servicios
-</button>
+            <button onclick="window.location.href='otros-servicios.html'">Otros Servicios</button>
             <button class="cta" onclick="scrollToId('planner')">Planificar mi viaje →</button>
         </div>
-         <!-- ===== SELECTOR DE IDIOMA ===== -->
-<div class="language-switcher" id="languageSwitcher">
-    <button
-        class="language-current"
-        id="languageCurrent"
-        type="button"
-        aria-haspopup="true"
-        aria-expanded="false"
-        aria-label="Seleccionar idioma"
-    >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M3 12h18"></path>
-            <path d="M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9"></path>
-            <path d="M12 3c-2.5 2.5-3.5 5.5-3.5 9s1 6.5 3.5 9"></path>
-        </svg>
-
-        <span id="languageCurrentCode">ES</span>
-
-        <svg class="language-chevron" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6"></path>
-        </svg>
-    </button>
-
-    <div class="language-menu" id="languageMenu">
-        <button type="button" class="language-option active" data-language="es">
-            <span class="language-flag">ES</span>
-            <span class="language-name">Español</span>
-            <span class="language-check">✓</span>
-        </button>
-
-        <button type="button" class="language-option" data-language="en">
-            <span class="language-flag">EN</span>
-            <span class="language-name">English</span>
-            <span class="language-check">✓</span>
-        </button>
-
-        <button type="button" class="language-option" data-language="fr">
-            <span class="language-flag">FR</span>
-            <span class="language-name">Français</span>
-            <span class="language-check">✓</span>
-        </button>
-
-        <button type="button" class="language-option" data-language="pt">
-            <span class="language-flag">PT</span>
-            <span class="language-name">Português</span>
-            <span class="language-check">✓</span>
-        </button>
-    </div>
-</div>
+        
+        <!-- ===== SELECTOR DE IDIOMA ===== -->
+        <div class="language-switcher" id="languageSwitcher">
+            <button class="language-current" id="languageCurrent" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Seleccionar idioma">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M3 12h18"></path>
+                    <path d="M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9"></path>
+                    <path d="M12 3c-2.5 2.5-3.5 5.5-3.5 9s1 6.5 3.5 9"></path>
+                </svg>
+                <span id="languageCurrentCode">ES</span>
+                <svg class="language-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6"></path>
+                </svg>
+            </button>
+            <div class="language-menu" id="languageMenu">
+                <button type="button" class="language-option active" data-language="es">
+                    <span class="language-flag">ES</span>
+                    <span class="language-name">Español</span>
+                    <span class="language-check">✓</span>
+                </button>
+                <button type="button" class="language-option" data-language="en">
+                    <span class="language-flag">EN</span>
+                    <span class="language-name">English</span>
+                    <span class="language-check">✓</span>
+                </button>
+                <button type="button" class="language-option" data-language="fr">
+                    <span class="language-flag">FR</span>
+                    <span class="language-name">Français</span>
+                    <span class="language-check">✓</span>
+                </button>
+                <button type="button" class="language-option" data-language="pt">
+                    <span class="language-flag">PT</span>
+                    <span class="language-name">Português</span>
+                    <span class="language-check">✓</span>
+                </button>
+            </div>
+        </div>
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
 
@@ -1280,7 +139,7 @@
                 <p style="color:#9db0c7;max-width:350px;">Completa los datos y nosotros organizamos el resto.</p>
             </div>
 
-            <!-- PASO 1: Origen y Destino -->
+            <!-- PASO 1 -->
             <div id="step1" class="planner-step active">
                 <div class="search-row">
                     <div class="search-field">
@@ -1300,7 +159,7 @@
                 </div>
             </div>
 
-            <!-- PASO 2: Detalles del viaje -->
+            <!-- PASO 2 -->
             <div id="step2" class="planner-step">
                 <div class="detail-grid">
                     <div class="detail-field">
@@ -1335,7 +194,7 @@
                 </div>
             </div>
 
-            <!-- PASO 3: Datos personales -->
+            <!-- PASO 3 -->
             <div id="step3" class="planner-step">
                 <div class="detail-grid">
                     <div class="detail-field full">
@@ -1365,11 +224,9 @@
                 </div>
             </div>
 
-            <!-- PASO 4: Resumen y envío -->
+            <!-- PASO 4 -->
             <div id="step4" class="planner-step">
-                <div class="summary-card" id="summaryContent">
-                    <!-- Se llena dinámicamente -->
-                </div>
+                <div class="summary-card" id="summaryContent"></div>
                 <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
                     <button class="secondary" onclick="goToStep3()" style="padding:12px 24px;">← Editar</button>
                     <button class="primary" id="enviarBtn" onclick="submitRequest()" style="padding:12px 32px;">Enviar solicitud →</button>
@@ -1527,7 +384,6 @@
             <div>
                 <h4>Atención</h4>
                 <span>Orientación personalizada</span>
-                <!-- Convertimos "WhatsApp Business" en enlace directo -->
                 <a href="https://wa.me/18099995904?text=Hola%2C%20G%C3%89NESIS%20GLOBAL.%20Me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre%20sus%20servicios." class="whatsapp-link" target="_blank" rel="noopener noreferrer">WhatsApp Business</a>
                 <span>Formulario de solicitud</span>
             </div>
@@ -1553,9 +409,6 @@
     <!-- ============================================================ -->
     <!-- SCRIPTS -->
     <script type="module">
-        // ============================================================
-        // GLOBO 3D (se mantiene exactamente igual)
-        // ============================================================
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -1587,7 +440,8 @@
         controls.minDistance = 1.08;
         controls.maxDistance = 6.5; 
         controls.target.set(0, 0, 0);
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+        
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
         scene.add(ambientLight);
         const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
         dirLight.position.set(1, 1, 1);
@@ -1597,9 +451,7 @@
         scene.add(backLight);
 
         const textureLoader = new THREE.TextureLoader();
-        const earthMap = textureLoader.load(
-    'https://threejs.org/examples/textures/planets/earth_atmos_4096.jpg'
-);
+        const earthMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_4096.jpg');
 
         const earthGeo = new THREE.SphereGeometry(1, 64, 64);
         const earthMat = new THREE.MeshPhongMaterial({
@@ -1612,281 +464,122 @@
         });
         const earth = new THREE.Mesh(earthGeo, earthMat);
         scene.add(earth);
-        /* ============================================================
-   🌍 FRONTERAS REALES DE LOS PAÍSES — GEOJSON
-   ============================================================ */
 
-let worldFeatures = [];
-let countryBorders = null;
+        let worldFeatures = [];
+        let countryBorders = null;
 
-const GEOJSON_URL =
-    'https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json';
+        const GEOJSON_URL = 'https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json';
 
-function latLonToVector3(lat, lon, radius = 1.014) {
-    const phi = (90 - lat) * Math.PI / 180;
-    const theta = (lon + 180) * Math.PI / 180;
-
-    return new THREE.Vector3(
-        -Math.sin(phi) * Math.cos(theta) * radius,
-        Math.cos(phi) * radius,
-        Math.sin(phi) * Math.sin(theta) * radius
-    );
-}
-
-function createCountryBorders(geojson) {
-
-    if (countryBorders) {
-        scene.remove(countryBorders);
-        countryBorders.traverse(obj => {
-            if (obj.geometry) obj.geometry.dispose();
-            if (obj.material) obj.material.dispose();
-        });
-    }
-
-    const borderGroup = new THREE.Group();
-
-    geojson.features.forEach(feature => {
-
-        if (!feature.geometry) return;
-
-        const geometry = feature.geometry;
-
-        function addRing(ring) {
-
-            if (!ring || ring.length < 2) return;
-
-            const points = [];
-
-            ring.forEach(([lon, lat]) => {
-                points.push(latLonToVector3(lat, lon));
-            });
-
-            const lineGeometry =
-                new THREE.BufferGeometry().setFromPoints(points);
-
-            const lineMaterial = new THREE.LineBasicMaterial({
-                color: 0x66e6c4,
-                transparent: true,
-                opacity: 0.85,
-                depthTest: true
-            });
-
-            const line = new THREE.Line(
-                lineGeometry,
-                lineMaterial
+        function latLonToVector3(lat, lon, radius = 1.014) {
+            const phi = (90 - lat) * Math.PI / 180;
+            const theta = (lon + 180) * Math.PI / 180;
+            return new THREE.Vector3(
+                -Math.sin(phi) * Math.cos(theta) * radius,
+                Math.cos(phi) * radius,
+                Math.sin(phi) * Math.sin(theta) * radius
             );
-
-            borderGroup.add(line);
         }
 
-        if (geometry.type === 'Polygon') {
-
-            geometry.coordinates.forEach(ring => {
-                addRing(ring);
-            });
-
-        } else if (geometry.type === 'MultiPolygon') {
-
-            geometry.coordinates.forEach(polygon => {
-
-                polygon.forEach(ring => {
-                    addRing(ring);
+        function createCountryBorders(geojson) {
+            if (countryBorders) {
+                scene.remove(countryBorders);
+                countryBorders.traverse(obj => {
+                    if (obj.geometry) obj.geometry.dispose();
+                    if (obj.material) obj.material.dispose();
                 });
-
-            });
-        }
-    });
-
-    countryBorders = borderGroup;
-
-    scene.add(countryBorders);
-
-    console.log(
-        `🌎 Fronteras cargadas: ${geojson.features.length} países`
-    );
-}
-
-fetch(GEOJSON_URL)
-    .then(response => {
-
-        if (!response.ok) {
-            throw new Error(
-                `HTTP ${response.status} al cargar GeoJSON`
-            );
-        }
-
-        return response.json();
-    })
-    .then(geojson => {
-
-     worldFeatures = geojson.features || [];
-
-createCountryBorders(geojson);
-
-createCountryFills(geojson);
-
-console.log('✅ GeoJSON mundial cargado correctamente');
-    })
-    .catch(error => {
-
-        console.error(
-            '❌ Error cargando las fronteras mundiales:',
-            error
-        );
-
-    });
-/* ============================================================
-   CAPA VISUAL DE PAÍSES
-   ============================================================ */
-
-let countryFillGroup = null;
-let selectedCountryMesh = null;
-function createCountryFills(geojson) {
-
-    // Eliminar capa anterior si existe
-    if (countryFillGroup) {
-        scene.remove(countryFillGroup);
-
-        countryFillGroup.traverse(obj => {
-            if (obj.geometry) obj.geometry.dispose();
-            if (obj.material) obj.material.dispose();
-        });
-    }
-
-    countryFillGroup = new THREE.Group();
-
-    geojson.features.forEach(feature => {
-
-        if (!feature.geometry) return;
-
-        const geometry = feature.geometry;
-
-        function createPolygon(rings) {
-
-            if (!rings || !rings.length) return;
-
-            const outerRing = rings[0];
-
-            if (!outerRing || outerRing.length < 3) {
-                return;
             }
-
-            /*
-             * Convertimos longitud/latitud
-             * a coordenadas 2D para triangular
-             * el territorio.
-             */
-            const shapePoints = outerRing.map(([lon, lat]) => {
-
-                return new THREE.Vector2(
-                    lon,
-                    lat
-                );
-
-            });
-
-            const triangles =
-                THREE.ShapeUtils.triangulateShape(
-                    shapePoints,
-                    []
-                );
-
-            if (!triangles.length) return;
-
-            const positions = [];
-
-            triangles.forEach(triangle => {
-
-                triangle.forEach(index => {
-
-                    const [lon, lat] = outerRing[index];
-
-                    const point =
-                        latLonToVector3(
-                            lat,
-                            lon,
-                            1.006
-                        );
-
-                    positions.push(
-                        point.x,
-                        point.y,
-                        point.z
-                    );
-
-                });
-
-            });
-
-            if (!positions.length) return;
-
-            const fillGeometry =
-                new THREE.BufferGeometry();
-
-            fillGeometry.setAttribute(
-                'position',
-                new THREE.Float32BufferAttribute(
-                    positions,
-                    3
-                )
-            );
-
-            fillGeometry.computeVertexNormals();
-
-            const fillMaterial =
-                new THREE.MeshBasicMaterial({
-                    color: 0x66e6c4,
-                    transparent: true,
-                    opacity: 0.08,
-                    side: THREE.DoubleSide,
-                    depthWrite: false
-                });
-
-            const countryMesh =
-                new THREE.Mesh(
-                    fillGeometry,
-                    fillMaterial
-                );
-
-            countryMesh.userData.country =
-                feature;
-
-            countryFillGroup.add(
-                countryMesh
-            );
-        }
-
-        if (geometry.type === 'Polygon') {
-
-            createPolygon(
-                geometry.coordinates
-            );
-
-        } else if (
-            geometry.type === 'MultiPolygon'
-        ) {
-
-            geometry.coordinates.forEach(
-                polygon => {
-                    createPolygon(polygon);
+            const borderGroup = new THREE.Group();
+            geojson.features.forEach(feature => {
+                if (!feature.geometry) return;
+                const geometry = feature.geometry;
+                function addRing(ring) {
+                    if (!ring || ring.length < 2) return;
+                    const points = [];
+                    ring.forEach(([lon, lat]) => {
+                        points.push(latLonToVector3(lat, lon));
+                    });
+                    const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const lineMaterial = new THREE.LineBasicMaterial({
+                        color: 0x66e6c4, transparent: true, opacity: 0.85, depthTest: true
+                    });
+                    const line = new THREE.Line(lineGeometry, lineMaterial);
+                    borderGroup.add(line);
                 }
-            );
+                if (geometry.type === 'Polygon') {
+                    geometry.coordinates.forEach(ring => addRing(ring));
+                } else if (geometry.type === 'MultiPolygon') {
+                    geometry.coordinates.forEach(polygon => polygon.forEach(ring => addRing(ring)));
+                }
+            });
+            countryBorders = borderGroup;
+            scene.add(countryBorders);
         }
-    });
 
-    scene.add(countryFillGroup);
+        fetch(GEOJSON_URL)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status} al cargar GeoJSON`);
+                return response.json();
+            })
+            .then(geojson => {
+                worldFeatures = geojson.features || [];
+                createCountryBorders(geojson);
+                createCountryFills(geojson);
+            })
+            .catch(error => console.error('❌ Error cargando las fronteras mundiales:', error));
 
-    console.log(
-        `🗺️ Capa visual de países creada: ${geojson.features.length}`
-    );
-}
+        let countryFillGroup = null;
+        let selectedCountryMesh = null;
+
+        function createCountryFills(geojson) {
+            if (countryFillGroup) {
+                scene.remove(countryFillGroup);
+                countryFillGroup.traverse(obj => {
+                    if (obj.geometry) obj.geometry.dispose();
+                    if (obj.material) obj.material.dispose();
+                });
+            }
+            countryFillGroup = new THREE.Group();
+            geojson.features.forEach(feature => {
+                if (!feature.geometry) return;
+                const geometry = feature.geometry;
+                function createPolygon(rings) {
+                    if (!rings || !rings.length) return;
+                    const outerRing = rings[0];
+                    if (!outerRing || outerRing.length < 3) return;
+                    const shapePoints = outerRing.map(([lon, lat]) => new THREE.Vector2(lon, lat));
+                    const triangles = THREE.ShapeUtils.triangulateShape(shapePoints, []);
+                    if (!triangles.length) return;
+                    const positions = [];
+                    triangles.forEach(triangle => {
+                        triangle.forEach(index => {
+                            const [lon, lat] = outerRing[index];
+                            const point = latLonToVector3(lat, lon, 1.006);
+                            positions.push(point.x, point.y, point.z);
+                        });
+                    });
+                    if (!positions.length) return;
+                    const fillGeometry = new THREE.BufferGeometry();
+                    fillGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+                    fillGeometry.computeVertexNormals();
+                    const fillMaterial = new THREE.MeshBasicMaterial({
+                        color: 0x66e6c4, transparent: true, opacity: 0.08, side: THREE.DoubleSide, depthWrite: false
+                    });
+                    const countryMesh = new THREE.Mesh(fillGeometry, fillMaterial);
+                    countryMesh.userData.country = feature;
+                    countryFillGroup.add(countryMesh);
+                }
+                if (geometry.type === 'Polygon') {
+                    createPolygon(geometry.coordinates);
+                } else if (geometry.type === 'MultiPolygon') {
+                    geometry.coordinates.forEach(polygon => createPolygon(polygon));
+                }
+            });
+            scene.add(countryFillGroup);
+        }
+
         const cloudTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
         const cloudMat = new THREE.MeshPhongMaterial({
-            map: cloudTexture,
-            transparent: true,
-            opacity: 0.15,
-            blending: THREE.AdditiveBlending,
-            side: THREE.DoubleSide,
+            map: cloudTexture, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
         });
         const cloudGeo = new THREE.SphereGeometry(1.008, 64, 64);
         const cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
@@ -1923,11 +616,7 @@ function createCountryFills(geojson) {
         ];
 
         const markerMat = new THREE.PointsMaterial({
-            color: 0x66e6c4,
-            size: 0.04,
-            transparent: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
+            color: 0x66e6c4, size: 0.04, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
         });
         const positions = [];
         countryData.forEach(c => {
@@ -1948,127 +637,32 @@ function createCountryFills(geojson) {
         let hoveredCountry = null;
 
         function getCountryFromPosition(point) {
+            if (!worldFeatures || worldFeatures.length === 0 || typeof window.geoContains !== 'function') return null;
+            const pos = point.clone().normalize();
+            const lat = Math.asin(pos.y) * 180 / Math.PI;
+            const lon = Math.atan2(-pos.x, pos.z) * 180 / Math.PI;
+            const coordinates = [lon, lat];
+            const feature = worldFeatures.find(feature => {
+                if (!feature || !feature.geometry) return false;
+                try {
+                    return window.geoContains(feature, coordinates);
+                } catch (error) { return false; }
+            });
+            if (!feature) return null;
 
-    // El GeoJSON todavía no está disponible
-    if (
-        !worldFeatures ||
-        worldFeatures.length === 0 ||
-        typeof window.geoContains !== 'function'
-    ) {
-        return null;
-    }
+            const iso3ToIso2 = {
+                CUB: 'CU', BRA: 'BR', DOM: 'DO', MEX: 'MX', USA: 'US', ESP: 'ES', ARG: 'AR', COL: 'CO', VEN: 'VE', PER: 'PE',
+                CHL: 'CL', ECU: 'EC', URY: 'UY', PRY: 'PY', BOL: 'BO', PAN: 'PA', CRI: 'CR', GTM: 'GT', HND: 'HN', NIC: 'NI',
+                SLV: 'SV', FRA: 'FR', ITA: 'IT', DEU: 'DE', GBR: 'GB', PRT: 'PT', CAN: 'CA'
+            };
+            const iso2 = iso3ToIso2[feature.id];
+            const existingCountry = countryData.find(country => country.code === iso2);
+            if (existingCountry) return existingCountry;
 
-    // Convertir el punto 3D del globo
-    // a coordenadas geográficas
-    const pos = point.clone().normalize();
-
-    const lat =
-        Math.asin(pos.y) * 180 / Math.PI;
-
-    const lon =
-        Math.atan2(-pos.x, pos.z) * 180 / Math.PI;
-
-    // d3-geo utiliza [longitud, latitud]
-    const coordinates = [lon, lat];
-
-    // Buscar el país cuyo polígono
-    // contiene realmente el punto
-    const feature = worldFeatures.find(feature => {
-
-        if (!feature || !feature.geometry) {
-            return false;
+            return {
+                name: feature.properties?.name || 'País', code: feature.id || '', lat: lat, lon: lon, flag: '🌍', feature: feature
+            };
         }
-
-        try {
-            return window.geoContains(
-                feature,
-                coordinates
-            );
-        } catch (error) {
-
-            console.warn(
-                'Error comprobando país:',
-                error
-            );
-
-            return false;
-        }
-    });
-
-    // Si estamos sobre océano
-    // no existe ningún país
-    if (!feature) {
-        return null;
-    }
-
-    console.log(
-        '🌍 País detectado:',
-        feature.properties?.name,
-        feature.id
-    );
-
-    /*
-     * El GeoJSON utiliza códigos ISO-3
-     * mientras que countryData utiliza ISO-2.
-     *
-     * Esta conversión permite mantener
-     * nuestros 27 países actuales.
-     */
-    const iso3ToIso2 = {
-        CUB: 'CU',
-        BRA: 'BR',
-        DOM: 'DO',
-        MEX: 'MX',
-        USA: 'US',
-        ESP: 'ES',
-        ARG: 'AR',
-        COL: 'CO',
-        VEN: 'VE',
-        PER: 'PE',
-        CHL: 'CL',
-        ECU: 'EC',
-        URY: 'UY',
-        PRY: 'PY',
-        BOL: 'BO',
-        PAN: 'PA',
-        CRI: 'CR',
-        GTM: 'GT',
-        HND: 'HN',
-        NIC: 'NI',
-        SLV: 'SV',
-        FRA: 'FR',
-        ITA: 'IT',
-        DEU: 'DE',
-        GBR: 'GB',
-        PRT: 'PT',
-        CAN: 'CA'
-    };
-
-    const iso2 = iso3ToIso2[feature.id];
-
-    // Comprobar si ya tenemos
-    // ese país dentro de countryData
-    const existingCountry = countryData.find(
-        country => country.code === iso2
-    );
-
-    // Si existe, conservar sus datos,
-    // incluyendo bandera y nombre en español
-    if (existingCountry) {
-        return existingCountry;
-    }
-
-    // Para países que todavía no están
-    // en nuestros 27 marcadores
-    return {
-        name: feature.properties?.name || 'País',
-        code: feature.id || '',
-        lat: lat,
-        lon: lon,
-        flag: '🌍',
-        feature: feature
-    };
-}
 
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();
@@ -2083,30 +677,21 @@ function createCountryFills(geojson) {
             if (intersects.length > 0) {
                 const point = intersects[0].point;
                 const country = getCountryFromPosition(point);
-               if (country) {
-    selectedCountry = country;
-
-    if (selectedCountryMesh) {
-        selectedCountryMesh.material.opacity = 0.08;
-        selectedCountryMesh = null;
-    }
-
-    if (country.feature && countryFillGroup) {
-
-        countryFillGroup.traverse(mesh => {
-
-            if (
-                mesh.userData.country === country.feature &&
-                mesh.material
-            ) {
-                selectedCountryMesh = mesh;
-                mesh.material.opacity = 0.35;
-            }
-
-        });
-    }
-
-    const destinoInput = document.getElementById('destinoInput');
+                if (country) {
+                    selectedCountry = country;
+                    if (selectedCountryMesh) {
+                        selectedCountryMesh.material.opacity = 0.08;
+                        selectedCountryMesh = null;
+                    }
+                    if (country.feature && countryFillGroup) {
+                        countryFillGroup.traverse(mesh => {
+                            if (mesh.userData.country === country.feature && mesh.material) {
+                                selectedCountryMesh = mesh;
+                                mesh.material.opacity = 0.35;
+                            }
+                        });
+                    }
+                    const destinoInput = document.getElementById('destinoInput');
                     if (destinoInput) {
                         destinoInput.value = country.name;
                         destinoInput.dispatchEvent(new Event('input'));
@@ -2121,39 +706,20 @@ function createCountryFills(geojson) {
             }
         }
 
- function onPointerMove(event) {
-
-    // No mostrar ningún país al mover el mouse
-    tooltip.style.display = 'none';
-
-    // No mantener ningún país en estado hover
-    hoveredCountry = null;
-
-    // Cursor normal de interacción con el globo
-    renderer.domElement.style.cursor = 'grab';
-
-    // Actualizar únicamente los marcadores seleccionados
-    updateMarkerColors();
-}
+        function onPointerMove(event) {
+            tooltip.style.display = 'none';
+            hoveredCountry = null;
+            renderer.domElement.style.cursor = 'grab';
+            updateMarkerColors();
+        }
 
         function updateMarkerColors() {
             const colors = new Float32Array(countryData.length * 3);
             countryData.forEach((c, i) => {
-                let r = 0.4,
-                    g = 0.9,
-                    b = 0.77;
-                if (selectedCountry && c.name === selectedCountry.name) {
-                    r = 0.2;
-                    g = 1.0;
-                    b = 0.6;
-                } else if (hoveredCountry && c.name === hoveredCountry.name) {
-                    r = 0.5;
-                    g = 0.8;
-                    b = 1.0;
-                }
-                colors[i * 3] = r;
-                colors[i * 3 + 1] = g;
-                colors[i * 3 + 2] = b;
+                let r = 0.4, g = 0.9, b = 0.77;
+                if (selectedCountry && c.name === selectedCountry.name) { r = 0.2; g = 1.0; b = 0.6; } 
+                else if (hoveredCountry && c.name === hoveredCountry.name) { r = 0.5; g = 0.8; b = 1.0; }
+                colors[i * 3] = r; colors[i * 3 + 1] = g; colors[i * 3 + 2] = b;
             });
             markerGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
             markerMat.vertexColors = true;
@@ -2185,36 +751,19 @@ function createCountryFills(geojson) {
         renderer.domElement.addEventListener('touchend', () => { setTimeout(() => { controls.autoRotate = true; }, 2000); });
 
         window.countryData = countryData;
-        console.log('🌍 Globo 3D cargado');
     </script>
 
     <script>
-        // ============================================================
-        // INICIALIZACIÓN DE EMAILJS (CORREGIDA)
-        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof emailjs !== 'undefined') {
-                emailjs.init({
-                    publicKey: "0Km4RQbZC8JqZ6fkL",
-                });
-                console.log('✅ EmailJS inicializado correctamente');
+                emailjs.init({ publicKey: "0Km4RQbZC8JqZ6fkL" });
             } else {
-                console.error('❌ EmailJS no se cargó correctamente');
                 var script = document.createElement('script');
                 script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-                script.onload = function() {
-                    emailjs.init({
-                        publicKey: "0Km4RQbZC8JqZ6fkL",
-                    });
-                    console.log('✅ EmailJS inicializado (carga tardía)');
-                };
+                script.onload = function() { emailjs.init({ publicKey: "0Km4RQbZC8JqZ6fkL" }); };
                 document.head.appendChild(script);
             }
         });
-
-        // ============================================================
-        // LÓGICA DE LA APLICACIÓN (autocompletado, pasos, resumen, ENVÍO)
-        // ============================================================
 
         const countryData = window.countryData || [];
 
@@ -2224,18 +773,9 @@ function createCountryFills(geojson) {
 
             input.addEventListener('input', function() {
                 const query = this.value.toLowerCase().trim();
-                if (query.length === 0) {
-                    list.classList.remove('show');
-                    return;
-                }
-                const filtered = countryData.filter(c =>
-                    c.name.toLowerCase().includes(query) ||
-                    c.code.toLowerCase().includes(query)
-                );
-                if (filtered.length === 0) {
-                    list.classList.remove('show');
-                    return;
-                }
+                if (query.length === 0) { list.classList.remove('show'); return; }
+                const filtered = countryData.filter(c => c.name.toLowerCase().includes(query) || c.code.toLowerCase().includes(query));
+                if (filtered.length === 0) { list.classList.remove('show'); return; }
                 list.innerHTML = '';
                 filtered.forEach(c => {
                     const item = document.createElement('div');
@@ -2244,8 +784,6 @@ function createCountryFills(geojson) {
                     item.addEventListener('click', function() {
                         input.value = c.name;
                         list.classList.remove('show');
-                        const flagSpan = input.parentElement.querySelector('.flag');
-                        if (flagSpan) flagSpan.textContent = c.flag;
                         input.dispatchEvent(new Event('change'));
                     });
                     list.appendChild(item);
@@ -2254,9 +792,7 @@ function createCountryFills(geojson) {
             });
 
             document.addEventListener('click', function(e) {
-                if (!input.contains(e.target) && !list.contains(e.target)) {
-                    list.classList.remove('show');
-                }
+                if (!input.contains(e.target) && !list.contains(e.target)) list.classList.remove('show');
             });
 
             input.addEventListener('keydown', function(e) {
@@ -2281,10 +817,7 @@ function createCountryFills(geojson) {
         window.goToStep2 = function() {
             const origen = document.getElementById('origenInput').value.trim();
             const destino = document.getElementById('destinoInput').value.trim();
-            if (!origen || !destino) {
-                alert('Por favor, selecciona tu origen y destino.');
-                return;
-            }
+            if (!origen || !destino) { alert('Por favor, selecciona tu origen y destino.'); return; }
             showStep('step2');
         };
         window.goToStep3 = function() { showStep('step3'); };
@@ -2336,240 +869,65 @@ function createCountryFills(geojson) {
             showStep('step4');
         };
 
-        // ===== FUNCIÓN DE ENVÍO REAL CON EMAILJS + WHATSAPP =====
-     window.submitRequest = async function() {
+        window.submitRequest = async function() {
+            const origen = document.getElementById('origenInput').value.trim();
+            const destino = document.getElementById('destinoInput').value.trim();
+            const fechaViaje = document.getElementById('fechaViaje').value;
+            const fechaRegreso = document.getElementById('fechaRegreso').value;
+            const adultos = document.getElementById('adultos').value;
+            const ninos = document.getElementById('ninos').value;
+            const tipoSelect = document.getElementById('tipoViaje');
+            const tipo = tipoSelect.options[tipoSelect.selectedIndex].text;
+            const nombre = document.getElementById('nombre').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const residencia = document.getElementById('residencia').value.trim();
+            const comentarios = document.getElementById('comentarios').value.trim();
 
-    const origen = document.getElementById('origenInput').value.trim();
-    const destino = document.getElementById('destinoInput').value.trim();
-    const fechaViaje = document.getElementById('fechaViaje').value;
-    const fechaRegreso = document.getElementById('fechaRegreso').value;
-    const adultos = document.getElementById('adultos').value;
-    const ninos = document.getElementById('ninos').value;
+            if (!origen || !destino || !nombre || !whatsapp || !email || !residencia) {
+                alert('⚠️ Por favor, completa todos los datos requeridos.');
+                return;
+            }
 
-    const tipoSelect = document.getElementById('tipoViaje');
-    const tipo = tipoSelect.options[tipoSelect.selectedIndex].text;
+            const btn = document.getElementById('enviarBtn');
+            btn.disabled = true;
+            btn.textContent = 'Guardando solicitud...';
 
-    const nombre = document.getElementById('nombre').value.trim();
-    const whatsapp = document.getElementById('whatsapp').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const residencia = document.getElementById('residencia').value.trim();
-    const comentarios = document.getElementById('comentarios').value.trim();
+            try {
+                if (typeof window.saveTravelRequest !== 'function') throw new Error('La conexión con Supabase no está disponible.');
+                await window.saveTravelRequest({
+                    origen: origen, destino: destino, fechaViaje: fechaViaje || null, fechaRegreso: fechaRegreso || null,
+                    adultos: Number(adultos || 1), ninos: Number(ninos || 0), tipo: tipo, nombre: nombre,
+                    whatsapp: whatsapp, email: email, residencia: residencia, comentarios: comentarios || null
+                });
 
-    // Validación
-    if (!origen || !destino || !nombre || !whatsapp || !email || !residencia) {
-        alert(
-            '⚠️ Por favor, completa todos los datos requeridos.'
-        );
-        return;
-    }
+                if (typeof emailjs === 'undefined') throw new Error('EmailJS no está disponible.');
+                btn.textContent = 'Enviando solicitud...';
 
-    const btn = document.getElementById('enviarBtn');
+                const templateParams = {
+                    to_email: 'porcenatjamsle07@gmail.com', origen: origen, destino: destino, tipo: tipo,
+                    fecha_salida: fechaViaje || 'No especificada', fecha_regreso: fechaRegreso || 'No especificada',
+                    viajeros: `${adultos} adultos${Number(ninos) > 0 ? `, ${ninos} niños` : ''}`,
+                    nombre: nombre, email: email, whatsapp: whatsapp, residencia: residencia, comentarios: comentarios || 'Ninguno'
+                };
 
-    btn.disabled = true;
-    btn.textContent = 'Guardando solicitud...';
+                await emailjs.send('service_q28ua8c', 'template_2t8g1pc', templateParams);
 
-    try {
+                const mensajeWhatsApp = `📩 NUEVA SOLICITUD DE VIAJE — GÉNESIS GLOBAL\n\n✈️ INFORMACIÓN DEL VIAJE\n\nPaís de origen/residencia: ${residencia}\nOrigen: ${origen}\nDestino: ${destino}\nTipo de viaje: ${tipo}\nFecha de salida: ${fechaViaje || 'No especificada'}\nFecha de regreso: ${fechaRegreso || 'No especificada'}\nNúmero de viajeros: ${adultos} adultos${Number(ninos) > 0 ? `, ${ninos} niños` : ''}\n\n👤 DATOS DEL CLIENTE\n\nNombre completo: ${nombre}\nEmail: ${email}\nWhatsApp / Teléfono: ${whatsapp}\n\n💬 COMENTARIOS\n\n${comentarios || 'Ninguno'}`;
+                const urlWhatsApp = `https://wa.me/18099995904?text=${encodeURIComponent(mensajeWhatsApp)}`;
 
-        // =====================================================
-        // 1. GUARDAR EN SUPABASE
-        // =====================================================
+                alert('✅ ¡Solicitud enviada correctamente!\n\nTu solicitud fue registrada y nuestro equipo recibirá la información.\n\nAhora se abrirá WhatsApp para continuar la atención.');
+                window.open(urlWhatsApp, '_blank');
 
-        if (
-            typeof window.saveTravelRequest !== 'function'
-        ) {
-            throw new Error(
-                'La conexión con Supabase no está disponible.'
-            );
-        }
-
-        await window.saveTravelRequest({
-
-            origen: origen,
-            destino: destino,
-
-            fechaViaje:
-                fechaViaje || null,
-
-            fechaRegreso:
-                fechaRegreso || null,
-
-            adultos:
-                Number(adultos || 1),
-
-            ninos:
-                Number(ninos || 0),
-
-            tipo:
-                tipo,
-
-            nombre:
-                nombre,
-
-            whatsapp:
-                whatsapp,
-
-            email:
-                email,
-
-            residencia:
-                residencia,
-
-            comentarios:
-                comentarios || null
-        });
-
-
-        console.log(
-            '✅ Solicitud guardada en Supabase'
-        );
-
-
-        // =====================================================
-        // 2. ENVIAR EMAIL
-        // =====================================================
-
-        if (typeof emailjs === 'undefined') {
-            throw new Error(
-                'EmailJS no está disponible.'
-            );
-        }
-
-        btn.textContent = 'Enviando solicitud...';
-
-        const templateParams = {
-
-            to_email:
-                'porcenatjamsle07@gmail.com',
-
-            origen:
-                origen,
-
-            destino:
-                destino,
-
-            tipo:
-                tipo,
-
-            fecha_salida:
-                fechaViaje || 'No especificada',
-
-            fecha_regreso:
-                fechaRegreso || 'No especificada',
-
-            viajeros:
-                `${adultos} adultos${
-                    Number(ninos) > 0
-                        ? `, ${ninos} niños`
-                        : ''
-                }`,
-
-            nombre:
-                nombre,
-
-            email:
-                email,
-
-            whatsapp:
-                whatsapp,
-
-            residencia:
-                residencia,
-
-            comentarios:
-                comentarios || 'Ninguno'
+            } catch (error) {
+                console.error('❌ Error enviando solicitud:', error);
+                alert('❌ No pudimos completar la solicitud.\n\nPor favor, inténtalo nuevamente o contáctanos directamente por WhatsApp al +1 (809) 999-5904.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Enviar solicitud →';
+            }
         };
 
-
-        await emailjs.send(
-            'service_q28ua8c',
-            'template_2t8g1pc',
-            templateParams
-        );
-
-
-        console.log(
-            '✅ Email enviado correctamente'
-        );
-
-
-        // =====================================================
-        // 3. WHATSAPP
-        // =====================================================
-
-        const mensajeWhatsApp =
-`📩 NUEVA SOLICITUD DE VIAJE — GÉNESIS GLOBAL
-
-✈️ INFORMACIÓN DEL VIAJE
-
-País de origen/residencia: ${residencia}
-Origen: ${origen}
-Destino: ${destino}
-Tipo de viaje: ${tipo}
-Fecha de salida: ${fechaViaje || 'No especificada'}
-Fecha de regreso: ${fechaRegreso || 'No especificada'}
-Número de viajeros: ${adultos} adultos${
-    Number(ninos) > 0
-        ? `, ${ninos} niños`
-        : ''
-}
-
-👤 DATOS DEL CLIENTE
-
-Nombre completo: ${nombre}
-Email: ${email}
-WhatsApp / Teléfono: ${whatsapp}
-
-💬 COMENTARIOS
-
-${comentarios || 'Ninguno'}`;
-
-
-        const urlWhatsApp =
-            `https://wa.me/18099995904?text=${encodeURIComponent(
-                mensajeWhatsApp
-            )}`;
-
-
-        // =====================================================
-        // 4. ÉXITO
-        // =====================================================
-
-        alert(
-            '✅ ¡Solicitud enviada correctamente!\\n\\n' +
-            'Tu solicitud fue registrada y nuestro equipo ' +
-            'recibirá la información.\\n\\n' +
-            'Ahora se abrirá WhatsApp para continuar la atención.'
-        );
-
-
-        window.open(
-            urlWhatsApp,
-            '_blank'
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            '❌ Error enviando solicitud:',
-            error
-        );
-
-        alert(
-            '❌ No pudimos completar la solicitud.\\n\\n' +
-            'Por favor, inténtalo nuevamente o contáctanos ' +
-            'directamente por WhatsApp al +1 (809) 999-5904.'
-        );
-
-    } finally {
-
-        btn.disabled = false;
-        btn.textContent = 'Enviar solicitud →';
-
-    }
-};
-
-        // ===== NAVEGACIÓN Y UTILIDADES =====
         window.scrollToId = function(id) {
             const el = document.getElementById(id);
             if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -2581,14 +939,12 @@ ${comentarios || 'Ninguno'}`;
             document.getElementById('links').classList.toggle('open');
         };
 
-        // FAQ Accordion
         document.querySelectorAll('.faq-q').forEach(q => {
             q.addEventListener('click', function() {
                 this.parentElement.classList.toggle('open');
             });
         });
 
-        // Scroll Reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('show');
@@ -2596,53 +952,16 @@ ${comentarios || 'Ninguno'}`;
         }, { threshold: 0.12 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Políticas
         window.showPolicy = function(type) {
             const modal = document.getElementById('policyModal');
             const content = document.getElementById('policyContent');
             let html = '';
             if (type === 'privacidad') {
-                html = `
-                <h2 style="font-family:Manrope;font-weight:800;font-size:28px;margin-bottom:12px;">Política de Privacidad</h2>
-                <p style="color:#9db0c7;font-size:13px;margin-bottom:20px;">Última actualización: 18 de agosto de 2026</p>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">En <strong>GÉNESIS GLOBAL</strong> nos tomamos muy en serio la privacidad. Esta política explica cómo recopilamos, usamos y protegemos tu información personal.</p>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">1. Información que recopilamos</h3>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">Recopilamos la información que nos proporcionas voluntariamente al completar el formulario: nombre, origen, destino y mensaje. También podemos recopilar datos de uso anónimos a través de cookies.</p>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">2. Uso de la información</h3>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">Utilizamos tu información para evaluar tu solicitud, coordinar la atención y mejorar nuestros servicios. No compartimos tus datos con terceros sin tu consentimiento.</p>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">3. Seguridad</h3>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">Implementamos medidas de seguridad técnicas y organizativas para proteger tu información. Sin embargo, ningún sistema es 100% seguro.</p>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">4. Tus derechos</h3>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">Puedes solicitar acceso, rectificación o eliminación de tus datos enviando un correo a <span style="color:#66e6c4;">privacidad@genesistriplea.com</span>.</p>
-                `;
+                html = `<h2 style="font-family:Manrope;font-weight:800;font-size:28px;margin-bottom:12px;">Política de Privacidad</h2><p style="color:#9db0c7;font-size:13px;margin-bottom:20px;">Última actualización: 18 de agosto de 2026</p><p style="color:#9db0c7;font-size:14px;line-height:1.7;">En <strong>GÉNESIS GLOBAL</strong> nos tomamos muy en serio la privacidad. Esta política explica cómo recopilamos, usamos y protegemos tu información personal.</p><h3 style="font-weight:700;margin-top:20px;font-size:16px;">1. Información que recopilamos</h3><p style="color:#9db0c7;font-size:14px;line-height:1.7;">Recopilamos la información que nos proporcionas voluntariamente al completar el formulario: nombre, origen, destino y mensaje. También podemos recopilar datos de uso anónimos a través de cookies.</p><h3 style="font-weight:700;margin-top:20px;font-size:16px;">2. Uso de la información</h3><p style="color:#9db0c7;font-size:14px;line-height:1.7;">Utilizamos tu información para evaluar tu solicitud, coordinar la atención y mejorar nuestros servicios. No compartimos tus datos con terceros sin tu consentimiento.</p><h3 style="font-weight:700;margin-top:20px;font-size:16px;">3. Seguridad</h3><p style="color:#9db0c7;font-size:14px;line-height:1.7;">Implementamos medidas de seguridad técnicas y organizativas para proteger tu información. Sin embargo, ningún sistema es 100% seguro.</p><h3 style="font-weight:700;margin-top:20px;font-size:16px;">4. Tus derechos</h3><p style="color:#9db0c7;font-size:14px;line-height:1.7;">Puedes solicitar acceso, rectificación o eliminación de tus datos enviando un correo a <span style="color:#66e6c4;">privacidad@genesistriplea.com</span>.</p>`;
             } else if (type === 'terminos') {
-                html = `
-                <h2 style="font-family:Manrope;font-weight:800;font-size:28px;margin-bottom:12px;">Términos y Condiciones</h2>
-                <p style="color:#9db0c7;font-size:13px;margin-bottom:20px;">Última actualización: 18 de agosto de 2026</p>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">Al utilizar nuestro sitio web y servicios, aceptas los siguientes términos.</p>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">1. Servicios ofrecidos</h3>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">GÉNESIS GLOBAL ofrece planificación y coordinación de viajes familiares, orientación documental y acompañamiento personalizado. No vendemos visas ni gestionamos trámites migratorios directamente.</p>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">2. Responsabilidad</h3>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">No nos responsabilizamos de errores u omisiones en los contenidos. Las decisiones migratorias son competencia de las autoridades.</p>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">3. Propiedad intelectual</h3>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">Todo el contenido es propiedad de GÉNESIS GLOBAL y está protegido por las leyes de propiedad intelectual.</p>
-                `;
+                html = `<h2 style="font-family:Manrope;font-weight:800;font-size:28px;margin-bottom:12px;">Términos y Condiciones</h2><p style="color:#9db0c7;font-size:13px;margin-bottom:20px;">Última actualización: 18 de agosto de 2026</p><p style="color:#9db0c7;font-size:14px;line-height:1.7;">Al utilizar nuestro sitio web y servicios, aceptas los siguientes términos.</p><h3 style="font-weight:700;margin-top:20px;font-size:16px;">1. Servicios ofrecidos</h3><p style="color:#9db0c7;font-size:14px;line-height:1.7;">GÉNESIS GLOBAL ofrece planificación y coordinación de viajes familiares, orientación documental y acompañamiento personalizado. No vendemos visas ni gestionamos trámites migratorios directamente.</p><h3 style="font-weight:700;margin-top:20px;font-size:16px;">2. Responsabilidad</h3><p style="color:#9db0c7;font-size:14px;line-height:1.7;">No nos responsabilizamos de errores u omisiones en los contenidos. Las decisiones migratorias son competencia de las autoridades.</p><h3 style="font-weight:700;margin-top:20px;font-size:16px;">3. Propiedad intelectual</h3><p style="color:#9db0c7;font-size:14px;line-height:1.7;">Todo el contenido es propiedad de GÉNESIS GLOBAL y está protegido por las leyes de propiedad intelectual.</p>`;
             } else if (type === 'cookies') {
-                html = `
-                <h2 style="font-family:Manrope;font-weight:800;font-size:28px;margin-bottom:12px;">Política de Cookies</h2>
-                <p style="color:#9db0c7;font-size:13px;margin-bottom:20px;">Última actualización: 18 de agosto de 2026</p>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">Utilizamos cookies para mejorar tu experiencia. Esta política explica qué son y cómo las usamos.</p>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">1. ¿Qué son las cookies?</h3>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">Son pequeños archivos de texto que se almacenan en tu dispositivo para recordar preferencias y analizar el tráfico.</p>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">2. Cookies que utilizamos</h3>
-                <ul style="color:#9db0c7;font-size:14px;line-height:1.7;list-style:disc;padding-left:20px;">
-                    <li><strong>Técnicas:</strong> necesarias para el funcionamiento básico.</li>
-                    <li><strong>Análisis:</strong> usamos Google Analytics de forma anónima.</li>
-                    <li><strong>Preferencias:</strong> recuerdan tu configuración.</li>
-                </ul>
-                <h3 style="font-weight:700;margin-top:20px;font-size:16px;">3. Gestión de cookies</h3>
-                <p style="color:#9db0c7;font-size:14px;line-height:1.7;">Puedes aceptar o rechazar las cookies desde la configuración de tu navegador.</p>
-                `;
+                html = `<h2 style="font-family:Manrope;font-weight:800;font-size:28px;margin-bottom:12px;">Política de Cookies</h2><p style="color:#9db0c7;font-size:13px;margin-bottom:20px;">Última actualización: 18 de agosto de 2026</p><p style="color:#9db0c7;font-size:14px;line-height:1.7;">Utilizamos cookies para mejorar tu experiencia. Esta política explica qué son y cómo las usamos.</p><h3 style="font-weight:700;margin-top:20px;font-size:16px;">1. ¿Qué son las cookies?</h3><p style="color:#9db0c7;font-size:14px;line-height:1.7;">Son pequeños archivos de texto que se almacenan en tu dispositivo para recordar preferencias y analizar el tráfico.</p><h3 style="font-weight:700;margin-top:20px;font-size:16px;">2. Cookies que utilizamos</h3><ul style="color:#9db0c7;font-size:14px;line-height:1.7;list-style:disc;padding-left:20px;"><li><strong>Técnicas:</strong> necesarias para el funcionamiento básico.</li><li><strong>Análisis:</strong> usamos Google Analytics de forma anónima.</li><li><strong>Preferencias:</strong> recuerdan tu configuración.</li></ul><h3 style="font-weight:700;margin-top:20px;font-size:16px;">3. Gestión de cookies</h3><p style="color:#9db0c7;font-size:14px;line-height:1.7;">Puedes aceptar o rechazar las cookies desde la configuración de tu navegador.</p>`;
             }
             content.innerHTML = html;
             modal.style.display = 'flex';
@@ -2654,71 +973,6 @@ ${comentarios || 'Ninguno'}`;
         document.getElementById('policyModal').addEventListener('click', function(e) {
             if (e.target === this) closePolicy();
         });
-
-        console.log('✅ GÉNESIS GLOBAL — Todo listo con WhatsApp integrado');
     </script>
- <!-- ===== SCRIPT DE TRADUCCIÓN ===== -->
-<script>
-function translatePage(lang) {
-    // Guardar idioma
-    localStorage.setItem('genesis-lang', lang);
-    
-    // Traducir todos los textos visibles
-    const elements = document.querySelectorAll('body *:not(script):not(style):not(noscript)');
-    
-    elements.forEach(el => {
-        if (el.children.length === 0 && el.textContent.trim() !== '') {
-            const originalText = el.textContent.trim();
-            if (originalText.length > 1 && !originalText.match(/^[0-9\s\.\,\-\+\$\%\€]+$/)) {
-                translateText(originalText, lang, el);
-            }
-        }
-    });
-    
-    // Marcar botón activo visualmente
-    document.querySelectorAll('.lang-selector button').forEach(btn => {
-        btn.style.opacity = '0.6';
-        btn.style.filter = 'grayscale(0.6)';
-        btn.style.background = 'none';
-        btn.style.transform = 'scale(1)';
-    });
-    
-    const activeBtn = document.querySelector(`.lang-selector button[onclick="translatePage('${lang}')"]`);
-    if (activeBtn) {
-        activeBtn.style.opacity = '1';
-        activeBtn.style.filter = 'grayscale(0)';
-        activeBtn.style.background = 'rgba(102, 230, 196, 0.15)';
-        activeBtn.style.transform = 'scale(1.1)';
-    }
-}
-
-function translateText(text, targetLang, element) {
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
-    
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data && data[0] && data[0][0] && data[0][0][0]) {
-                const translated = data[0][0][0];
-                if (translated !== text) {
-                    element.textContent = translated;
-                }
-            }
-        })
-        .catch(error => {
-            // Si falla, mantener el texto original
-            console.warn('Error traduciendo:', error);
-        });
-}
-
-// Cargar idioma guardado al iniciar
-document.addEventListener('DOMContentLoaded', function() {
-    const savedLang = localStorage.getItem('genesis-lang');
-    if (savedLang && ['es','en','fr','pt'].includes(savedLang)) {
-        setTimeout(() => translatePage(savedLang), 500);
-    }
-});
-</script>
-    
 </body>
 </html>
