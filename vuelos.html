@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Buscar Vuelos | GÉNESIS GLOBAL</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <style>
+        .flight-search-box {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .flight-form {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            align-items: end;
+        }
+        .flight-form .form-group { display: flex; flex-direction: column; }
+        .flight-form label { font-size: 12px; color: var(--text-soft); margin-bottom: 6px; font-weight: 600; }
+        .flight-form input, .flight-form select {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+        }
+        .flight-form input:focus, .flight-form select:focus { border-color: var(--accent); }
+        
+        .results-area {
+            margin-top: 40px;
+            padding: 40px;
+            text-align: center;
+            border: 1px dashed var(--border);
+            border-radius: 20px;
+            color: var(--text-soft);
+        }
+
+        @media (max-width: 768px) {
+            .flight-form { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav shell" id="nav">
+        <a href="index.html" class="brand">
+            <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+            <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
+        </a>
+        <div id="links" class="links">
+            <a href="index.html">Inicio</a>
+            <a href="servicios.html">Servicios</a>
+            <a href="como-funciona.html">Cómo funciona</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="faq.html">FAQ</a>
+            <a href="otros-servicios.html">Otros Servicios</a>
+        </div>
+        <div class="nav-actions">
+            <a href="index.html#planner" class="cta">Planificar mi viaje</a>
+        </div>
+        <button class="menu" onclick="toggleMenu()">☰</button>
+    </nav>
+
+    <section class="shell" style="padding: 140px 0 60px; text-align: center;">
+        <span class="kicker">Vuelos</span>
+        <h1 style="font-size: clamp(36px, 5vw, 56px); margin: 20px 0;">Encuentra tu <span class="text-gradient">próximo vuelo.</span></h1>
+        <p style="color: var(--text-soft); max-width: 600px; margin: 0 auto 40px;">Busca vuelos desde Cuba, Brasil, Guyana y otros destinos. Te ayudamos a encontrar la mejor conexión.</p>
+
+        <div class="flight-search-box reveal">
+            <form class="flight-form" onsubmit="event.preventDefault(); alert('La búsqueda en tiempo real se conectará con una API de vuelos. Por ahora, usa el planificador principal o contáctanos por WhatsApp.');">
+                <div class="form-group">
+                    <label>Origen</label>
+                    <input type="text" placeholder="Ej: La Habana (HAV)">
+                </div>
+                <div class="form-group">
+                    <label>Destino</label>
+                    <input type="text" placeholder="Ej: São Paulo (GRU)">
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Salida</label>
+                    <input type="date">
+                </div>
+                <button type="submit" class="primary" style="padding: 12px;">Buscar Vuelos</button>
+            </form>
+        </div>
+
+        <div class="results-area reveal">
+            <p>🔍 Los resultados de vuelos en tiempo real aparecerán aquí.</p>
+            <p style="font-size: 13px; margin-top: 10px;">Nota: Para mostrar precios reales, se requiere conectar una API de vuelos como Amadeus o Google Flights.</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="shell footer-grid">
+            <div>
+                <div class="brand" style="cursor:default;">
+                    <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+                    <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
+                </div>
+                <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
+            </div>
+            <div>
+                <h4>Empresa</h4>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
+            </div>
+            <div>
+                <h4>Contacto Directo</h4>
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
+            </div>
+        </div>
+        <div class="shell copy">
+            <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
+            <span>
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a> &middot;
+                <a href="help-center.html">Help Center</a>
+            </span>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
