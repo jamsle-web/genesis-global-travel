@@ -753,180 +753,13 @@
         window.countryData = countryData;
     </script>
 
+    <!-- SCRIPTS DE LA UI (Menú, Políticas, FAQ) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof emailjs !== 'undefined') {
                 emailjs.init({ publicKey: "0Km4RQbZC8JqZ6fkL" });
-            } else {
-                var script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-                script.onload = function() { emailjs.init({ publicKey: "0Km4RQbZC8JqZ6fkL" }); };
-                document.head.appendChild(script);
             }
         });
-
-        const countryData = window.countryData || [];
-
-        function setupAutocomplete(inputId, listId) {
-            const input = document.getElementById(inputId);
-            const list = document.getElementById(listId);
-
-            input.addEventListener('input', function() {
-                const query = this.value.toLowerCase().trim();
-                if (query.length === 0) { list.classList.remove('show'); return; }
-                const filtered = countryData.filter(c => c.name.toLowerCase().includes(query) || c.code.toLowerCase().includes(query));
-                if (filtered.length === 0) { list.classList.remove('show'); return; }
-                list.innerHTML = '';
-                filtered.forEach(c => {
-                    const item = document.createElement('div');
-                    item.className = 'autocomplete-item';
-                    item.innerHTML = `<span class="flag">${c.flag}</span> ${c.name} (${c.code})`;
-                    item.addEventListener('click', function() {
-                        input.value = c.name;
-                        list.classList.remove('show');
-                        input.dispatchEvent(new Event('change'));
-                    });
-                    list.appendChild(item);
-                });
-                list.classList.add('show');
-            });
-
-            document.addEventListener('click', function(e) {
-                if (!input.contains(e.target) && !list.contains(e.target)) list.classList.remove('show');
-            });
-
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && list.classList.contains('show')) {
-                    const firstItem = list.querySelector('.autocomplete-item');
-                    if (firstItem) firstItem.click();
-                }
-            });
-        }
-
-        setupAutocomplete('origenInput', 'origenList');
-        setupAutocomplete('destinoInput', 'destinoList');
-
-        function showStep(stepId) {
-            document.querySelectorAll('.planner-step').forEach(el => el.classList.remove('active'));
-            const step = document.getElementById(stepId);
-            if (step) step.classList.add('active');
-            document.getElementById('planner').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        window.goToStep1 = function() { showStep('step1'); };
-        window.goToStep2 = function() {
-            const origen = document.getElementById('origenInput').value.trim();
-            const destino = document.getElementById('destinoInput').value.trim();
-            if (!origen || !destino) { alert('Por favor, selecciona tu origen y destino.'); return; }
-            showStep('step2');
-        };
-        window.goToStep3 = function() { showStep('step3'); };
-
-        function getCountryFlag(name) {
-            const found = countryData.find(c => c.name === name);
-            return found ? found.flag : '🌍';
-        }
-
-        window.showSummary = function() {
-            const origen = document.getElementById('origenInput').value.trim();
-            const destino = document.getElementById('destinoInput').value.trim();
-            const fechaViaje = document.getElementById('fechaViaje').value;
-            const fechaRegreso = document.getElementById('fechaRegreso').value;
-            const adultos = document.getElementById('adultos').value;
-            const ninos = document.getElementById('ninos').value;
-            const tipoSelect = document.getElementById('tipoViaje');
-            const tipo = tipoSelect.options[tipoSelect.selectedIndex].text;
-            const nombre = document.getElementById('nombre').value.trim();
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const residencia = document.getElementById('residencia').value.trim();
-            const comentarios = document.getElementById('comentarios').value.trim();
-
-            if (!nombre || !whatsapp || !email || !residencia) {
-                alert('Por favor, completa todos los datos personales.');
-                return;
-            }
-
-            const summaryDiv = document.getElementById('summaryContent');
-            summaryDiv.innerHTML = `
-                <div class="route">
-                    <span>${getCountryFlag(origen)} ${origen}</span>
-                    <span class="arrow">→</span>
-                    <span>${getCountryFlag(destino)} ${destino}</span>
-                </div>
-                <div class="details">
-                    <div><strong>📅 Fecha viaje:</strong> ${fechaViaje || 'No especificada'}</div>
-                    <div><strong>📅 Regreso:</strong> ${fechaRegreso || 'No especificada'}</div>
-                    <div><strong>👥 Viajeros:</strong> ${adultos} adultos${ninos > 0 ? `, ${ninos} niños` : ''}</div>
-                    <div><strong>❤️ Motivo:</strong> ${tipo}</div>
-                    <div><strong>👤 Nombre:</strong> ${nombre}</div>
-                    <div><strong>📱 WhatsApp:</strong> ${whatsapp}</div>
-                    <div><strong>📧 Email:</strong> ${email}</div>
-                    <div><strong>🌍 Residencia:</strong> ${residencia}</div>
-                    ${comentarios ? `<div><strong>💬 Comentarios:</strong> ${comentarios}</div>` : ''}
-                </div>
-            `;
-            showStep('step4');
-        };
-
-        window.submitRequest = async function() {
-            const origen = document.getElementById('origenInput').value.trim();
-            const destino = document.getElementById('destinoInput').value.trim();
-            const fechaViaje = document.getElementById('fechaViaje').value;
-            const fechaRegreso = document.getElementById('fechaRegreso').value;
-            const adultos = document.getElementById('adultos').value;
-            const ninos = document.getElementById('ninos').value;
-            const tipoSelect = document.getElementById('tipoViaje');
-            const tipo = tipoSelect.options[tipoSelect.selectedIndex].text;
-            const nombre = document.getElementById('nombre').value.trim();
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const residencia = document.getElementById('residencia').value.trim();
-            const comentarios = document.getElementById('comentarios').value.trim();
-
-            if (!origen || !destino || !nombre || !whatsapp || !email || !residencia) {
-                alert('⚠️ Por favor, completa todos los datos requeridos.');
-                return;
-            }
-
-            const btn = document.getElementById('enviarBtn');
-            btn.disabled = true;
-            btn.textContent = 'Guardando solicitud...';
-
-            try {
-                if (typeof window.saveTravelRequest !== 'function') throw new Error('La conexión con Supabase no está disponible.');
-                await window.saveTravelRequest({
-                    origen: origen, destino: destino, fechaViaje: fechaViaje || null, fechaRegreso: fechaRegreso || null,
-                    adultos: Number(adultos || 1), ninos: Number(ninos || 0), tipo: tipo, nombre: nombre,
-                    whatsapp: whatsapp, email: email, residencia: residencia, comentarios: comentarios || null
-                });
-
-                if (typeof emailjs === 'undefined') throw new Error('EmailJS no está disponible.');
-                btn.textContent = 'Enviando solicitud...';
-
-                const templateParams = {
-                    to_email: 'porcenatjamsle07@gmail.com', origen: origen, destino: destino, tipo: tipo,
-                    fecha_salida: fechaViaje || 'No especificada', fecha_regreso: fechaRegreso || 'No especificada',
-                    viajeros: `${adultos} adultos${Number(ninos) > 0 ? `, ${ninos} niños` : ''}`,
-                    nombre: nombre, email: email, whatsapp: whatsapp, residencia: residencia, comentarios: comentarios || 'Ninguno'
-                };
-
-                await emailjs.send('service_q28ua8c', 'template_2t8g1pc', templateParams);
-
-                const mensajeWhatsApp = `📩 NUEVA SOLICITUD DE VIAJE — GÉNESIS GLOBAL\n\n✈️ INFORMACIÓN DEL VIAJE\n\nPaís de origen/residencia: ${residencia}\nOrigen: ${origen}\nDestino: ${destino}\nTipo de viaje: ${tipo}\nFecha de salida: ${fechaViaje || 'No especificada'}\nFecha de regreso: ${fechaRegreso || 'No especificada'}\nNúmero de viajeros: ${adultos} adultos${Number(ninos) > 0 ? `, ${ninos} niños` : ''}\n\n👤 DATOS DEL CLIENTE\n\nNombre completo: ${nombre}\nEmail: ${email}\nWhatsApp / Teléfono: ${whatsapp}\n\n💬 COMENTARIOS\n\n${comentarios || 'Ninguno'}`;
-                const urlWhatsApp = `https://wa.me/18099995904?text=${encodeURIComponent(mensajeWhatsApp)}`;
-
-                alert('✅ ¡Solicitud enviada correctamente!\n\nTu solicitud fue registrada y nuestro equipo recibirá la información.\n\nAhora se abrirá WhatsApp para continuar la atención.');
-                window.open(urlWhatsApp, '_blank');
-
-            } catch (error) {
-                console.error('❌ Error enviando solicitud:', error);
-                alert('❌ No pudimos completar la solicitud.\n\nPor favor, inténtalo nuevamente o contáctanos directamente por WhatsApp al +1 (809) 999-5904.');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Enviar solicitud →';
-            }
-        };
 
         window.scrollToId = function(id) {
             const el = document.getElementById(id);
@@ -974,5 +807,8 @@
             if (e.target === this) closePolicy();
         });
     </script>
+    
+    <!-- NUEVO PLANNER -->
+    <script src="js/planner.js"></script>
 </body>
 </html>
