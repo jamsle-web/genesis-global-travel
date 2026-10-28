@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Otros Servicios | GÉNESIS GLOBAL</title>
-    <meta name="description" content="Recargas, Remesas, Cambios de productos y más. Apoya a tu familia desde cualquier parte del mundo.">
     
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -13,88 +12,110 @@
     <link rel="manifest" href="site.webmanifest">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Estilos -->
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     
     <style>
-        /* Estilos exclusivos de Otros Servicios */
-        .hero-page { padding: 140px 0 60px; text-align: center; position: relative; }
+        .hero-page { padding: 140px 0 60px; text-align: center; }
         .hero-page h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
         .hero-page p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
         
+        /* Grid de Servicios Principales */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            padding-bottom: 100px;
+            padding-bottom: 60px;
         }
 
         .service-card {
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 40px 30px;
+            padding: 30px;
             text-align: center;
-            transition: transform 0.4s var(--ease), border-color 0.4s;
+            transition: transform 0.4s var(--ease);
             position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(102, 230, 196, 0.4);
-        }
-        .service-card::before {
-            content: ""; position: absolute; top: -50px; right: -50px;
-            width: 150px; height: 150px;
-            background: radial-gradient(circle, rgba(102,230,196,0.15), transparent 70%);
-            border-radius: 50%; pointer-events: none;
-        }
-
+        .service-card:hover { transform: translateY(-10px); border-color: rgba(102, 230, 196, 0.4); }
+        
         .service-card .icon-box {
-            width: 70px; height: 70px;
+            width: 60px; height: 60px;
             background: linear-gradient(135deg, rgba(102,230,196,0.15), rgba(130,169,255,0.1));
-            border-radius: 20px;
+            border-radius: 18px;
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 24px;
-            color: var(--accent);
+            margin: 0 auto 20px; color: var(--accent);
         }
-
-        .service-card h3 { font-size: 22px; margin-bottom: 12px; }
-        .service-card p { color: var(--text-soft); font-size: 15px; line-height: 1.6; margin-bottom: 30px; flex-grow: 1; }
+        .service-card h3 { font-size: 22px; margin-bottom: 10px; }
+        .service-card p { color: var(--text-soft); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
         
         .service-card .btn-action {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 12px 20px;
-            border-radius: 12px;
+            padding: 10px 20px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             transition: all 0.3s;
             display: inline-block;
-            width: 100%;
         }
-        .service-card .btn-action:hover {
-            background: var(--accent);
-            color: #07111f;
-            border-color: var(--accent);
-        }
+        .service-card .btn-action:hover { background: var(--accent); color: #07111f; }
 
-        @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) {
-            .services-grid { grid-template-columns: 1fr; }
-            .hero-page { padding: 120px 0 40px; }
+        /* Sección de Productos con Imágenes y Precios */
+        .products-section { padding: 60px 0 100px; }
+        .products-section .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
+        .products-section h2 { font-size: 32px; }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
         }
+        
+        .product-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .product-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: #0a1727;
+        }
+        
+        .product-info { padding: 20px; }
+        .product-info h4 { font-size: 16px; margin-bottom: 8px; color: var(--text); }
+        .product-info .price { font-size: 20px; font-weight: 800; color: var(--accent); margin-bottom: 15px; display: block; }
+        .product-info .btn-buy {
+            display: block;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .product-info .btn-buy:hover { background: var(--accent); color: #07111f; }
+
+        @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } .product-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .services-grid, .product-grid { grid-template-columns: 1fr; } .products-section .section-header { flex-direction: column; align-items: flex-start; gap: 10px; } }
     </style>
 </head>
 <body>
@@ -103,10 +124,7 @@
     <nav class="nav shell" id="nav">
         <a href="index.html" class="brand">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
-            <span>
-                <b>GÉNESIS GLOBAL</b>
-                <small>Donde comienzan nuevas oportunidades.</small>
-            </span>
+            <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
         </a>
         <div id="links" class="links">
             <a href="index.html">Inicio</a>
@@ -126,55 +144,94 @@
     <section class="hero-page shell reveal">
         <span class="kicker">Más que Viajes</span>
         <h1>Apoya a tu familia <br><span class="text-gradient">sin importar la distancia.</span></h1>
-        <p>Hemos ampliado nuestros servicios para que puedas enviar ayuda, comprar productos y mantenerte conectado con los tuyos de forma rápida y segura.</p>
+        <p>Envía recargas, remesas o compra productos reales para tus seres queridos en Cuba.</p>
     </section>
 
-    <!-- ===== GRID DE SERVICIOS ===== -->
+    <!-- ===== SERVICIOS PRINCIPALES (Recargas, Remesas, Cambios) ===== -->
     <section class="shell reveal">
         <div class="services-grid">
-            
             <!-- Recargas -->
             <article class="service-card">
                 <div class="icon-box">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
                 </div>
                 <h3>Recargas Telefónicas</h3>
-                <p>Mantén la comunicación fluida. Recarga el saldo móvil de tus familiares en Cuba y otros destinos al instante.</p>
+                <p>Mantén la comunicación fluida. Recarga el saldo móvil de tus familiares en Cuba al instante.</p>
                 <a href="https://wa.me/5359508420?text=Hola,%20quiero%20hacer%20una%20recarga%20telef%C3%B3nica." class="btn-action" target="_blank">Recargar Ahora →</a>
             </article>
 
             <!-- Remesas -->
             <article class="service-card">
                 <div class="icon-box">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                 </div>
                 <h3>Envío de Remesas</h3>
-                <p>Envía dinero a tu familia de manera segura. Coordinamos la entrega con total transparencia y rapidez.</p>
+                <p>Envía dinero a tu familia de manera segura. Coordinamos la entrega con total transparencia.</p>
                 <a href="https://wa.me/5359508420?text=Hola,%20quiero%20enviar%20dinero%20a%20mi%20familia." class="btn-action" target="_blank">Enviar Dinero →</a>
             </article>
 
             <!-- Cambios de Productos -->
             <article class="service-card">
                 <div class="icon-box">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                 </div>
                 <h3>Cambios y Productos</h3>
-                <p>Compra alimentos, electrodomésticos o artículos de primera necesidad. Nosotros nos encargamos de la entrega.</p>
-                <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20productos%20para%20mi%20familia." class="btn-action" target="_blank">Ver Productos →</a>
+                <p>Compra alimentos, electrodomésticos o artículos de primera necesidad. Nosotros entregamos.</p>
+                <a href="#productos" class="btn-action">Ver Catálogo →</a>
+            </article>
+        </div>
+    </section>
+
+    <!-- ===== SECCIÓN DE PRODUCTOS CON IMÁGENES Y PRECIOS ===== -->
+    <section id="productos" class="products-section shell reveal">
+        <div class="section-header">
+            <div>
+                <span class="kicker">Catálogo</span>
+                <h2>Productos <span class="text-gradient">Destacados</span></h2>
+            </div>
+            <p style="color: var(--text-soft);">Precios de ejemplo. Consulta disponibilidad por WhatsApp.</p>
+        </div>
+
+        <div class="product-grid">
+            <!-- Producto 1 -->
+            <article class="product-card">
+                <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=400&auto=format&fit=crop" alt="Saco de Arroz" class="product-image">
+                <div class="product-info">
+                    <h4>Arroz (5 kg)</h4>
+                    <span class="price">$8.50 USD</span>
+                    <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Arroz%20de%205kg" class="btn-buy" target="_blank">Comprar</a>
+                </div>
             </article>
 
-            <!-- Ofertas de Viajes -->
-            <article class="service-card" style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; text-align: left; padding: 50px;">
-                <div>
-                    <span class="kicker" style="margin-bottom: 10px; display: block;">Ofertas Especiales</span>
-                    <h3 style="font-size: 32px; margin-bottom: 15px;">Paquetes y Ofertas de Viaje</h3>
-                    <p style="margin-bottom: 0; font-size: 16px;">Descubre nuestras ofertas exclusivas para vuelos y alojamientos. Diseñadas para que reencontrarte con tu familia sea más económico.</p>
-                </div>
-                <div style="text-align: right;">
-                    <a href="servicios.html" class="primary" style="padding: 14px 30px;">Explorar Ofertas →</a>
+            <!-- Producto 2 -->
+            <article class="product-card">
+                <img src="https://images.unsplash.com/photo-1620707005438-6b8c3b3b7d8d?q=80&w=400&auto=format&fit=crop" alt="Aceite de Cocina" class="product-image">
+                <div class="product-info">
+                    <h4>Aceite (1L)</h4>
+                    <span class="price">$4.20 USD</span>
+                    <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Aceite%20de%201L" class="btn-buy" target="_blank">Comprar</a>
                 </div>
             </article>
 
+            <!-- Producto 3 -->
+            <article class="product-card">
+                <img src="https://images.unsplash.com/photo-1594385208974-2e75f8d7bb48?q=80&w=400&auto=format&fit=crop" alt="Frijoles Negros" class="product-image">
+                <div class="product-info">
+                    <h4>Frijoles Negros (1 kg)</h4>
+                    <span class="price">$3.80 USD</span>
+                    <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Frijoles%20Negros" class="btn-buy" target="_blank">Comprar</a>
+                </div>
+            </article>
+
+            <!-- Producto 4 -->
+            <article class="product-card">
+                <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=400&auto=format&fit=crop" alt="Leche en Polvo" class="product-image">
+                <div class="product-info">
+                    <h4>Leche en Polvo (1 kg)</h4>
+                    <span class="price">$12.00 USD</span>
+                    <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Leche%20en%20Polvo" class="btn-buy" target="_blank">Comprar</a>
+                </div>
+            </article>
         </div>
     </section>
 
@@ -184,62 +241,38 @@
             <div>
                 <div class="brand" style="cursor:default;">
                     <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
-                    <span>
-                        <b>GÉNESIS GLOBAL</b>
-                        <small>Donde comienzan nuevas oportunidades.</small>
-                    </span>
+                    <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
                 </div>
                 <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
             </div>
             <div>
                 <h4>Empresa</h4>
-                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Nosotros</a>
-                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Servicios</a>
-                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">FAQ</a>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
             </div>
             <div>
                 <h4>Contacto Directo</h4>
-                <span>Orientación personalizada</span>
-                
-                <!-- Contacto Cuba (CEO) -->
-                <a href="https://wa.me/5359508420?text=Hola%2C%20G%C3%89NESIS%20GLOBAL.%20Me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre%20sus%20servicios." class="whatsapp-link" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                    Cuba (CEO): +53 5 9508420
-                </a>
-
-                <!-- Contacto Brasil (Marketing) -->
-                <a href="https://wa.me/554187097183?text=Hola%2C%20G%C3%89NESIS%20GLOBAL.%20Quisiera%20contactar%20con%20el%20equipo%20de%20Brasil." class="whatsapp-link" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                    Brasil: +55 41 8709-7183
-                </a>
-
-                <!-- WhatsApp General -->
-                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 8px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                    WhatsApp General
-                </a>
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
             </div>
         </div>
         <div class="shell copy">
             <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
             <span>
-                <a href="#">Política de Privacidad</a> &middot;
-                <a href="#">Términos y Condiciones</a> &middot;
-                <a href="#">Política de Cookies</a>
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a> &middot;
+                <a href="help-center.html">Help Center</a>
             </span>
         </div>
     </footer>
 
-    <!-- Script para el menú móvil y animaciones -->
     <script>
-        function toggleMenu() {
-            document.getElementById('links').classList.toggle('open');
-        }
-
+        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('show');
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
