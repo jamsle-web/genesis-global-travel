@@ -6,7 +6,6 @@
     <title>Nosotros | GÉNESIS GLOBAL</title>
     <meta name="description" content="Conoce la historia y el equipo detrás de GÉNESIS GLOBAL.">
     
-    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -27,7 +26,7 @@
         
         .about-content {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Texto a la izq, Equipo a la der */
+            grid-template-columns: 1fr 1fr;
             gap: 60px;
             align-items: center;
             padding-bottom: 100px;
@@ -36,10 +35,9 @@
         .about-text h2 { font-size: 32px; margin-bottom: 20px; }
         .about-text p { color: var(--text-soft); font-size: 16px; line-height: 1.8; margin-bottom: 20px; }
 
-        /* ===== ESTILOS DEL EQUIPO ===== */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 columnas de tarjetas */
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             width: 100%;
         }
@@ -63,13 +61,12 @@
             box-shadow: 0 10px 30px rgba(102, 230, 196, 0.05);
         }
 
-        /* --- MEJORA PROFESIONAL DE LAS FOTOS --- */
         .team-card img {
-            width: 100px; /* Un poco más grande */
-            height: 110px; /* Ligeramente más alto que ancho (formato retrato) */
-            border-radius: 16px; /* Bordes suaves redondeados, no un círculo perfecto */
+            width: 100px;
+            height: 110px;
+            border-radius: 16px;
             object-fit: cover;
-            object-position: top center; /* Enfoca la parte superior (la cara) */
+            object-position: top center;
             border: 2px solid var(--accent);
             margin-bottom: 15px;
             background: #0a1727;
@@ -92,7 +89,6 @@
             line-height: 1.4;
         }
 
-        /* Responsive */
         @media (max-width: 900px) {
             .about-content { grid-template-columns: 1fr; gap: 40px; }
             .hero-page { padding: 120px 0 40px; }
@@ -102,7 +98,6 @@
 </head>
 <body>
 
-    <!-- ===== NAV ===== -->
     <nav class="nav shell" id="nav">
         <a href="index.html" class="brand">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
@@ -126,58 +121,43 @@
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
 
-    <!-- ===== CONTENIDO ===== -->
     <section class="hero-page shell reveal">
-        <span class="kicker">Nuestra Historia</span>
-        <h1>Una marca creada para <br><span class="text-gradient">acercar personas.</span></h1>
+        <span class="kicker" id="about-kicker">Nuestra Historia</span>
+        <h1 id="about-title">Una marca creada para <br><span class="text-gradient">acercar personas.</span></h1>
     </section>
 
     <section class="shell reveal">
         <div class="about-content">
-            
-            <!-- Texto de la Izquierda -->
             <div class="about-text">
-                <h2>Más que una agencia de viajes, un puente hacia tu familia.</h2>
-                <p>En GÉNESIS GLOBAL creemos firmemente que la distancia geográfica nunca debe ser más fuerte que los lazos familiares. Nacimos con la misión de facilitar los reencuentros, especialmente para aquellos que necesitan viajar entre Cuba, Brasil, Guyana y otras regiones.</p>
-                <p>Nuestra tecnología y nuestro equipo humano trabajan de la mano para ofrecerte un proceso transparente, seguro y lleno de empatía. No solo gestionamos vuelos y documentos; gestionamos tranquilidad para que tu único pensamiento sea el abrazo que te espera al llegar.</p>
+                <h2 id="about-subtitle">Más que una agencia de viajes, un puente hacia tu familia.</h2>
+                <p id="about-p1">En GÉNESIS GLOBAL creemos firmemente que la distancia geográfica nunca debe ser más fuerte que los lazos familiares. Nacimos con la misión de facilitar los reencuentros, especialmente para aquellos que necesitan viajar entre Cuba, Brasil, Guyana y otras regiones.</p>
+                <p id="about-p2">Nuestra tecnología y nuestro equipo humano trabajan de la mano para ofrecerte un proceso transparente, seguro y lleno de empatía. No solo gestionamos vuelos y documentos; gestionamos tranquilidad para que tu único pensamiento sea el abrazo que te espera al llegar.</p>
             </div>
-
-            <!-- Fotos del Equipo a la Derecha -->
             <div class="team-grid">
-                
-                <!-- Miembro 1 -->
                 <div class="team-card">
                     <img src="equipo-1.png" alt="Jamsle Porcena" loading="lazy">
                     <h4>Jamsle Porcena</h4>
-                    <p>Tecnología &<br>Developer</p>
+                    <p id="role-jamsle">Tecnología &<br>Developer</p>
                 </div>
-
-                <!-- Miembro 2 -->
                 <div class="team-card">
                     <img src="equipo-2.png" alt="Arlen Arletis" loading="lazy">
                     <h4>Arlen Arletis</h4>
-                    <p>Marketing &<br>Redes Sociales</p>
+                    <p id="role-arlen">Marketing &<br>Redes Sociales</p>
                 </div>
-
-                <!-- Miembro 3 -->
                 <div class="team-card">
                     <img src="equipo-3.jpg" alt="Antonio" loading="lazy">
                     <h4>Antonio</h4>
-                    <p>Administrador</p>
+                    <p id="role-antonio">Administrador</p>
                 </div>
-
-                <!-- Miembro 4 -->
                 <div class="team-card">
                     <img src="equipo-4.jpeg" alt="Alber" loading="lazy">
                     <h4>Alber</h4>
-                    <p>Dirección &<br>Estrategia CEO</p>
+                    <p id="role-alber">Dirección &<br>Estrategia CEO</p>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="shell footer-grid">
             <div>
@@ -192,9 +172,9 @@
             </div>
             <div>
                 <h4>Empresa</h4>
-                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Nosotros</a>
-                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Servicios</a>
-                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">FAQ</a>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
             </div>
             <div>
                 <h4>Contacto Directo</h4>
@@ -216,12 +196,54 @@
         </div>
     </footer>
 
+    <script src="i18n.js"></script>
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        const pageTranslations = {
+            es: {
+                kicker: "Nuestra Historia", title: 'Una marca creada para <br><span class="text-gradient">acercar personas.</span>',
+                subtitle: "Más que una agencia de viajes, un puente hacia tu familia.",
+                p1: "En GÉNESIS GLOBAL creemos firmemente que la distancia geográfica nunca debe ser más fuerte que los lazos familiares. Nacimos con la misión de facilitar los reencuentros, especialmente para aquellos que necesitan viajar entre Cuba, Brasil, Guyana y otras regiones.",
+                p2: "Nuestra tecnología y nuestro equipo humano trabajan de la mano para ofrecerte un proceso transparente, seguro y lleno de empatía. No solo gestionamos vuelos y documentos; gestionamos tranquilidad para que tu único pensamiento sea el abrazo que te espera al llegar.",
+                roleJamsle: "Tecnología &<br>Developer", roleArlen: "Marketing &<br>Redes Sociales", roleAntonio: "Administrador", roleAlber: "Dirección &<br>Estrategia CEO"
+            },
+            en: {
+                kicker: "Our Story", title: 'A brand created to <br><span class="text-gradient">bring people closer.</span>',
+                subtitle: "More than a travel agency, a bridge to your family.",
+                p1: "At GÉNESIS GLOBAL we firmly believe that geographic distance should never be stronger than family ties. We were born with the mission of facilitating reunions, especially for those who need to travel between Cuba, Brazil, Guyana and other regions.",
+                p2: "Our technology and our human team work hand in hand to offer you a transparent, safe and empathetic process. We don't just manage flights and documents; we manage peace of mind so that your only thought is the hug that awaits you upon arrival.",
+                roleJamsle: "Technology &<br>Developer", roleArlen: "Marketing &<br>Social Media", roleAntonio: "Administrator", roleAlber: "Management &<br>CEO Strategy"
+            },
+            pt: {
+                kicker: "Nossa História", title: 'Uma marca criada para <br><span class="text-gradient">aproximar pessoas.</span>',
+                subtitle: "Mais que uma agência de viagens, uma ponte para sua família.",
+                p1: "Na GÉNESIS GLOBAL acreditamos firmemente que a distância geográfica nunca deve ser mais forte que os laços familiares. Nascemos com a missão de facilitar os reencontros, especialmente para aqueles que precisam viajar entre Cuba, Brasil, Guiana e outras regiões.",
+                p2: "Nossa tecnologia e nossa equipe humana trabalham de mãos dadas para oferecer a você um processo transparente, seguro e cheio de empatia. Não apenas gerenciamos voos e documentos; gerenciamos tranquilidade para que seu único pensamento seja o abraço que o espera ao chegar.",
+                roleJamsle: "Tecnologia &<br>Developer", roleArlen: "Marketing &<br>Redes Sociais", roleAntonio: "Administrador", roleAlber: "Direção &<br>Estratégia CEO"
+            }
+        };
+
+        function applyPageTranslation(lang) {
+            const t = pageTranslations[lang] || pageTranslations.es;
+            document.getElementById('about-kicker').textContent = t.kicker;
+            document.getElementById('about-title').innerHTML = t.title;
+            document.getElementById('about-subtitle').textContent = t.subtitle;
+            document.getElementById('about-p1').textContent = t.p1;
+            document.getElementById('about-p2').textContent = t.p2;
+            document.getElementById('role-jamsle').innerHTML = t.roleJamsle;
+            document.getElementById('role-arlen').innerHTML = t.roleArlen;
+            document.getElementById('role-antonio').innerHTML = t.roleAntonio;
+            document.getElementById('role-alber').innerHTML = t.roleAlber;
+        }
+
+        const langObserver = new MutationObserver(() => applyPageTranslation(document.documentElement.lang || 'es'));
+        langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+        document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
     </script>
 </body>
 </html>
