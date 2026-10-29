@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Nosotros | GÉNESIS GLOBAL</title>
-    <meta name="description" content="Conoce la historia y la misión de GÉNESIS GLOBAL.">
+    <meta name="description" content="Conoce la historia y el equipo detrás de GÉNESIS GLOBAL.">
     
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -27,32 +27,74 @@
         
         .about-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr; /* Texto a la izq, Equipo a la der */
             gap: 60px;
             align-items: center;
             padding-bottom: 100px;
         }
+        
         .about-text h2 { font-size: 32px; margin-bottom: 20px; }
         .about-text p { color: var(--text-soft); font-size: 16px; line-height: 1.8; margin-bottom: 20px; }
-        
-        .about-visual {
+
+        /* ===== ESTILOS DEL EQUIPO ===== */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columnas de tarjetas */
+            gap: 20px;
+            width: 100%;
+        }
+
+        .team-card {
             background: var(--glass);
             border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 50px;
+            border-radius: 20px;
+            padding: 25px 15px;
             text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
-        .about-visual img { width: 120px; height: 120px; border-radius: 50%; margin-bottom: 20px; border: 2px solid var(--accent); }
-        .about-visual h3 { font-size: 24px; margin-bottom: 10px; }
-        .about-visual p { color: var(--accent); font-style: italic; }
 
+        .team-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 230, 196, 0.4);
+            box-shadow: 0 10px 30px rgba(102, 230, 196, 0.05);
+        }
+
+        .team-card img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            margin-bottom: 15px;
+            background: #0a1727;
+        }
+
+        .team-card h4 {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 4px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+        }
+
+        .team-card p {
+            font-size: 11px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        /* Responsive */
         @media (max-width: 900px) {
             .about-content { grid-template-columns: 1fr; gap: 40px; }
             .hero-page { padding: 120px 0 40px; }
+            .team-grid { max-width: 500px; margin: 0 auto; }
         }
     </style>
 </head>
@@ -90,15 +132,45 @@
 
     <section class="shell reveal">
         <div class="about-content">
+            
+            <!-- Texto de la Izquierda -->
             <div class="about-text">
                 <h2>Más que una agencia de viajes, un puente hacia tu familia.</h2>
                 <p>En GÉNESIS GLOBAL creemos firmemente que la distancia geográfica nunca debe ser más fuerte que los lazos familiares. Nacimos con la misión de facilitar los reencuentros, especialmente para aquellos que necesitan viajar entre Cuba, Brasil, Guyana y otras regiones.</p>
                 <p>Nuestra tecnología y nuestro equipo humano trabajan de la mano para ofrecerte un proceso transparente, seguro y lleno de empatía. No solo gestionamos vuelos y documentos; gestionamos tranquilidad para que tu único pensamiento sea el abrazo que te espera al llegar.</p>
             </div>
-            <div class="about-visual">
-                <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
-                <h3>GÉNESIS GLOBAL</h3>
-                <p>"Donde comienzan nuevas oportunidades."</p>
+
+            <!-- Fotos del Equipo a la Derecha -->
+            <div class="team-grid">
+                
+                <!-- Miembro 1 -->
+                <div class="team-card">
+                    <img src="equipo-1.png" alt="Jamsle Porcena">
+                    <h4>Jamsle Porcena</h4>
+                    <p>Tecnología &<br>Developer</p>
+                </div>
+
+                <!-- Miembro 2 -->
+                <div class="team-card">
+                    <img src="equipo-2.png" alt="Arlen Arletis">
+                    <h4>Arlen Arletis</h4>
+                    <p>Marketing &<br>Redes Sociales</p>
+                </div>
+
+                <!-- Miembro 3 -->
+                <div class="team-card">
+                    <img src="equipo-3.jpg" alt="Antonio">
+                    <h4>Antonio</h4>
+                    <p>Administrador</p>
+                </div>
+
+                <!-- Miembro 4 -->
+                <div class="team-card">
+                    <img src="equipo-4.jpeg" alt="Alber">
+                    <h4>Alber</h4>
+                    <p>Dirección &<br>Estrategia CEO</p>
+                </div>
+
             </div>
         </div>
     </section>
