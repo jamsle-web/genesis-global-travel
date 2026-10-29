@@ -20,6 +20,10 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     
+    <!-- SUPABASE SCRIPTS (Añadidos aquí para que carguen antes del catálogo) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    
     <style>
         .hero-page { padding: 140px 0 60px; text-align: center; }
         .hero-page h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
@@ -106,52 +110,19 @@
         </div>
     </section>
 
+    <!-- ===== SECCIÓN DE PRODUCTOS CONECTADA A SUPABASE ===== -->
     <section id="productos" class="products-section shell reveal">
         <div class="section-header">
             <div>
                 <span class="kicker">Catálogo</span>
                 <h2>Productos <span class="text-gradient">Destacados</span></h2>
             </div>
-            <p style="color: var(--text-soft);">Precios de ejemplo. Consulta disponibilidad por WhatsApp.</p>
+            <p style="color: var(--text-soft);">Precios reales. Consulta disponibilidad por WhatsApp.</p>
         </div>
 
-        <div class="product-grid">
-            <article class="product-card">
-                <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=400&auto=format&fit=crop" alt="Saco de Arroz" class="product-image" loading="lazy">
-                <div class="product-info">
-                    <h4>Arroz (5 kg)</h4>
-                    <span class="price">$8.50 USD</span>
-                    <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Arroz%20de%205kg" class="btn-buy" target="_blank">Comprar</a>
-                </div>
-            </article>
-            <article class="product-card">
-                <img src="https://images.unsplash.com/photo-1620707005438-6b8c3b3b7d8d?q=80&w=400&auto=format&fit=crop" 
-     alt="Aceite de Cocina" 
-     class="product-image"
-     loading="lazy"
-     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?q=80&w=400&auto=format&fit=crop';">
-                <div class="product-info">
-                    <h4>Aceite (1L)</h4>
-                    <span class="price">$4.20 USD</span>
-                    <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Aceite%20de%201L" class="btn-buy" target="_blank">Comprar</a>
-                </div>
-            </article>
-            <article class="product-card">
-                <img src="https://images.unsplash.com/photo-1594385208974-2e75f8d7bb48?q=80&w=400&auto=format&fit=crop" alt="Frijoles Negros" class="product-image" loading="lazy">
-                <div class="product-info">
-                    <h4>Frijoles Negros (1 kg)</h4>
-                    <span class="price">$3.80 USD</span>
-                    <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Frijoles%20Negros" class="btn-buy" target="_blank">Comprar</a>
-                </div>
-            </article>
-            <article class="product-card">
-                <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=400&auto=format&fit=crop" alt="Leche en Polvo" class="product-image" loading="lazy">
-                <div class="product-info">
-                    <h4>Leche en Polvo (1 kg)</h4>
-                    <span class="price">$12.00 USD</span>
-                    <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20Leche%20en%20Polvo" class="btn-buy" target="_blank">Comprar</a>
-                </div>
-            </article>
+        <div class="product-grid" id="product-grid">
+            <!-- Los productos se cargarán aquí automáticamente desde Supabase -->
+            <p style="color: var(--text-soft); text-align: center; width: 100%; grid-column: 1/-1;">Cargando productos...</p>
         </div>
     </section>
 
@@ -196,6 +167,47 @@
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- Script para cargar productos desde Supabase -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('product-grid');
+            if (!grid) return;
+
+            try {
+                // Hacemos la consulta a la tabla 'products'
+                const { data: products, error } = await window.genesisSupabase
+                    .from('products')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (products && products.length > 0) {
+                    grid.innerHTML = products.map(p => `
+                        <article class="product-card">
+                            <img src="${p.image_url || 'https://via.placeholder.com/400'}" alt="${p.name}" class="product-image" loading="lazy">
+                            <div class="product-info">
+                                <h4>${p.name}</h4>
+                                <!-- Mostramos ambos precios (USD y BRL) -->
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
+                                    <span class="price" style="margin:0;">$${parseFloat(p.price_usd || 0).toFixed(2)} USD</span>
+                                    <span style="font-size: 14px; color: var(--text-soft);">R$ ${parseFloat(p.price_brl || 0).toFixed(2)}</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-soft); margin-bottom: 15px;">${p.description || ''}</p>
+                                <a href="https://wa.me/5359508420?text=Hola,%20quiero%20comprar%20${encodeURIComponent(p.name)}" class="btn-buy" target="_blank">Comprar</a>
+                            </div>
+                        </article>
+                    `).join('');
+                } else {
+                    grid.innerHTML = '<p style="color: var(--text-soft); text-align: center; width: 100%; grid-column: 1/-1;">No hay productos disponibles por el momento.</p>';
+                }
+            } catch (error) {
+                console.error("Error cargando productos:", error);
+                grid.innerHTML = '<p style="color: #ff6b6b; text-align: center; width: 100%; grid-column: 1/-1;">Error al cargar los productos.</p>';
+            }
+        });
     </script>
 </body>
 </html>
