@@ -224,7 +224,6 @@
         </div>
 
     </div>
-
     <script>
         // --- 1. PROTECCIÓN DE RUTA ---
         window.genesisSupabase.auth.getSession().then(({ data: { session } }) => {
@@ -258,7 +257,7 @@
             document.getElementById('pageTitle').textContent = titles[tabName];
         }
 
-        // --- 4. CARGAR DATOS (CORREGIDO) ---
+        // --- 4. CARGAR DATOS (CON DIAGNÓSTICO) ---
         async function loadDashboardData() {
             const supabase = window.genesisSupabase;
 
@@ -271,16 +270,21 @@
             document.getElementById('statRequests').textContent = requests || 0;
             document.getElementById('statSubs').textContent = subs || 0;
 
-            // B) Cargar Solicitudes (Asegúrate de que estos nombres coincidan con tu base de datos)
+            // B) Cargar Solicitudes (Recientes)
             const { data: recentReq } = await supabase.from('travel_requests').select('*').order('created_at', { ascending: false }).limit(5);
             
-            console.log("Datos de Supabase:", recentReq); // <-- Abre la consola para ver los nombres reales de las columnas
+            // --- ESTO ES PARA QUE VEAS LOS DATOS EXACTOS EN LA CONSOLA ---
+            if(recentReq && recentReq.length > 0) {
+                console.log("Estructura exacta de la primera solicitud:", recentReq[0]); 
+            }
+            // -------------------------------------------------------------
 
             const tbodyRecent = document.querySelector('#tableRecentRequests tbody');
             if (recentReq && recentReq.length > 0) {
                 tbodyRecent.innerHTML = recentReq.map(r => `
                     <tr>
                         <td>${new Date(r.created_at).toLocaleDateString()}</td>
+                        <!-- Aquí intentamos leer todas las variantes posibles -->
                         <td>${r.p_nombre || r.nombre || 'Sin nombre'}</td>
                         <td>${r.p_origen || r.origen || '?'} → ${r.p_destino || r.destino || '?'}</td>
                         <td><span class="badge badge-success">Recibida</span></td>
