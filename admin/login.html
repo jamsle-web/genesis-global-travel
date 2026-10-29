@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Acceso Restringido | GÉNESIS GLOBAL</title>
+    <!-- Subimos un nivel para buscar el favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Subimos un nivel para buscar el cliente de Supabase -->
+    <script src="../supabase-client.js"></script>
+
+    <style>
+        :root {
+            --bg: #06101d;
+            --accent: #66e6c4;
+            --text: #f3f8ff;
+            --text-soft: #9db0c7;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: radial-gradient(circle at 50% 0%, rgba(102, 230, 196, 0.05), transparent 50%);
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .login-card h1 { font-family: 'Manrope', sans-serif; font-size: 26px; margin-bottom: 10px; }
+        .login-card p { color: var(--text-soft); font-size: 14px; margin-bottom: 35px; }
+        
+        .form-group { text-align: left; margin-bottom: 20px; }
+        .form-group label {
+            display: block; font-size: 11px; font-weight: 700; color: var(--text-soft);
+            margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .form-group input {
+            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px; color: var(--text); font-family: inherit;
+            outline: none; box-sizing: border-box; font-size: 15px; transition: all 0.3s;
+        }
+        .form-group input:focus { border-color: var(--accent); background: rgba(102, 230, 196, 0.05); }
+        
+        button {
+            width: 100%; background: var(--accent); color: var(--bg); border: 0;
+            padding: 16px; border-radius: 12px; font-weight: 800; font-size: 16px;
+            cursor: pointer; margin-top: 15px; transition: transform 0.2s; font-family: 'Manrope', sans-serif;
+        }
+        button:hover { transform: scale(1.02); }
+        #error-msg { color: #ff6b6b; font-size: 13px; margin-top: 15px; display: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h1>GÉNESIS GLOBAL</h1>
+        <p>Acceso exclusivo para administradores</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="email" required placeholder="admin@genesistriplea.com">
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" id="loginBtn">Iniciar Sesión</button>
+            <div id="error-msg"></div>
+        </form>
+    </div>
+
+    <script>
+        // Si ya está logueado, pasar directo al dashboard
+        window.genesisSupabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                window.location.href = "dashboard.html";
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            const errorMsg = document.getElementById('error-msg');
+
+            btn.textContent = "Verificando...";
+            btn.disabled = true;
+            errorMsg.style.display = 'none';
+
+            try {
+                const { data, error } = await window.genesisSupabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) throw error;
+
+                // Al conectar, te envía a tu dashboard (mismo nivel)
+                window.location.href = "dashboard.html";
+
+            } catch (error) {
+                errorMsg.textContent = "❌ " + (error.message === "Invalid login credentials" ? "Correo o contraseña incorrectos." : error.message);
+                errorMsg.style.display = 'block';
+            } finally {
+                btn.textContent = "Iniciar Sesión";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
