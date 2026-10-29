@@ -3,13 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard | GÉNESIS GLOBAL</title>
+    <title>Panel de Control | GÉNESIS GLOBAL</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
     
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Ruta relativa corregida -->
     <script src="../supabase-client.js"></script>
 
     <style>
@@ -19,7 +18,8 @@
             --accent: #66e6c4;
             --text: #f3f8ff;
             --text-soft: #9db0c7;
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.08);
+            --card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
         }
         body {
             background: var(--bg);
@@ -39,174 +39,188 @@
             display: flex;
             flex-direction: column;
         }
-        .sidebar h2 {
-            font-family: 'Manrope', sans-serif;
-            font-size: 18px;
-            margin-bottom: 40px;
-            color: var(--accent);
-            text-align: center;
+        .sidebar-brand {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 40px; padding-left: 10px;
         }
-        .sidebar a {
-            display: block;
-            color: var(--text-soft);
-            text-decoration: none;
-            padding: 14px 16px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: 0.3s;
-            cursor: pointer;
+        .sidebar-brand img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--accent); }
+        .sidebar-brand span { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: 0.05em; }
+        
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            color: var(--text-soft); text-decoration: none; padding: 14px 16px;
+            border-radius: 12px; margin-bottom: 6px; font-size: 14px; font-weight: 600;
+            transition: 0.3s; cursor: pointer;
         }
-        .sidebar a:hover, .sidebar a.active {
-            background: rgba(102, 230, 196, 0.1);
-            color: var(--accent);
-        }
-        .logout-btn {
-            margin-top: auto;
-            background: rgba(255, 107, 107, 0.1);
-            color: #ff6b6b;
-        }
-        .logout-btn:hover {
-            background: #ff6b6b;
-            color: white;
-        }
+        .nav-item svg { width: 20px; height: 20px; stroke-width: 2; }
+        .nav-item:hover, .nav-item.active { background: rgba(102, 230, 196, 0.08); color: var(--accent); }
+        .nav-item.active svg { stroke: var(--accent); }
+
+        .logout-btn { margin-top: auto; color: #ff6b6b; background: rgba(255, 107, 107, 0.05); }
+        .logout-btn:hover { background: #ff6b6b; color: white; }
+        .logout-btn svg { stroke: currentColor; }
 
         /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        
+        /* Topbar */
+        .topbar {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
+        .topbar h1 { font-family: 'Manrope', sans-serif; font-size: 28px; margin: 0; }
+        .user-profile {
+            display: flex; align-items: center; gap: 12px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 8px 16px; border-radius: 999px;
         }
-        .header h1 { font-family: 'Manrope', sans-serif; font-size: 28px; margin: 0; }
-        .user-email { color: var(--text-soft); font-size: 14px; }
+        .user-profile img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--accent); }
+        .user-info { display: flex; flex-direction: column; }
+        .user-info span { font-size: 13px; font-weight: 700; color: var(--text); }
+        .user-info small { font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
 
         /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
         .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 25px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 20px; padding: 30px; position: relative; overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
         }
-        .stat-card h3 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            color: var(--text-soft);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .stat-card:hover { transform: translateY(-4px); border-color: rgba(102, 230, 196, 0.3); }
+        .stat-card::before {
+            content: ""; position: absolute; top: 0; right: 0; width: 100px; height: 100px;
+            background: radial-gradient(circle, rgba(102, 230, 196, 0.1), transparent 70%);
+            border-radius: 50%; transform: translate(30%, -30%);
         }
-        .stat-card .number {
-            font-size: 36px;
-            font-family: 'Manrope', sans-serif;
-            font-weight: 800;
-            color: var(--accent);
-        }
+        .stat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .stat-header svg { width: 20px; height: 20px; stroke: var(--accent); }
+        .stat-header h3 { margin: 0; font-size: 13px; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+        .stat-number { font-family: 'Manrope', sans-serif; font-size: 42px; font-weight: 800; color: var(--text); line-height: 1; }
 
-        /* Tables */
-        .section-title {
-            font-family: 'Manrope', sans-serif;
-            font-size: 20px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
+        /* Table Section */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .section-header h2 { font-family: 'Manrope', sans-serif; font-size: 20px; margin: 0; }
+        .section-header a { color: var(--accent); font-size: 13px; text-decoration: none; font-weight: 600; }
+        
+        .table-container {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
         }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .data-table th, .data-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
-        }
-        .data-table th {
-            background: rgba(0, 0, 0, 0.2);
-            color: var(--text-soft);
-            font-weight: 600;
-        }
-        .data-table tr:hover { background: rgba(255, 255, 255, 0.05); }
+        .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .data-table th { padding: 16px 24px; font-size: 12px; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.2); }
+        .data-table td { padding: 16px 24px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--text); }
+        .data-table tr:last-child td { border-bottom: 0; }
+        .data-table tr:hover { background: rgba(255, 255, 255, 0.02); }
+        
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+        .badge-success { background: rgba(102, 230, 196, 0.1); color: var(--accent); }
+        .badge-warning { background: rgba(255, 193, 7, 0.1); color: #ffc107; }
+        
+        #tab-content { display: none; }
     </style>
 </head>
 <body>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2>GÉNESIS GLOBAL<br><small style="font-size:10px;color:var(--text-soft);">Admin Panel</small></h2>
-        <a class="active" onclick="showTab('dashboard')">📊 Dashboard</a>
-        <a onclick="showTab('mensajes')">✉️ Mensajes / Solicitudes</a>
-        <a onclick="showTab('newsletter')">👥 Suscriptores</a>
-        <a onclick="showTab('contenido')">📝 Editar Contenido</a>
-        <a class="logout-btn" onclick="logout()">🚪 Cerrar Sesión</a>
+        <div class="sidebar-brand">
+            <img src="../favicon-32x32.png" alt="Logo">
+            <span>GÉNESIS GLOBAL</span>
+        </div>
+        
+        <a class="nav-item active" onclick="showTab('dashboard', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            Dashboard
+        </a>
+        <a class="nav-item" onclick="showTab('mensajes', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            Mensajes
+        </a>
+        <a class="nav-item" onclick="showTab('newsletter', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            Suscriptores
+        </a>
+        
+        <a class="nav-item logout-btn" onclick="logout()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Cerrar Sesión
+        </a>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="header">
-            <h1 id="pageTitle">Dashboard</h1>
-            <div class="user-email" id="userEmail">Cargando...</div>
+        
+        <!-- Topbar -->
+        <div class="topbar">
+            <h1 id="pageTitle">Resumen General</h1>
+            <div class="user-profile">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=66e6c4&color=07111f" alt="Admin">
+                <div class="user-info">
+                    <span id="userEmailDisplay">Cargando...</span>
+                    <small>Administrador</small>
+                </div>
+            </div>
         </div>
 
         <!-- SECCIÓN: DASHBOARD -->
         <div id="tab-dashboard">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Visitas Totales</h3>
-                    <div class="number" id="statVisits">...</div>
+                    <div class="stat-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <h3>Visitas Totales</h3>
+                    </div>
+                    <div class="stat-number" id="statVisits">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Solicitudes de Viaje</h3>
-                    <div class="number" id="statRequests">...</div>
+                    <div class="stat-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <h3>Solicitudes</h3>
+                    </div>
+                    <div class="stat-number" id="statRequests">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Suscriptores</h3>
-                    <div class="number" id="statSubs">...</div>
+                    <div class="stat-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <h3>Suscriptores</h3>
+                    </div>
+                    <div class="stat-number" id="statSubs">0</div>
                 </div>
             </div>
-            <h2 class="section-title">Últimas Solicitudes</h2>
-            <table class="data-table" id="tableRecentRequests">
-                <thead><tr><th>Fecha</th><th>Nombre</th><th>Origen</th><th>Destino</th></tr></thead>
-                <tbody><tr><td colspan="4">Cargando datos...</td></tr></tbody>
-            </table>
+
+            <div class="section-header">
+                <h2>Últimas Solicitudes de Viaje</h2>
+                <a onclick="showTab('mensajes', document.querySelectorAll('.nav-item')[1])">Ver todas →</a>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="tableRecentRequests">
+                    <thead><tr><th>Fecha</th><th>Cliente</th><th>Ruta</th><th>Estado</th></tr></thead>
+                    <tbody><tr><td colspan="4" style="text-align:center;">Cargando datos...</td></tr></tbody>
+                </table>
+            </div>
         </div>
 
         <!-- SECCIÓN: MENSAJES -->
         <div id="tab-mensajes" style="display: none;">
-            <h2 class="section-title">Todas las Solicitudes de Viaje</h2>
-            <table class="data-table" id="tableAllRequests">
-                <thead><tr><th>Fecha</th><th>Nombre</th><th>WhatsApp</th><th>Origen</th><th>Destino</th></tr></thead>
-                <tbody><tr><td colspan="5">Cargando datos...</td></tr></tbody>
-            </table>
+            <div class="section-header">
+                <h2>Todas las Solicitudes</h2>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="tableAllRequests">
+                    <thead><tr><th>Fecha</th><th>Cliente</th><th>Contacto</th><th>Ruta</th><th>Estado</th></tr></thead>
+                    <tbody><tr><td colspan="5" style="text-align:center;">Cargando datos...</td></tr></tbody>
+                </table>
+            </div>
         </div>
 
         <!-- SECCIÓN: NEWSLETTER -->
         <div id="tab-newsletter" style="display: none;">
-            <h2 class="section-title">Lista de Suscriptores</h2>
-            <table class="data-table" id="tableSubs">
-                <thead><tr><th>Fecha</th><th>Nombre</th><th>Email</th><th>Intereses</th></tr></thead>
-                <tbody><tr><td colspan="4">Cargando datos...</td></tr></tbody>
-            </table>
-        </div>
-
-        <!-- SECCIÓN: EDITAR CONTENIDO -->
-        <div id="tab-contenido" style="display: none;">
-            <h2 class="section-title">Editor de Textos (Próximamente)</h2>
-            <p style="color: var(--text-soft);">Aquí podrás editar los textos de las secciones del sitio web de forma visual.</p>
+            <div class="section-header">
+                <h2>Base de Datos de Suscriptores</h2>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="tableSubs">
+                    <thead><tr><th>Fecha</th><th>Nombre</th><th>Email</th><th>Intereses</th></tr></thead>
+                    <tbody><tr><td colspan="4" style="text-align:center;">Cargando datos...</td></tr></tbody>
+                </table>
+            </div>
         </div>
 
     </div>
@@ -215,9 +229,9 @@
         // --- 1. PROTECCIÓN DE RUTA ---
         window.genesisSupabase.auth.getSession().then(({ data: { session } }) => {
             if (!session) {
-                window.location.href = "login.html"; // Te expulsa al login de la misma carpeta
+                window.location.href = "login.html";
             } else {
-                document.getElementById('userEmail').textContent = session.user.email;
+                document.getElementById('userEmailDisplay').textContent = session.user.email;
                 loadDashboardData();
             }
         });
@@ -233,21 +247,22 @@
         }
 
         // --- 3. NAVEGACIÓN ---
-        function showTab(tabName) {
-            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-            event.target.classList.add('active');
+        function showTab(tabName, element) {
+            document.querySelectorAll('.nav-item').forEach(a => a.classList.remove('active'));
+            if (element) element.classList.add('active');
             
             document.querySelectorAll('[id^="tab-"]').forEach(div => div.style.display = 'none');
             document.getElementById('tab-' + tabName).style.display = 'block';
 
-            const titles = { 'dashboard': 'Dashboard', 'mensajes': 'Mensajes', 'newsletter': 'Suscriptores', 'contenido': 'Editar Contenido' };
+            const titles = { 'dashboard': 'Resumen General', 'mensajes': 'Mensajes y Solicitudes', 'newsletter': 'Suscriptores' };
             document.getElementById('pageTitle').textContent = titles[tabName];
         }
 
-        // --- 4. CARGAR DATOS ---
+        // --- 4. CARGAR DATOS (CORREGIDO) ---
         async function loadDashboardData() {
             const supabase = window.genesisSupabase;
 
+            // A) Contadores
             const { count: visits } = await supabase.from('site_page_views').select('*', { count: 'exact', head: true });
             const { count: requests } = await supabase.from('travel_requests').select('*', { count: 'exact', head: true });
             const { count: subs } = await supabase.from('newsletter_subscribers').select('*', { count: 'exact', head: true });
@@ -256,37 +271,43 @@
             document.getElementById('statRequests').textContent = requests || 0;
             document.getElementById('statSubs').textContent = subs || 0;
 
+            // B) Cargar Solicitudes (Asegúrate de que estos nombres coincidan con tu base de datos)
             const { data: recentReq } = await supabase.from('travel_requests').select('*').order('created_at', { ascending: false }).limit(5);
+            
+            console.log("Datos de Supabase:", recentReq); // <-- Abre la consola para ver los nombres reales de las columnas
+
             const tbodyRecent = document.querySelector('#tableRecentRequests tbody');
             if (recentReq && recentReq.length > 0) {
                 tbodyRecent.innerHTML = recentReq.map(r => `
                     <tr>
                         <td>${new Date(r.created_at).toLocaleDateString()}</td>
-                        <td>${r.nombre}</td>
-                        <td>${r.origen}</td>
-                        <td>${r.destino}</td>
+                        <td>${r.p_nombre || r.nombre || 'Sin nombre'}</td>
+                        <td>${r.p_origen || r.origen || '?'} → ${r.p_destino || r.destino || '?'}</td>
+                        <td><span class="badge badge-success">Recibida</span></td>
                     </tr>
                 `).join('');
             } else {
-                tbodyRecent.innerHTML = '<tr><td colspan="4">No hay solicitudes aún.</td></tr>';
+                tbodyRecent.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay solicitudes aún.</td></tr>';
             }
 
+            // C) Cargar Todas las Solicitudes (Mensajes)
             const { data: allReq } = await supabase.from('travel_requests').select('*').order('created_at', { ascending: false });
             const tbodyAll = document.querySelector('#tableAllRequests tbody');
             if (allReq && allReq.length > 0) {
                 tbodyAll.innerHTML = allReq.map(r => `
                     <tr>
                         <td>${new Date(r.created_at).toLocaleDateString()}</td>
-                        <td>${r.nombre}</td>
-                        <td><a href="https://wa.me/${r.whatsapp.replace(/\D/g,'')}" target="_blank" style="color:var(--accent);">${r.whatsapp}</a></td>
-                        <td>${r.origen}</td>
-                        <td>${r.destino}</td>
+                        <td>${r.p_nombre || r.nombre || 'Sin nombre'}</td>
+                        <td><a href="https://wa.me/${(r.p_whatsapp || r.whatsapp || '').replace(/\D/g,'')}" target="_blank" style="color:var(--accent);">${r.p_whatsapp || r.whatsapp || '-'}</a></td>
+                        <td>${r.p_origen || r.origen || '?'} → ${r.p_destino || r.destino || '?'}</td>
+                        <td><span class="badge badge-success">Recibida</span></td>
                     </tr>
                 `).join('');
             } else {
-                tbodyAll.innerHTML = '<tr><td colspan="5">No hay solicitudes.</td></tr>';
+                tbodyAll.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay solicitudes.</td></tr>';
             }
 
+            // D) Cargar Suscriptores
             const { data: subsData } = await supabase.from('newsletter_subscribers').select('*').order('created_at', { ascending: false });
             const tbodySubs = document.querySelector('#tableSubs tbody');
             if (subsData && subsData.length > 0) {
@@ -295,11 +316,11 @@
                         <td>${new Date(s.created_at).toLocaleDateString()}</td>
                         <td>${s.name || '-'}</td>
                         <td>${s.email}</td>
-                        <td>${s.interests || '-'}</td>
+                        <td><span class="badge badge-warning">${s.interests || 'Todos'}</span></td>
                     </tr>
                 `).join('');
             } else {
-                tbodySubs.innerHTML = '<tr><td colspan="4">No hay suscriptores.</td></tr>';
+                tbodySubs.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay suscriptores.</td></tr>';
             }
         }
     </script>
