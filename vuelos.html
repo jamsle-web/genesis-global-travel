@@ -151,37 +151,37 @@
     </nav>
 
     <section class="hero-flights shell reveal">
-        <span class="kicker">Vuelos</span>
-        <h1>Encuentra los mejores <span class="text-gradient">vuelos.</span></h1>
-        <p>Comparamos cientos de aerolíneas para que encuentres la ruta perfecta hacia tu familia.</p>
+        <span class="kicker" id="flights-kicker">Vuelos</span>
+        <h1 id="flights-title">Encuentra los mejores <span class="text-gradient">vuelos.</span></h1>
+        <p id="flights-desc">Comparamos cientos de aerolíneas para que encuentres la ruta perfecta hacia tu familia.</p>
     </section>
 
     <section class="shell reveal">
         <div class="search-box">
             <form class="search-form" id="flightSearchForm">
                 <div class="input-group">
-                    <label>Origen (Código IATA)</label>
+                    <label id="flights-label-origin">Origen (Código IATA)</label>
                     <input type="text" id="origin" placeholder="Ej: HAV, GRU, MIA" required maxlength="3" style="text-transform: uppercase;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
                 </div>
                 <div class="input-group">
-                    <label>Destino (Código IATA)</label>
+                    <label id="flights-label-dest">Destino (Código IATA)</label>
                     <input type="text" id="destination" placeholder="Ej: HAV, GRU, MIA" required maxlength="3" style="text-transform: uppercase;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
                 </div>
                 <div class="input-group">
-                    <label>Salida</label>
+                    <label id="flights-label-depart">Salida</label>
                     <input type="date" id="departDate" required>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                 </div>
                 <div class="input-group">
-                    <label>Regreso (Opc.)</label>
+                    <label id="flights-label-return">Regreso (Opc.)</label>
                     <input type="date" id="returnDate">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                 </div>
-                <button type="submit" class="primary">Buscar Vuelos</button>
+                <button type="submit" class="primary" id="flights-btn">Buscar Vuelos</button>
             </form>
-            <p style="font-size: 12px; color: var(--text-muted); margin-top: 15px; text-align: center;">Usa códigos de aeropuerto (ej. HAV para La Habana, GRU para São Paulo).</p>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 15px; text-align: center;" id="flights-hint">Usa códigos de aeropuerto (ej. HAV para La Habana, GRU para São Paulo).</p>
         </div>
     </section>
 
@@ -189,18 +189,18 @@
         <div class="features">
             <div class="feature-card">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                <h3>Precios Reales</h3>
-                <p>Conectamos con Skyscanner para mostrarte tarifas actualizadas de cientos de aerolíneas.</p>
+                <h3 id="flights-f1-title">Precios Reales</h3>
+                <p id="flights-f1-desc">Conectamos con Skyscanner para mostrarte tarifas actualizadas de cientos de aerolíneas.</p>
             </div>
             <div class="feature-card">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <h3>Búsqueda Segura</h3>
-                <p>Te redirigimos a la plataforma oficial para que realices tu reserva con total confianza.</p>
+                <h3 id="flights-f2-title">Búsqueda Segura</h3>
+                <p id="flights-f2-desc">Te redirigimos a la plataforma oficial para que realices tu reserva con total confianza.</p>
             </div>
             <div class="feature-card">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <h3>Atención Humana</h3>
-                <p>Si tienes dudas con tu vuelo, nuestro equipo en Cuba y Brasil está para ayudarte.</p>
+                <h3 id="flights-f3-title">Atención Humana</h3>
+                <p id="flights-f3-desc">Si tienes dudas con tu vuelo, nuestro equipo en Cuba y Brasil está para ayudarte.</p>
             </div>
         </div>
     </section>
@@ -240,31 +240,74 @@
         </div>
     </footer>
 
+    <script src="i18n.js"></script>
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
 
-    <!-- SCRIPT DEFINITIVO PARA LA DEMO DE ESTA NOCHE -->
-    <script>
+        const pageTranslations = {
+            es: {
+                kicker: "Vuelos", title: 'Encuentra los mejores <span class="text-gradient">vuelos.</span>', desc: "Comparamos cientos de aerolíneas para que encuentres la ruta perfecta hacia tu familia.",
+                labelOrigin: "Origen (Código IATA)", labelDest: "Destino (Código IATA)", labelDepart: "Salida", labelReturn: "Regreso (Opc.)", btn: "Buscar Vuelos", hint: "Usa códigos de aeropuerto (ej. HAV para La Habana, GRU para São Paulo).",
+                f1Title: "Precios Reales", f1Desc: "Conectamos con Skyscanner para mostrarte tarifas actualizadas de cientos de aerolíneas.",
+                f2Title: "Búsqueda Segura", f2Desc: "Te redirigimos a la plataforma oficial para que realices tu reserva con total confianza.",
+                f3Title: "Atención Humana", f3Desc: "Si tienes dudas con tu vuelo, nuestro equipo en Cuba y Brasil está para ayudarte."
+            },
+            en: {
+                kicker: "Flights", title: 'Find the best <span class="text-gradient">flights.</span>', desc: "We compare hundreds of airlines so you can find the perfect route to your family.",
+                labelOrigin: "Origin (IATA Code)", labelDest: "Destination (IATA Code)", labelDepart: "Departure", labelReturn: "Return (Opt.)", btn: "Search Flights", hint: "Use airport codes (e.g., HAV for Havana, GRU for São Paulo).",
+                f1Title: "Real Prices", f1Desc: "We connect with Skyscanner to show you updated fares from hundreds of airlines.",
+                f2Title: "Secure Search", f2Desc: "We redirect you to the official platform so you can make your reservation with total confidence.",
+                f3Title: "Human Support", f3Desc: "If you have questions about your flight, our team in Cuba and Brazil is here to help."
+            },
+            pt: {
+                kicker: "Voos", title: 'Encontre os melhores <span class="text-gradient">voos.</span>', desc: "Comparamos centenas de companhias aéreas para que você encontre a rota perfeita para sua família.",
+                labelOrigin: "Origem (Código IATA)", labelDest: "Destino (Código IATA)", labelDepart: "Partida", labelReturn: "Retorno (Opc.)", btn: "Buscar Voos", hint: "Use códigos de aeroporto (ex.: HAV para Havana, GRU para São Paulo).",
+                f1Title: "Preços Reais", f1Desc: "Conectamos com o Skyscanner para mostrar tarifas atualizadas de centenas de companhias aéreas.",
+                f2Title: "Busca Segura", f2Desc: "Redirecionamos você para a plataforma oficial para que faça sua reserva com total confiança.",
+                f3Title: "Atendimento Humano", f3Desc: "Se tiver dúvidas sobre seu voo, nossa equipe em Cuba e no Brasil está aqui para ajudar."
+            }
+        };
+
+        function applyPageTranslation(lang) {
+            const t = pageTranslations[lang] || pageTranslations.es;
+            document.getElementById('flights-kicker').textContent = t.kicker;
+            document.getElementById('flights-title').innerHTML = t.title;
+            document.getElementById('flights-desc').textContent = t.desc;
+            document.getElementById('flights-label-origin').textContent = t.labelOrigin;
+            document.getElementById('flights-label-dest').textContent = t.labelDest;
+            document.getElementById('flights-label-depart').textContent = t.labelDepart;
+            document.getElementById('flights-label-return').textContent = t.labelReturn;
+            document.getElementById('flights-btn').textContent = t.btn;
+            document.getElementById('flights-hint').textContent = t.hint;
+            document.getElementById('flights-f1-title').textContent = t.f1Title;
+            document.getElementById('flights-f1-desc').textContent = t.f1Desc;
+            document.getElementById('flights-f2-title').textContent = t.f2Title;
+            document.getElementById('flights-f2-desc').textContent = t.f2Desc;
+            document.getElementById('flights-f3-title').textContent = t.f3Title;
+            document.getElementById('flights-f3-desc').textContent = t.f3Desc;
+        }
+
+        const langObserver = new MutationObserver(() => applyPageTranslation(document.documentElement.lang || 'es'));
+        langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+        document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
+
+        // Lógica de búsqueda de vuelos
         document.getElementById('flightSearchForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const origin = document.getElementById('origin').value.trim().toUpperCase();
             const destination = document.getElementById('destination').value.trim().toUpperCase();
             const departDate = document.getElementById('departDate').value;
             const returnDate = document.getElementById('returnDate').value;
 
-            // Validar que sean códigos de 3 letras
             if (origin.length !== 3 || destination.length !== 3) {
-                alert("Por favor, usa códigos de aeropuerto de 3 letras (Ej: HAV para Cuba, GRU para Brasil, MIA para Miami).");
+                alert("Por favor, usa códigos de aeropuerto de 3 letras (Ej: HAV, GRU, MIA).");
                 return;
             }
 
-            // Formatear fecha a YYMMDD (Ej: 2026-11-25 -> 261125)
             const formatDate = (dateString) => {
                 if (!dateString) return '';
                 const parts = dateString.split('-');
@@ -274,14 +317,8 @@
             const dep = formatDate(departDate);
             const ret = formatDate(returnDate);
 
-            // URL estándar de Skyscanner que NO tiene bloqueo de captcha
             let skyscannerUrl = `https://www.skyscanner.net/transport/flights/${origin}/${destination}/${dep}/`;
-            
-            if (ret) {
-                skyscannerUrl += `${ret}/`;
-            }
-
-            // Abrir en nueva pestaña
+            if (ret) skyscannerUrl += `${ret}/`;
             window.open(skyscannerUrl, '_blank');
         });
     </script>
