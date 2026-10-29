@@ -76,7 +76,6 @@
             <a href="servicios.html">Servicios</a>
             <a href="como-funciona.html">Cómo funciona</a>
             <a href="nosotros.html">Nosotros</a>
-            <a href="faq.html">FAQ</a>
             <a href="otros-servicios.html">Otros Servicios</a>
         </div>
         <div class="nav-actions">
@@ -86,40 +85,40 @@
     </nav>
 
     <section class="help-section shell reveal">
-        <span class="kicker">Soporte</span>
-        <h1>¿Cómo podemos <span class="text-gradient">ayudarte?</span></h1>
-        <p>Encuentra respuestas rápidas o contacta directamente con nuestro equipo.</p>
+        <span class="kicker" id="help-kicker">Soporte</span>
+        <h1 id="help-title">¿Cómo podemos <span class="text-gradient">ayudarte?</span></h1>
+        <p id="help-desc">Encuentra respuestas rápidas o contacta directamente con nuestro equipo.</p>
 
         <div class="help-grid">
             <a href="faq.html" class="help-card">
                 <div class="icon-box">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                 </div>
-                <h3>Preguntas Frecuentes</h3>
-                <p>Respuestas a las dudas más comunes sobre viajes y servicios.</p>
+                <h3 id="help-card1-title">Preguntas Frecuentes</h3>
+                <p id="help-card1-desc">Respuestas a las dudas más comunes sobre viajes y servicios.</p>
             </a>
 
             <a href="como-funciona.html" class="help-card">
                 <div class="icon-box">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 </div>
-                <h3>Guía de Procesos</h3>
-                <p>Aprende paso a paso cómo planificamos tu viaje.</p>
+                <h3 id="help-card2-title">Guía de Procesos</h3>
+                <p id="help-card2-desc">Aprende paso a paso cómo planificamos tu viaje.</p>
             </a>
 
             <a href="https://wa.me/5359508420" target="_blank" class="help-card">
                 <div class="icon-box">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                 </div>
-                <h3>Contacto Directo</h3>
-                <p>Habla con un agente en Cuba o Brasil ahora mismo.</p>
+                <h3 id="help-card3-title">Contacto Directo</h3>
+                <p id="help-card3-desc">Habla con un agente en Cuba o Brasil ahora mismo.</p>
             </a>
         </div>
 
         <div class="contact-box">
-            <h2>¿Aún necesitas ayuda?</h2>
-            <p>Nuestro equipo está disponible para responder cualquier consulta personalizada.</p>
-            <a href="https://wa.me/5359508420" class="primary" target="_blank" style="padding: 16px 32px; font-size: 16px;">Contactar por WhatsApp →</a>
+            <h2 id="help-contact-title">¿Aún necesitas ayuda?</h2>
+            <p id="help-contact-desc">Nuestro equipo está disponible para responder cualquier consulta personalizada.</p>
+            <a href="https://wa.me/5359508420" class="primary" target="_blank" style="padding: 16px 32px; font-size: 16px;" id="help-contact-btn">Contactar por WhatsApp →</a>
         </div>
     </section>
 
@@ -150,22 +149,68 @@
         </div>
         <div class="shell copy">
             <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
-                       <span>
+            <span>
                 <a href="faq.html">FAQ</a> &middot;
                 <a href="help-center.html">Help Center</a> &middot;
-                <a href="privacidad.html">Política de Privacidad</a> &middot;
-                <a href="terminos.html">Términos y Condiciones</a> &middot;
-                <a href="cookies.html" style="color: var(--accent);">Política de Cookies</a>
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a> &middot;
+                <a href="newsletter.html">Newsletter</a>
             </span>
         </div>
     </footer>
 
+    <script src="i18n.js"></script>
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        const pageTranslations = {
+            es: {
+                kicker: "Soporte", title: '¿Cómo podemos <span class="text-gradient">ayudarte?</span>', desc: "Encuentra respuestas rápidas o contacta directamente con nuestro equipo.",
+                c1Title: "Preguntas Frecuentes", c1Desc: "Respuestas a las dudas más comunes sobre viajes y servicios.",
+                c2Title: "Guía de Procesos", c2Desc: "Aprende paso a paso cómo planificamos tu viaje.",
+                c3Title: "Contacto Directo", c3Desc: "Habla con un agente en Cuba o Brasil ahora mismo.",
+                contactTitle: "¿Aún necesitas ayuda?", contactDesc: "Nuestro equipo está disponible para responder cualquier consulta personalizada.", contactBtn: "Contactar por WhatsApp →"
+            },
+            en: {
+                kicker: "Support", title: 'How can we <span class="text-gradient">help you?</span>', desc: "Find quick answers or contact our team directly.",
+                c1Title: "Frequently Asked Questions", c1Desc: "Answers to the most common questions about travel and services.",
+                c2Title: "Process Guide", c2Desc: "Learn step by step how we plan your trip.",
+                c3Title: "Direct Contact", c3Desc: "Talk to an agent in Cuba or Brazil right now.",
+                contactTitle: "Still need help?", contactDesc: "Our team is available to answer any personalized query.", contactBtn: "Contact via WhatsApp →"
+            },
+            pt: {
+                kicker: "Suporte", title: 'Como podemos <span class="text-gradient">ajudar você?</span>', desc: "Encontre respostas rápidas ou entre em contato diretamente com nossa equipe.",
+                c1Title: "Perguntas Frequentes", c1Desc: "Respostas às dúvidas mais comuns sobre viagens e serviços.",
+                c2Title: "Guia de Processos", c2Desc: "Aprenda passo a passo como planejamos sua viagem.",
+                c3Title: "Contato Direto", c3Desc: "Fale com um agente em Cuba ou no Brasil agora mesmo.",
+                contactTitle: "Ainda precisa de ajuda?", contactDesc: "Nossa equipe está disponível para responder qualquer consulta personalizada.", contactBtn: "Contatar via WhatsApp →"
+            }
+        };
+
+        function applyPageTranslation(lang) {
+            const t = pageTranslations[lang] || pageTranslations.es;
+            document.getElementById('help-kicker').textContent = t.kicker;
+            document.getElementById('help-title').innerHTML = t.title;
+            document.getElementById('help-desc').textContent = t.desc;
+            document.getElementById('help-card1-title').textContent = t.c1Title;
+            document.getElementById('help-card1-desc').textContent = t.c1Desc;
+            document.getElementById('help-card2-title').textContent = t.c2Title;
+            document.getElementById('help-card2-desc').textContent = t.c2Desc;
+            document.getElementById('help-card3-title').textContent = t.c3Title;
+            document.getElementById('help-card3-desc').textContent = t.c3Desc;
+            document.getElementById('help-contact-title').textContent = t.contactTitle;
+            document.getElementById('help-contact-desc').textContent = t.contactDesc;
+            document.getElementById('help-contact-btn').textContent = t.contactBtn;
+        }
+
+        const langObserver = new MutationObserver(() => applyPageTranslation(document.documentElement.lang || 'es'));
+        langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+        document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
     </script>
 </body>
 </html>
