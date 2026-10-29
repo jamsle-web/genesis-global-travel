@@ -6,7 +6,6 @@
     <title>Preguntas Frecuentes | GÉNESIS GLOBAL</title>
     <meta name="description" content="Respuestas a las dudas más comunes sobre nuestros servicios.">
     
-    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -27,9 +26,7 @@
         
         .faq-container { max-width: 800px; margin: 0 auto; padding-bottom: 100px; }
         
-        .faq-row {
-            border-bottom: 1px solid var(--border);
-        }
+        .faq-row { border-bottom: 1px solid var(--border); }
         .faq-q {
             width: 100%; background: none; border: 0; color: #fff;
             display: flex; justify-content: space-between; align-items: center;
@@ -53,7 +50,6 @@
 </head>
 <body>
 
-    <!-- ===== NAV ===== -->
     <nav class="nav shell" id="nav">
         <a href="index.html" class="brand">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
@@ -62,7 +58,6 @@
                 <small>Donde comienzan nuevas oportunidades.</small>
             </span>
         </a>
-        
         <div id="links" class="links">
             <a href="index.html">Inicio</a>
             <a href="servicios.html">Servicios</a>
@@ -70,45 +65,42 @@
             <a href="nosotros.html">Nosotros</a>
             <a href="otros-servicios.html">Otros Servicios</a>
         </div>
-        
         <div class="nav-actions">
              <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
         </div>
         <button class="menu" onclick="toggleMenu()">☰</button>
     </nav>
 
-    <!-- ===== CONTENIDO FAQ ===== -->
     <section class="hero-page shell reveal">
-        <span class="kicker">Preguntas Frecuentes</span>
-        <h1>Claridad antes de <br><span class="text-gradient">decidir.</span></h1>
+        <span class="kicker" id="faq-kicker">Preguntas Frecuentes</span>
+        <h1 id="faq-title">Claridad antes de <br><span class="text-gradient">decidir.</span></h1>
     </section>
 
     <section class="shell reveal">
         <div class="faq-container">
             <div class="faq-row">
-                <button class="faq-q">¿GÉNESIS GLOBAL vende visas? <span>⌄</span></button>
-                <div class="faq-a">No. La empresa puede orientar sobre requisitos aplicables y coordinar con profesionales autorizados cuando un caso lo requiera. Las decisiones migratorias corresponden a las autoridades competentes.</div>
+                <button class="faq-q" id="faq-q1">¿GÉNESIS GLOBAL vende visas? <span>⌄</span></button>
+                <div class="faq-a" id="faq-a1">No. La empresa puede orientar sobre requisitos aplicables y coordinar con profesionales autorizados cuando un caso lo requiera. Las decisiones migratorias corresponden a las autoridades competentes.</div>
             </div>
             <div class="faq-row">
-                <button class="faq-q">¿Puedo solicitar ayuda para viajar hacia Cuba? <span>⌄</span></button>
-                <div class="faq-a">Sí. El concepto contempla personas que viven en Brasil, Guyana u otros países y quieren organizar un viaje a Cuba para visitar a sus familiares, sujeto a las normas vigentes.</div>
+                <button class="faq-q" id="faq-q2">¿Puedo solicitar ayuda para viajar hacia Cuba? <span>⌄</span></button>
+                <div class="faq-a" id="faq-a2">Sí. El concepto contempla personas que viven en Brasil, Guyana u otros países y quieren organizar un viaje a Cuba para visitar a sus familiares, sujeto a las normas vigentes.</div>
             </div>
             <div class="faq-row">
-                <button class="faq-q">¿También se pueden organizar viajes desde Cuba? <span>⌄</span></button>
-                <div class="faq-a">Sí. Puede contemplarse la planificación de viajes desde Cuba hacia Brasil, Guyana u otros destinos, dependiendo de requisitos y servicios disponibles.</div>
+                <button class="faq-q" id="faq-q3">¿También se pueden organizar viajes desde Cuba? <span>⌄</span></button>
+                <div class="faq-a" id="faq-a3">Sí. Puede contemplarse la planificación de viajes desde Cuba hacia Brasil, Guyana u otros destinos, dependiendo de requisitos y servicios disponibles.</div>
             </div>
             <div class="faq-row">
-                <button class="faq-q">¿Ofrecen servicios de remesas o recargas? <span>⌄</span></button>
-                <div class="faq-a">Sí, contamos con una sección de "Otros Servicios" donde puede gestionar recargas telefónicas, envíos de remesas y compra de productos para sus familiares.</div>
+                <button class="faq-q" id="faq-q4">¿Ofrecen servicios de remesas o recargas? <span>⌄</span></button>
+                <div class="faq-a" id="faq-a4">Sí, contamos con una sección de "Otros Servicios" donde puede gestionar recargas telefónicas, envíos de remesas y compra de productos para sus familiares.</div>
             </div>
             <div class="faq-row">
-                <button class="faq-q">¿Cómo empiezo? <span>⌄</span></button>
-                <div class="faq-a">Completa el formulario de orientación en nuestra página de inicio o contáctanos directamente por WhatsApp. Un miembro del equipo podrá revisar tu solicitud y explicarte los próximos pasos.</div>
+                <button class="faq-q" id="faq-q5">¿Cómo empiezo? <span>⌄</span></button>
+                <div class="faq-a" id="faq-a5">Completa el formulario de orientación en nuestra página de inicio o contáctanos directamente por WhatsApp. Un miembro del equipo podrá revisar tu solicitud y explicarte los próximos pasos.</div>
             </div>
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="shell footer-grid">
             <div>
@@ -123,9 +115,9 @@
             </div>
             <div>
                 <h4>Empresa</h4>
-                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Nosotros</a>
-                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Servicios</a>
-                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">FAQ</a>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
             </div>
             <div>
                 <h4>Contacto Directo</h4>
@@ -147,21 +139,65 @@
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
+    <script src="i18n.js"></script>
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
-        
-        // Lógica del acordeón para el FAQ
         document.querySelectorAll('.faq-q').forEach(q => {
             q.addEventListener('click', function() {
                 this.parentElement.classList.toggle('open');
             });
         });
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        const pageTranslations = {
+            es: {
+                kicker: "Preguntas Frecuentes", title: 'Claridad antes de <br><span class="text-gradient">decidir.</span>',
+                q1: "¿GÉNESIS GLOBAL vende visas?", a1: "No. La empresa puede orientar sobre requisitos aplicables y coordinar con profesionales autorizados cuando un caso lo requiera. Las decisiones migratorias corresponden a las autoridades competentes.",
+                q2: "¿Puedo solicitar ayuda para viajar hacia Cuba?", a2: "Sí. El concepto contempla personas que viven en Brasil, Guyana u otros países y quieren organizar un viaje a Cuba para visitar a sus familiares, sujeto a las normas vigentes.",
+                q3: "¿También se pueden organizar viajes desde Cuba?", a3: "Sí. Puede contemplarse la planificación de viajes desde Cuba hacia Brasil, Guyana u otros destinos, dependiendo de requisitos y servicios disponibles.",
+                q4: "¿Ofrecen servicios de remesas o recargas?", a4: "Sí, contamos con una sección de 'Otros Servicios' donde puede gestionar recargas telefónicas, envíos de remesas y compra de productos para sus familiares.",
+                q5: "¿Cómo empiezo?", a5: "Completa el formulario de orientación en nuestra página de inicio o contáctanos directamente por WhatsApp. Un miembro del equipo podrá revisar tu solicitud y explicarte los próximos pasos."
+            },
+            en: {
+                kicker: "Frequently Asked Questions", title: 'Clarity before you <br><span class="text-gradient">decide.</span>',
+                q1: "Does GÉNESIS GLOBAL sell visas?", a1: "No. The company can provide guidance on applicable requirements and coordinate with authorized professionals when necessary. Immigration decisions are made by the competent authorities.",
+                q2: "Can I request help traveling to Cuba?", a2: "Yes. The concept includes people living in Brazil, Guyana or other countries who want to organize a trip to Cuba to visit their families, subject to current regulations.",
+                q3: "Can trips from Cuba also be organized?", a3: "Yes. Travel planning from Cuba to Brazil, Guyana or other destinations may be considered depending on requirements and available services.",
+                q4: "Do you offer remittance or recharge services?", a4: "Yes, we have an 'Other Services' section where you can manage phone recharges, send remittances and buy products for your family members.",
+                q5: "How do I get started?", a5: "Complete the guidance form on our home page or contact us directly via WhatsApp. A team member can review your request and explain the next steps."
+            },
+            pt: {
+                kicker: "Perguntas Frequentes", title: 'Clareza antes de <br><span class="text-gradient">decidir.</span>',
+                q1: "A GÉNESIS GLOBAL vende vistos?", a1: "Não. A empresa pode orientar sobre os requisitos aplicáveis e coordenar com profissionais autorizados quando necessário. As decisões migratórias cabem às autoridades competentes.",
+                q2: "Posso solicitar ajuda para viajar para Cuba?", a2: "Sim. O conceito inclui pessoas que vivem no Brasil, Guiana ou outros países e desejam organizar uma viagem a Cuba para visitar seus familiares, de acordo com as normas vigentes.",
+                q3: "Também é possível organizar viagens saindo de Cuba?", a3: "Sim. O planejamento de viagens de Cuba para o Brasil, Guiana ou outros destinos pode ser considerado dependendo dos requisitos e serviços disponíveis.",
+                q4: "Vocês oferecem serviços de remessas ou recargas?", a4: "Sim, temos uma seção de 'Outros Serviços' onde você pode gerenciar recargas telefônicas, envio de remessas e compra de produtos para seus familiares.",
+                q5: "Como começo?", a5: "Preencha o formulário de orientação em nossa página inicial ou entre em contato diretamente pelo WhatsApp. Um membro da equipe poderá analisar sua solicitação e explicar os próximos passos."
+            }
+        };
+
+        function applyPageTranslation(lang) {
+            const t = pageTranslations[lang] || pageTranslations.es;
+            document.getElementById('faq-kicker').textContent = t.kicker;
+            document.getElementById('faq-title').innerHTML = t.title;
+            document.getElementById('faq-q1').textContent = t.q1;
+            document.getElementById('faq-a1').textContent = t.a1;
+            document.getElementById('faq-q2').textContent = t.q2;
+            document.getElementById('faq-a2').textContent = t.a2;
+            document.getElementById('faq-q3').textContent = t.q3;
+            document.getElementById('faq-a3').textContent = t.a3;
+            document.getElementById('faq-q4').textContent = t.q4;
+            document.getElementById('faq-a4').textContent = t.a4;
+            document.getElementById('faq-q5').textContent = t.q5;
+            document.getElementById('faq-a5').textContent = t.a5;
+        }
+
+        const langObserver = new MutationObserver(() => applyPageTranslation(document.documentElement.lang || 'es'));
+        langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+        document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
     </script>
 </body>
 </html>
