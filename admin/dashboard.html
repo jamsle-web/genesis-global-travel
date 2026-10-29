@@ -270,24 +270,18 @@
             document.getElementById('statRequests').textContent = requests || 0;
             document.getElementById('statSubs').textContent = subs || 0;
 
-            // B) Cargar Solicitudes (Recientes)
+                       // B) Cargar Solicitudes (Recientes)
             const { data: recentReq } = await supabase.from('travel_requests').select('*').order('created_at', { ascending: false }).limit(5);
             
-            // --- ESTO ES PARA QUE VEAS LOS DATOS EXACTOS EN LA CONSOLA ---
-            if(recentReq && recentReq.length > 0) {
-                console.log("Estructura exacta de la primera solicitud:", recentReq[0]); 
-            }
-            // -------------------------------------------------------------
-
             const tbodyRecent = document.querySelector('#tableRecentRequests tbody');
             if (recentReq && recentReq.length > 0) {
                 tbodyRecent.innerHTML = recentReq.map(r => `
                     <tr>
                         <td>${new Date(r.created_at).toLocaleDateString()}</td>
-                        <!-- Aquí intentamos leer todas las variantes posibles -->
-                        <td>${r.p_nombre || r.nombre || 'Sin nombre'}</td>
-                        <td>${r.p_origen || r.origen || '?'} → ${r.p_destino || r.destino || '?'}</td>
-                        <td><span class="badge badge-success">Recibida</span></td>
+                        <!-- Como no hay nombre, usamos el ID de cliente o el WhatsApp como respaldo -->
+                        <td>${r.client_id ? 'Cliente Web' : 'Usuario WhatsApp'}</td>
+                        <td>${r.origin || '?'} → ${r.destination || '?'}</td>
+                        <td><span class="badge badge-success">${r.status || 'Recibida'}</span></td>
                     </tr>
                 `).join('');
             } else {
@@ -301,10 +295,10 @@
                 tbodyAll.innerHTML = allReq.map(r => `
                     <tr>
                         <td>${new Date(r.created_at).toLocaleDateString()}</td>
-                        <td>${r.p_nombre || r.nombre || 'Sin nombre'}</td>
-                        <td><a href="https://wa.me/${(r.p_whatsapp || r.whatsapp || '').replace(/\D/g,'')}" target="_blank" style="color:var(--accent);">${r.p_whatsapp || r.whatsapp || '-'}</a></td>
-                        <td>${r.p_origen || r.origen || '?'} → ${r.p_destino || r.destino || '?'}</td>
-                        <td><span class="badge badge-success">Recibida</span></td>
+                        <td>${r.client_id ? 'Cliente Web' : 'Usuario WhatsApp'}</td>
+                        <td><a href="https://wa.me/?text=${encodeURIComponent(r.origin + ' a ' + r.destination)}" target="_blank" style="color:var(--accent);">Contactar</a></td>
+                        <td>${r.origin || '?'} → ${r.destination || '?'}</td>
+                        <td><span class="badge badge-success">${r.status || 'Recibida'}</span></td>
                     </tr>
                 `).join('');
             } else {
