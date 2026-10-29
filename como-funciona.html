@@ -6,19 +6,16 @@
     <title>Cómo funciona | GÉNESIS GLOBAL</title>
     <meta name="description" content="Conoce el proceso paso a paso para planificar tu viaje con GÉNESIS GLOBAL.">
     
-    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Estilos -->
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
@@ -55,7 +52,6 @@
 </head>
 <body>
 
-    <!-- ===== NAV ===== -->
     <nav class="nav shell" id="nav">
         <a href="index.html" class="brand">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
@@ -69,7 +65,6 @@
             <a href="servicios.html">Servicios</a>
             <a href="como-funciona.html" style="color: var(--accent);">Cómo funciona</a>
             <a href="nosotros.html">Nosotros</a>
-           
             <a href="otros-servicios.html">Otros Servicios</a>
         </div>
         <div class="nav-actions">
@@ -79,32 +74,32 @@
     </nav>
 
     <section class="hero-page shell reveal">
-        <span class="kicker">Experiencia del cliente</span>
-        <h1>Simple desde el primer <br><span class="text-gradient">mensaje.</span></h1>
-        <p>Diseñamos el proceso para reducir dudas, pasos innecesarios y fricción. Así trabajamos para ti.</p>
+        <span class="kicker" id="proceso-kicker">Experiencia del cliente</span>
+        <h1 id="proceso-title">Simple desde el primer <br><span class="text-gradient">mensaje.</span></h1>
+        <p id="proceso-desc">Diseñamos el proceso para reducir dudas, pasos innecesarios y fricción. Así trabajamos para ti.</p>
     </section>
 
     <section class="shell reveal">
         <div class="steps-page">
             <div class="step-card">
-                <span class="num">PASO 01</span>
-                <h3>Cuéntanos tu situación</h3>
-                <p>Completa una solicitud breve y dinos desde dónde viajas, hacia dónde quieres ir y qué necesitas.</p>
+                <span class="num" id="proceso-paso1-num">PASO 01</span>
+                <h3 id="proceso-paso1-title">Cuéntanos tu situación</h3>
+                <p id="proceso-paso1-desc">Completa una solicitud breve y dinos desde dónde viajas, hacia dónde quieres ir y qué necesitas.</p>
             </div>
             <div class="step-card">
-                <span class="num">PASO 02</span>
-                <h3>Analizamos tus opciones</h3>
-                <p>Nuestro equipo revisa rutas, servicios y requisitos aplicables para tu caso específico.</p>
+                <span class="num" id="proceso-paso2-num">PASO 02</span>
+                <h3 id="proceso-paso2-title">Analizamos tus opciones</h3>
+                <p id="proceso-paso2-desc">Nuestro equipo revisa rutas, servicios y requisitos aplicables para tu caso específico.</p>
             </div>
             <div class="step-card">
-                <span class="num">PASO 03</span>
-                <h3>Recibes tu propuesta</h3>
-                <p>Te explicamos opciones, costes y próximos pasos antes de que tomes cualquier decisión.</p>
+                <span class="num" id="proceso-paso3-num">PASO 03</span>
+                <h3 id="proceso-paso3-title">Recibes tu propuesta</h3>
+                <p id="proceso-paso3-desc">Te explicamos opciones, costes y próximos pasos antes de que tomes cualquier decisión.</p>
             </div>
             <div class="step-card">
-                <span class="num">PASO 04</span>
-                <h3>Te acompañamos</h3>
-                <p>Coordinamos el proceso contratado y mantenemos la comunicación contigo en todo momento.</p>
+                <span class="num" id="proceso-paso4-num">PASO 04</span>
+                <h3 id="proceso-paso4-title">Te acompañamos</h3>
+                <p id="proceso-paso4-desc">Coordinamos el proceso contratado y mantenemos la comunicación contigo en todo momento.</p>
             </div>
         </div>
     </section>
@@ -123,36 +118,84 @@
             </div>
             <div>
                 <h4>Empresa</h4>
-                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Nosotros</a>
-                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">Servicios</a>
-                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0; transition: color 0.3s;">FAQ</a>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
             </div>
             <div>
-                <h4>Atención</h4>
-                <span>Orientación personalizada</span>
-                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank" rel="noopener noreferrer">WhatsApp Business</a>
-                <span>Formulario de solicitud</span>
+                <h4>Contacto Directo</h4>
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
             </div>
         </div>
         <div class="shell copy">
             <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
-                      <span>
-    <a href="faq.html">FAQ</a> &middot;
-    <a href="help-center.html">Help Center</a> &middot;
-    <a href="privacidad.html">Privacidad</a> &middot;
-    <a href="terminos.html">Términos</a> &middot;
-    <a href="cookies.html">Cookies</a> &middot;
-    <a href="newsletter.html">Newsletter</a>
-</span>
+            <span>
+                <a href="faq.html">FAQ</a> &middot;
+                <a href="help-center.html">Help Center</a> &middot;
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a> &middot;
+                <a href="newsletter.html">Newsletter</a>
+            </span>
         </div>
     </footer>
 
+    <script src="i18n.js"></script>
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        const pageTranslations = {
+            es: {
+                kicker: "Experiencia del cliente", title: 'Simple desde el primer <br><span class="text-gradient">mensaje.</span>', desc: "Diseñamos el proceso para reducir dudas, pasos innecesarios y fricción. Así trabajamos para ti.",
+                p1Num: "PASO 01", p1Title: "Cuéntanos tu situación", p1Desc: "Completa una solicitud breve y dinos desde dónde viajas, hacia dónde quieres ir y qué necesitas.",
+                p2Num: "PASO 02", p2Title: "Analizamos tus opciones", p2Desc: "Nuestro equipo revisa rutas, servicios y requisitos aplicables para tu caso específico.",
+                p3Num: "PASO 03", p3Title: "Recibes tu propuesta", p3Desc: "Te explicamos opciones, costes y próximos pasos antes de que tomes cualquier decisión.",
+                p4Num: "PASO 04", p4Title: "Te acompañamos", p4Desc: "Coordinamos el proceso contratado y mantenemos la comunicación contigo en todo momento."
+            },
+            en: {
+                kicker: "Customer experience", title: 'Simple from the first <br><span class="text-gradient">message.</span>', desc: "We designed the process to reduce doubts, unnecessary steps, and friction. This is how we work for you.",
+                p1Num: "STEP 01", p1Title: "Tell us your situation", p1Desc: "Complete a short request and tell us where you are traveling from, where you want to go and what you need.",
+                p2Num: "STEP 02", p2Title: "We analyze your options", p2Desc: "Our team reviews routes, services and applicable requirements for your specific case.",
+                p3Num: "STEP 03", p3Title: "You receive your proposal", p3Desc: "We explain options, costs and next steps before you make any decision.",
+                p4Num: "STEP 04", p4Title: "We support you", p4Desc: "We coordinate the contracted process and keep communication with you at all times."
+            },
+            pt: {
+                kicker: "Experiência do cliente", title: 'Simples desde a primeira <br><span class="text-gradient">mensagem.</span>', desc: "Projetamos o processo para reduzir dúvidas, etapas desnecessárias e atritos. É assim que trabalhamos para você.",
+                p1Num: "PASSO 01", p1Title: "Conte-nos sua situação", p1Desc: "Preencha uma solicitação breve e diga de onde você viaja, para onde deseja ir e do que precisa.",
+                p2Num: "PASSO 02", p2Title: "Analisamos suas opções", p2Desc: "Nossa equipe analisa rotas, serviços e requisitos aplicáveis para o seu caso específico.",
+                p3Num: "PASSO 03", p3Title: "Você recebe sua proposta", p3Desc: "Explicamos opções, custos e próximos passos antes de você tomar qualquer decisão.",
+                p4Num: "PASSO 04", p4Title: "Acompanhamos você", p4Desc: "Coordenamos o processo contratado e mantemos a comunicação com você o tempo todo."
+            }
+        };
+
+        function applyPageTranslation(lang) {
+            const t = pageTranslations[lang] || pageTranslations.es;
+            document.getElementById('proceso-kicker').textContent = t.kicker;
+            document.getElementById('proceso-title').innerHTML = t.title;
+            document.getElementById('proceso-desc').textContent = t.desc;
+            document.getElementById('proceso-paso1-num').textContent = t.p1Num;
+            document.getElementById('proceso-paso1-title').textContent = t.p1Title;
+            document.getElementById('proceso-paso1-desc').textContent = t.p1Desc;
+            document.getElementById('proceso-paso2-num').textContent = t.p2Num;
+            document.getElementById('proceso-paso2-title').textContent = t.p2Title;
+            document.getElementById('proceso-paso2-desc').textContent = t.p2Desc;
+            document.getElementById('proceso-paso3-num').textContent = t.p3Num;
+            document.getElementById('proceso-paso3-title').textContent = t.p3Title;
+            document.getElementById('proceso-paso3-desc').textContent = t.p3Desc;
+            document.getElementById('proceso-paso4-num').textContent = t.p4Num;
+            document.getElementById('proceso-paso4-title').textContent = t.p4Title;
+            document.getElementById('proceso-paso4-desc').textContent = t.p4Desc;
+        }
+
+        const langObserver = new MutationObserver(() => applyPageTranslation(document.documentElement.lang || 'es'));
+        langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+        document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
     </script>
 </body>
 </html>
