@@ -248,13 +248,11 @@
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 
-    <!-- SCRIPT CORREGIDO: Usando el generador oficial de enlaces de Skyscanner -->
+    <!-- SCRIPT DEFINITIVO PARA LA DEMO DE ESTA NOCHE -->
     <script>
         document.getElementById('flightSearchForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // IMPORTANTE: Skyscanner requiere códigos IATA (3 letras). 
-            // Ej: La Habana = HAV, Sao Paulo = GRU, Miami = MIA.
             const origin = document.getElementById('origin').value.trim().toUpperCase();
             const destination = document.getElementById('destination').value.trim().toUpperCase();
             const departDate = document.getElementById('departDate').value;
@@ -262,22 +260,28 @@
 
             // Validar que sean códigos de 3 letras
             if (origin.length !== 3 || destination.length !== 3) {
-                alert("Por favor, usa códigos de aeropuerto de 3 letras (Ej: HAV, GRU, MIA).");
+                alert("Por favor, usa códigos de aeropuerto de 3 letras (Ej: HAV para Cuba, GRU para Brasil, MIA para Miami).");
                 return;
             }
 
-            // El ID de afiliado de ejemplo. Si te registras en el programa de afiliados de Skyscanner, puedes cambiarlo por el tuyo.
-            const associateId = "genesis-global-demo"; 
+            // Formatear fecha a YYMMDD (Ej: 2026-11-25 -> 261125)
+            const formatDate = (dateString) => {
+                if (!dateString) return '';
+                const parts = dateString.split('-');
+                return parts[0].substring(2) + parts[1] + parts[2];
+            };
 
-            // Construir la URL usando el generador de enlaces seguro (Shallow Link) de Skyscanner
-            // Esto evita el bloqueo de "Press & Hold"
-            let skyscannerUrl = `https://partners.api.skyscanner.net/refer/flights/live/dayview?origin=${origin}&destination=${destination}&departuredate=${departDate}&userlanguage=es&usercountry=ES&associateid=${associateId}`;
+            const dep = formatDate(departDate);
+            const ret = formatDate(returnDate);
+
+            // URL estándar de Skyscanner que NO tiene bloqueo de captcha
+            let skyscannerUrl = `https://www.skyscanner.net/transport/flights/${origin}/${destination}/${dep}/`;
             
-            if (returnDate) {
-                skyscannerUrl += `&returndate=${returnDate}`;
+            if (ret) {
+                skyscannerUrl += `${ret}/`;
             }
 
-            // Abrir en una nueva pestaña
+            // Abrir en nueva pestaña
             window.open(skyscannerUrl, '_blank');
         });
     </script>
