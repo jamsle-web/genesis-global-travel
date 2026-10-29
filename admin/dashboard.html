@@ -60,11 +60,27 @@
         /* Formularios del Admin */
         .admin-form { background: var(--card-bg); border: 1px solid var(--border); padding: 30px; border-radius: 20px; margin-bottom: 30px; display: none; }
         .admin-form.active { display: block; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 12px; color: var(--text-soft); margin-bottom: 5px; text-transform: uppercase; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: white; font-family: inherit; }
-        .btn-primary { background: var(--accent); color: var(--bg); padding: 12px 24px; border: 0; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .btn-toggle { background: rgba(255,255,255,0.1); color: white; padding: 10px 20px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-weight: 600; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 12px; color: var(--text-soft); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: white; font-family: inherit; box-sizing: border-box; }
+        
+        /* Zona de subida de imágenes en formularios */
+        .image-upload-box {
+            border: 2px dashed rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background: rgba(0,0,0,0.1);
+        }
+        .image-upload-box:hover { border-color: var(--accent); background: rgba(102, 230, 196, 0.05); }
+        .image-upload-box svg { width: 30px; height: 30px; stroke: var(--text-soft); margin-bottom: 10px; }
+        .image-upload-box span { display: block; font-size: 13px; color: var(--text-soft); }
+        
+        .btn-primary { background: var(--accent); color: var(--bg); padding: 14px 28px; border: 0; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 10px; font-size: 14px; }
+        .btn-toggle { background: rgba(255,255,255,0.05); color: var(--text); padding: 12px 24px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-weight: 700; margin-bottom: 25px; transition: 0.3s; }
+        .btn-toggle:hover { background: rgba(255,255,255,0.1); }
 
         /* MODAL DE PERFIL */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px); }
@@ -87,41 +103,16 @@
         .success-message { display: none; background: rgba(102, 230, 196, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 15px; border-radius: 12px; margin-top: 15px; font-weight: 600; font-size: 14px; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* ===== MODAL DE CONTACTO (BOTONES PREMIUM) ===== */
+        /* MODAL DE CONTACTO */
         .contact-options { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-        
-        .contact-btn { 
-            display: flex; align-items: center; justify-content: center; gap: 10px; 
-            padding: 16px; border-radius: 12px; font-weight: 700; text-decoration: none; 
-            font-size: 15px; transition: all 0.3s ease; border: 1px solid transparent;
-        }
+        .contact-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 15px; transition: all 0.3s ease; border: 1px solid transparent; }
         .contact-btn svg { width: 20px; height: 20px; }
-
-        /* WhatsApp Premium */
-        .contact-wa { 
-            background: rgba(37, 211, 102, 0.08); 
-            color: #25D366; 
-            border-color: rgba(37, 211, 102, 0.3);
-        }
-        .contact-wa:hover { 
-            background: rgba(37, 211, 102, 0.15); 
-            border-color: #25D366;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.1);
-        }
-
-        /* Email Premium */
-        .contact-email { 
-            background: rgba(234, 67, 53, 0.08); 
-            color: #ff6b6b; 
-            border-color: rgba(234, 67, 53, 0.3);
-        }
-        .contact-email:hover { 
-            background: rgba(234, 67, 53, 0.15); 
-            border-color: #EA4335;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(234, 67, 53, 0.1);
-        }
+        
+        .contact-wa { background: rgba(37, 211, 102, 0.08); color: #25D366; border-color: rgba(37, 211, 102, 0.3); }
+        .contact-wa:hover { background: rgba(37, 211, 102, 0.15); border-color: #25D366; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(37, 211, 102, 0.1); }
+        
+        .contact-email { background: rgba(234, 67, 53, 0.08); color: #ff6b6b; border-color: rgba(234, 67, 53, 0.3); }
+        .contact-email:hover { background: rgba(234, 67, 53, 0.15); border-color: #EA4335; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(234, 67, 53, 0.1); }
     </style>
 </head>
 <body>
@@ -217,19 +208,35 @@
             <button class="btn-toggle" onclick="document.getElementById('formService').classList.toggle('active')">+ Agregar Nuevo Servicio</button>
             <div id="formService" class="admin-form">
                 <h3 style="margin-top:0;">Agregar Servicio</h3>
-                <div class="form-group"><label>Título</label><input type="text" placeholder="Ej: Vuelos y Conexiones"></div>
-                <div class="form-group"><label>Descripción</label><textarea rows="2"></textarea></div>
+                <div class="form-group">
+                    <label>Imagen de Portada / Cover</label>
+                    <div class="image-upload-box" onclick="document.getElementById('serviceImage').click()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        <span>Haz clic para subir la imagen del servicio</span>
+                    </div>
+                    <input type="file" id="serviceImage" style="display:none;" accept="image/*">
+                </div>
+                <div class="form-group"><label>Título del Servicio</label><input type="text" placeholder="Ej: Vuelos y Conexiones"></div>
+                <div class="form-group"><label>Descripción</label><textarea rows="2" placeholder="Descripción del servicio..."></textarea></div>
                 <button class="btn-primary" onclick="alert('¡Servicio guardado (simulación)!')">Confirmar y Guardar</button>
             </div>
         </div>
 
-        <!-- OTROS SERVICIOS -->
+        <!-- OTROS SERVICIOS (PRODUCTOS) -->
         <div id="tab-otros-servicios" style="display: none;">
             <div class="section-header"><h2>Gestión de Productos</h2></div>
             <button class="btn-toggle" onclick="document.getElementById('formProduct').classList.toggle('active')">+ Agregar Producto</button>
             <div id="formProduct" class="admin-form">
                 <h3 style="margin-top:0;">Agregar Producto</h3>
-                <div class="form-group"><label>Nombre</label><input type="text" placeholder="Ej: Recarga Móvil"></div>
+                <div class="form-group">
+                    <label>Imagen del Producto / Cover</label>
+                    <div class="image-upload-box" onclick="document.getElementById('productImage').click()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        <span>Haz clic para subir la imagen del producto</span>
+                    </div>
+                    <input type="file" id="productImage" style="display:none;" accept="image/*">
+                </div>
+                <div class="form-group"><label>Nombre del Producto</label><input type="text" placeholder="Ej: Recarga Móvil"></div>
                 <div class="form-group"><label>Precio</label><input type="number" placeholder="0.00"></div>
                 <button class="btn-primary" onclick="alert('¡Producto guardado (simulación)!')">Confirmar y Guardar</button>
             </div>
@@ -241,8 +248,17 @@
             <button class="btn-toggle" onclick="document.getElementById('formReview').classList.toggle('active')">+ Agregar Opinión</button>
             <div id="formReview" class="admin-form">
                 <h3 style="margin-top:0;">Agregar Opinión</h3>
+                <div class="form-group">
+                    <label>Foto del Cliente</label>
+                    <div class="image-upload-box" onclick="document.getElementById('reviewImage').click()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span>Haz clic para subir la foto del cliente</span>
+                    </div>
+                    <input type="file" id="reviewImage" style="display:none;" accept="image/*">
+                </div>
                 <div class="form-group"><label>Nombre del Cliente</label><input type="text"></div>
                 <div class="form-group"><label>Opinión</label><textarea rows="2"></textarea></div>
+                <div class="form-group"><label>Estrellas (1-5)</label><input type="number" min="1" max="5" value="5"></div>
                 <button class="btn-primary" onclick="alert('¡Opinión guardada (simulación)!')">Confirmar y Guardar</button>
             </div>
         </div>
@@ -341,7 +357,7 @@
             }
         }
 
-        // --- 2. CONTACTO PREMIUM (ICONOS SVG) ---
+        // --- 2. CONTACTO ---
         function openContactModal(name, wa, email, origin, destination, type) {
             document.getElementById('contactNameDisplay').textContent = name || 'Cliente';
             let smartMessage = `Hola ${name || ''}, le saludamos de GÉNESIS GLOBAL. `;
@@ -367,8 +383,10 @@
             }
             
             if (email && email !== 'null' && email.trim() !== '') {
+                // Arreglo del mailto para que abra la app correctamente
+                const mailtoLink = `mailto:${email.trim()}?subject=${encodeURIComponent('Respuesta de GÉNESIS GLOBAL')}&body=${encodeURIComponent(smartMessage)}`;
                 container.innerHTML += `
-                    <a href="mailto:${email}?subject=Respuesta de GÉNESIS GLOBAL&body=${encodeURIComponent(smartMessage)}" class="contact-btn contact-email">
+                    <a href="${mailtoLink}" class="contact-btn contact-email">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                         Enviar por Correo
                     </a>`;
@@ -401,7 +419,6 @@
             document.getElementById('statRequests').textContent = reqs || 0;
             document.getElementById('statSubs').textContent = subs || 0;
 
-            // Tabla Solicitudes
             const { data: allSol } = await supabase.from('solicitudes_viaje').select('*');
             const tbodySol = document.querySelector('#tableSolicitudesViaje tbody');
             if (allSol && allSol.length > 0) {
@@ -415,20 +432,17 @@
                 `).join('');
             } else { tbodySol.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay datos.</td></tr>'; }
 
-            // Tabla Dashboard Recientes
             const tbodyRecent = document.querySelector('#tableRecentRequests tbody');
             if (allSol && allSol.length > 0) {
                 tbodyRecent.innerHTML = allSol.slice(0, 5).map(r => `<tr><td>${r.nombre || 'Sin nombre'}</td><td>${r.origen || '?'} → ${r.destino || '?'}</td><td><span class="badge">Recibida</span></td></tr>`).join('');
             } else { tbodyRecent.innerHTML = '<tr><td colspan="3" style="text-align:center;">No hay solicitudes.</td></tr>'; }
 
-            // Tabla Mensajes
             const { data: allReq } = await supabase.from('travel_requests').select('*');
             const tbodyAll = document.querySelector('#tableAllRequests tbody');
             if (allReq && allReq.length > 0) {
                 tbodyAll.innerHTML = allReq.map(r => `<tr><td>${r.name || r.client_id || 'Cliente'}</td><td>${r.origin} → ${r.destination}</td><td><span class="badge">Recibida</span></td></tr>`).join('');
             } else { tbodyAll.innerHTML = '<tr><td colspan="3" style="text-align:center;">No hay avisos.</td></tr>'; }
 
-            // Tabla Suscriptores
             const { data: subsData } = await supabase.from('newsletter_subscribers').select('*');
             const tbodySubs = document.querySelector('#tableSubs tbody');
             if (subsData && subsData.length > 0) {
