@@ -87,11 +87,41 @@
         .success-message { display: none; background: rgba(102, 230, 196, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 15px; border-radius: 12px; margin-top: 15px; font-weight: 600; font-size: 14px; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* MODAL DE CONTACTO */
+        /* ===== MODAL DE CONTACTO (BOTONES PREMIUM) ===== */
         .contact-options { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-        .contact-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 15px; }
-        .contact-wa { background: #25D366; color: #fff; }
-        .contact-email { background: #EA4335; color: #fff; }
+        
+        .contact-btn { 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            padding: 16px; border-radius: 12px; font-weight: 700; text-decoration: none; 
+            font-size: 15px; transition: all 0.3s ease; border: 1px solid transparent;
+        }
+        .contact-btn svg { width: 20px; height: 20px; }
+
+        /* WhatsApp Premium */
+        .contact-wa { 
+            background: rgba(37, 211, 102, 0.08); 
+            color: #25D366; 
+            border-color: rgba(37, 211, 102, 0.3);
+        }
+        .contact-wa:hover { 
+            background: rgba(37, 211, 102, 0.15); 
+            border-color: #25D366;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.1);
+        }
+
+        /* Email Premium */
+        .contact-email { 
+            background: rgba(234, 67, 53, 0.08); 
+            color: #ff6b6b; 
+            border-color: rgba(234, 67, 53, 0.3);
+        }
+        .contact-email:hover { 
+            background: rgba(234, 67, 53, 0.15); 
+            border-color: #EA4335;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(234, 67, 53, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -311,7 +341,7 @@
             }
         }
 
-        // --- 2. CONTACTO ---
+        // --- 2. CONTACTO PREMIUM (ICONOS SVG) ---
         function openContactModal(name, wa, email, origin, destination, type) {
             document.getElementById('contactNameDisplay').textContent = name || 'Cliente';
             let smartMessage = `Hola ${name || ''}, le saludamos de GÉNESIS GLOBAL. `;
@@ -325,16 +355,27 @@
             const container = document.getElementById('contactOptions');
             container.innerHTML = '';
             let hasOption = false;
+
             if (wa && wa !== 'null' && wa.trim() !== '') {
                 const cleanWa = wa.replace(/\D/g, '');
-                container.innerHTML += `<a href="https://wa.me/${cleanWa}?text=${encodeURIComponent(smartMessage)}" target="_blank" class="contact-btn contact-wa">Enviar WhatsApp</a>`;
+                container.innerHTML += `
+                    <a href="https://wa.me/${cleanWa}?text=${encodeURIComponent(smartMessage)}" target="_blank" class="contact-btn contact-wa">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        Enviar por WhatsApp
+                    </a>`;
                 hasOption = true;
             }
+            
             if (email && email !== 'null' && email.trim() !== '') {
-                container.innerHTML += `<a href="mailto:${email}?subject=Respuesta GÉNESIS GLOBAL&body=${encodeURIComponent(smartMessage)}" class="contact-btn contact-email">Enviar Correo</a>`;
+                container.innerHTML += `
+                    <a href="mailto:${email}?subject=Respuesta de GÉNESIS GLOBAL&body=${encodeURIComponent(smartMessage)}" class="contact-btn contact-email">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        Enviar por Correo
+                    </a>`;
                 hasOption = true;
             }
-            if (!hasOption) container.innerHTML = `<p style="color:#ff6b6b;">No hay datos de contacto.</p>`;
+            
+            if (!hasOption) container.innerHTML = `<p style="color:#ff6b6b; text-align:center;">No hay datos de contacto.</p>`;
             document.getElementById('contactModal').style.display = 'flex';
         }
 
@@ -348,7 +389,7 @@
             document.getElementById('pageTitle').textContent = titles[tabName];
         }
 
-        // --- 4. CARGAR DATOS (LA CLAVE DEL ARREGLO) ---
+        // --- 4. CARGAR DATOS ---
         async function loadDashboardData() {
             const supabase = window.genesisSupabase;
             
@@ -360,7 +401,7 @@
             document.getElementById('statRequests').textContent = reqs || 0;
             document.getElementById('statSubs').textContent = subs || 0;
 
-            // LA SOLUCIÓN: Quitamos el "order('created_at')" para que lea los datos tal cual.
+            // Tabla Solicitudes
             const { data: allSol } = await supabase.from('solicitudes_viaje').select('*');
             const tbodySol = document.querySelector('#tableSolicitudesViaje tbody');
             if (allSol && allSol.length > 0) {
