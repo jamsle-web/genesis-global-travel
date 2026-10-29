@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Otros Servicios | GÉNESIS GLOBAL</title>
     
-    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -20,7 +19,6 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     
-    <!-- SUPABASE SCRIPTS (Añadidos aquí para que carguen antes del catálogo) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-client.js"></script>
     
@@ -76,9 +74,9 @@
     </nav>
 
     <section class="hero-page shell reveal">
-        <span class="kicker">Más que Viajes</span>
-        <h1>Apoya a tu familia <br><span class="text-gradient">sin importar la distancia.</span></h1>
-        <p>Envía recargas, remesas o compra productos reales para tus seres queridos en Cuba.</p>
+        <span class="kicker" id="otros-kicker">Más que Viajes</span>
+        <h1 id="otros-title">Apoya a tu familia <br><span class="text-gradient">sin importar la distancia.</span></h1>
+        <p id="otros-desc">Envía recargas, remesas o compra productos reales para tus seres queridos en Cuba.</p>
     </section>
 
     <section class="shell reveal">
@@ -87,42 +85,40 @@
                 <div class="icon-box">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
                 </div>
-                <h3>Recargas Telefónicas</h3>
-                <p>Mantén la comunicación fluida. Recarga el saldo móvil de tus familiares en Cuba al instante.</p>
-                <a href="https://wa.me/5359508420?text=Hola,%20quiero%20hacer%20una%20recarga%20telef%C3%B3nica." class="btn-action" target="_blank">Recargar Ahora →</a>
+                <h3 id="otros-recargas-title">Recargas Telefónicas</h3>
+                <p id="otros-recargas-desc">Mantén la comunicación fluida. Recarga el saldo móvil de tus familiares en Cuba al instante.</p>
+                <a href="https://wa.me/5359508420?text=Hola,%20quiero%20hacer%20una%20recarga%20telef%C3%B3nica." class="btn-action" target="_blank" id="otros-recargas-btn">Recargar Ahora →</a>
             </article>
             <article class="service-card">
                 <div class="icon-box">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                 </div>
-                <h3>Envío de Remesas</h3>
-                <p>Envía dinero a tu familia de manera segura. Coordinamos la entrega con total transparencia.</p>
-                <a href="https://wa.me/5359508420?text=Hola,%20quiero%20enviar%20dinero%20a%20mi%20familia." class="btn-action" target="_blank">Enviar Dinero →</a>
+                <h3 id="otros-remesas-title">Envío de Remesas</h3>
+                <p id="otros-remesas-desc">Envía dinero a tu familia de manera segura. Coordinamos la entrega con total transparencia.</p>
+                <a href="https://wa.me/5359508420?text=Hola,%20quiero%20enviar%20dinero%20a%20mi%20familia." class="btn-action" target="_blank" id="otros-remesas-btn">Enviar Dinero →</a>
             </article>
             <article class="service-card">
                 <div class="icon-box">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                 </div>
-                <h3>Cambios y Productos</h3>
-                <p>Compra alimentos, electrodomésticos o artículos de primera necesidad. Nosotros entregamos.</p>
-                <a href="#productos" class="btn-action">Ver Catálogo →</a>
+                <h3 id="otros-productos-title">Cambios y Productos</h3>
+                <p id="otros-productos-desc">Compra alimentos, electrodomésticos o artículos de primera necesidad. Nosotros entregamos.</p>
+                <a href="#productos" class="btn-action" id="otros-productos-btn">Ver Catálogo →</a>
             </article>
         </div>
     </section>
 
-    <!-- ===== SECCIÓN DE PRODUCTOS CONECTADA A SUPABASE ===== -->
     <section id="productos" class="products-section shell reveal">
         <div class="section-header">
             <div>
-                <span class="kicker">Catálogo</span>
-                <h2>Productos <span class="text-gradient">Destacados</span></h2>
+                <span class="kicker" id="otros-cat-kicker">Catálogo</span>
+                <h2 id="otros-cat-title">Productos <span class="text-gradient">Destacados</span></h2>
             </div>
-            <p style="color: var(--text-soft);">Precios reales. Consulta disponibilidad por WhatsApp.</p>
+            <p style="color: var(--text-soft);" id="otros-cat-desc">Precios reales. Consulta disponibilidad por WhatsApp.</p>
         </div>
 
         <div class="product-grid" id="product-grid">
-            <!-- Los productos se cargarán aquí automáticamente desde Supabase -->
-            <p style="color: var(--text-soft); text-align: center; width: 100%; grid-column: 1/-1;">Cargando productos...</p>
+            <p style="color: var(--text-soft); text-align: center; width: 100%; grid-column: 1/-1;" id="otros-loading">Cargando productos...</p>
         </div>
     </section>
 
@@ -161,36 +157,76 @@
         </div>
     </footer>
 
+    <script src="i18n.js"></script>
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
 
-    <!-- Script para cargar productos desde Supabase -->
-    <script>
+        // Traducción de la página
+        const pageTranslations = {
+            es: {
+                kicker: "Más que Viajes", title: 'Apoya a tu familia <br><span class="text-gradient">sin importar la distancia.</span>', desc: "Envía recargas, remesas o compra productos reales para tus seres queridos en Cuba.",
+                recargasTitle: "Recargas Telefónicas", recargasDesc: "Mantén la comunicación fluida. Recarga el saldo móvil de tus familiares en Cuba al instante.", recargasBtn: "Recargar Ahora →",
+                remesasTitle: "Envío de Remesas", remesasDesc: "Envía dinero a tu familia de manera segura. Coordinamos la entrega con total transparencia.", remesasBtn: "Enviar Dinero →",
+                productosTitle: "Cambios y Productos", productosDesc: "Compra alimentos, electrodomésticos o artículos de primera necesidad. Nosotros entregamos.", productosBtn: "Ver Catálogo →",
+                catKicker: "Catálogo", catTitle: 'Productos <span class="text-gradient">Destacados</span>', catDesc: "Precios reales. Consulta disponibilidad por WhatsApp.", loading: "Cargando productos..."
+            },
+            en: {
+                kicker: "More than Travel", title: 'Support your family <br><span class="text-gradient">no matter the distance.</span>', desc: "Send recharges, remittances, or buy real products for your loved ones in Cuba.",
+                recargasTitle: "Phone Recharges", recargasDesc: "Keep communication flowing. Recharge your family's mobile balance in Cuba instantly.", recargasBtn: "Recharge Now →",
+                remesasTitle: "Remittances", remesasDesc: "Send money to your family safely. We coordinate delivery with full transparency.", remesasBtn: "Send Money →",
+                productosTitle: "Products & Changes", productosDesc: "Buy food, appliances or basic necessities. We deliver.", productosBtn: "View Catalog →",
+                catKicker: "Catalog", catTitle: 'Featured <span class="text-gradient">Products</span>', catDesc: "Real prices. Check availability via WhatsApp.", loading: "Loading products..."
+            },
+            pt: {
+                kicker: "Mais que Viagens", title: 'Apoie sua família <br><span class="text-gradient">independentemente da distância.</span>', desc: "Envie recargas, remessas ou compre produtos reais para seus entes queridos em Cuba.",
+                recargasTitle: "Recargas Telefônicas", recargasDesc: "Mantenha a comunicação fluida. Recarregue o saldo móvel de seus familiares em Cuba instantaneamente.", recargasBtn: "Recarregar Agora →",
+                remesasTitle: "Envio de Remessas", remesasDesc: "Envie dinheiro para sua família com segurança. Coordenamos a entrega com total transparência.", remesasBtn: "Enviar Dinheiro →",
+                productosTitle: "Trocas e Produtos", productosDesc: "Compre alimentos, eletrodomésticos ou itens de primeira necessidade. Nós entregamos.", productosBtn: "Ver Catálogo →",
+                catKicker: "Catálogo", catTitle: 'Produtos <span class="text-gradient">Destacados</span>', catDesc: "Preços reais. Consulte disponibilidade pelo WhatsApp.", loading: "Carregando produtos..."
+            }
+        };
+
+        function applyPageTranslation(lang) {
+            const t = pageTranslations[lang] || pageTranslations.es;
+            document.getElementById('otros-kicker').textContent = t.kicker;
+            document.getElementById('otros-title').innerHTML = t.title;
+            document.getElementById('otros-desc').textContent = t.desc;
+            document.getElementById('otros-recargas-title').textContent = t.recargasTitle;
+            document.getElementById('otros-recargas-desc').textContent = t.recargasDesc;
+            document.getElementById('otros-recargas-btn').textContent = t.recargasBtn;
+            document.getElementById('otros-remesas-title').textContent = t.remesasTitle;
+            document.getElementById('otros-remesas-desc').textContent = t.remesasDesc;
+            document.getElementById('otros-remesas-btn').textContent = t.remesasBtn;
+            document.getElementById('otros-productos-title').textContent = t.productosTitle;
+            document.getElementById('otros-productos-desc').textContent = t.productosDesc;
+            document.getElementById('otros-productos-btn').textContent = t.productosBtn;
+            document.getElementById('otros-cat-kicker').textContent = t.catKicker;
+            document.getElementById('otros-cat-title').innerHTML = t.catTitle;
+            document.getElementById('otros-cat-desc').textContent = t.catDesc;
+            document.getElementById('otros-loading').textContent = t.loading;
+        }
+
+        const langObserver = new MutationObserver(() => applyPageTranslation(document.documentElement.lang || 'es'));
+        langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+        document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
+
+        // Cargar Productos desde Supabase
         document.addEventListener('DOMContentLoaded', async () => {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
-
             try {
-                // Hacemos la consulta a la tabla 'products'
-                const { data: products, error } = await window.genesisSupabase
-                    .from('products')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
+                const { data: products, error } = await window.genesisSupabase.from('products').select('*').order('created_at', { ascending: false });
                 if (error) throw error;
-
                 if (products && products.length > 0) {
                     grid.innerHTML = products.map(p => `
                         <article class="product-card">
                             <img src="${p.image_url || 'https://via.placeholder.com/400'}" alt="${p.name}" class="product-image" loading="lazy">
                             <div class="product-info">
                                 <h4>${p.name}</h4>
-                                <!-- Mostramos ambos precios (USD y BRL) -->
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
                                     <span class="price" style="margin:0;">$${parseFloat(p.price_usd || 0).toFixed(2)} USD</span>
                                     <span style="font-size: 14px; color: var(--text-soft);">R$ ${parseFloat(p.price_brl || 0).toFixed(2)}</span>
