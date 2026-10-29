@@ -66,7 +66,7 @@
         .btn-primary { background: var(--accent); color: var(--bg); padding: 12px 24px; border: 0; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; }
         .btn-toggle { background: rgba(255,255,255,0.1); color: white; padding: 10px 20px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-weight: 600; margin-bottom: 20px; }
 
-        /* MODAL DE PERFIL (REDISEÑADO PREMIUM) */
+        /* MODAL DE PERFIL */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px); }
         .modal-content { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 24px; padding: 40px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .modal-content h2 { margin: 0 0 5px 0; font-family: 'Manrope', sans-serif; font-size: 24px; }
@@ -153,8 +153,8 @@
             <div class="section-header"><h2>Últimas Solicitudes</h2></div>
             <div class="table-container">
                 <table class="data-table" id="tableRecentRequests">
-                    <thead><tr><th>Fecha</th><th>Cliente</th><th>Ruta</th><th>Estado</th></tr></thead>
-                    <tbody><tr><td colspan="4" style="text-align:center;">Cargando...</td></tr></tbody>
+                    <thead><tr><th>Nombre</th><th>Ruta</th><th>Estado</th></tr></thead>
+                    <tbody><tr><td colspan="3" style="text-align:center;">Cargando...</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -164,8 +164,8 @@
             <div class="section-header"><h2>Bandeja de Solicitudes Reales</h2></div>
             <div class="table-container">
                 <table class="data-table" id="tableSolicitudesViaje">
-                    <thead><tr><th>Fecha</th><th>Nombre</th><th>Ruta</th><th>WhatsApp / Email</th><th>Acción</th></tr></thead>
-                    <tbody><tr><td colspan="5" style="text-align:center;">Cargando...</td></tr></tbody>
+                    <thead><tr><th>Nombre</th><th>Ruta</th><th>WhatsApp / Email</th><th>Acción</th></tr></thead>
+                    <tbody><tr><td colspan="4" style="text-align:center;">Cargando...</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -175,8 +175,8 @@
             <div class="section-header"><h2>Buzón de Avisos</h2></div>
             <div class="table-container">
                 <table class="data-table" id="tableAllRequests">
-                    <thead><tr><th>Fecha</th><th>Cliente</th><th>Ruta</th><th>Estado</th></tr></thead>
-                    <tbody><tr><td colspan="4" style="text-align:center;">Cargando...</td></tr></tbody>
+                    <thead><tr><th>Cliente</th><th>Ruta</th><th>Estado</th></tr></thead>
+                    <tbody><tr><td colspan="3" style="text-align:center;">Cargando...</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -189,7 +189,6 @@
                 <h3 style="margin-top:0;">Agregar Servicio</h3>
                 <div class="form-group"><label>Título</label><input type="text" placeholder="Ej: Vuelos y Conexiones"></div>
                 <div class="form-group"><label>Descripción</label><textarea rows="2"></textarea></div>
-                <div class="form-group"><label>Imagen (Opcional)</label><input type="file" accept="image/*"></div>
                 <button class="btn-primary" onclick="alert('¡Servicio guardado (simulación)!')">Confirmar y Guardar</button>
             </div>
         </div>
@@ -202,7 +201,6 @@
                 <h3 style="margin-top:0;">Agregar Producto</h3>
                 <div class="form-group"><label>Nombre</label><input type="text" placeholder="Ej: Recarga Móvil"></div>
                 <div class="form-group"><label>Precio</label><input type="number" placeholder="0.00"></div>
-                <div class="form-group"><label>Imagen</label><input type="file" accept="image/*"></div>
                 <button class="btn-primary" onclick="alert('¡Producto guardado (simulación)!')">Confirmar y Guardar</button>
             </div>
         </div>
@@ -215,7 +213,6 @@
                 <h3 style="margin-top:0;">Agregar Opinión</h3>
                 <div class="form-group"><label>Nombre del Cliente</label><input type="text"></div>
                 <div class="form-group"><label>Opinión</label><textarea rows="2"></textarea></div>
-                <div class="form-group"><label>Estrellas (1-5)</label><input type="number" min="1" max="5" value="5"></div>
                 <button class="btn-primary" onclick="alert('¡Opinión guardada (simulación)!')">Confirmar y Guardar</button>
             </div>
         </div>
@@ -225,33 +222,27 @@
             <div class="section-header"><h2>Suscriptores del Newsletter</h2></div>
             <div class="table-container">
                 <table class="data-table" id="tableSubs">
-                    <thead><tr><th>Fecha</th><th>Nombre</th><th>Email</th><th>Intereses</th></tr></thead>
-                    <tbody><tr><td colspan="4" style="text-align:center;">Cargando...</td></tr></tbody>
+                    <thead><tr><th>Nombre</th><th>Email</th><th>Intereses</th></tr></thead>
+                    <tbody><tr><td colspan="3" style="text-align:center;">Cargando...</td></tr></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- MODAL PERFIL REDISEÑADO -->
+    <!-- MODAL PERFIL -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-content">
             <h2>Mi Perfil</h2>
             <p>Personaliza tu cuenta de administrador</p>
-            
             <div class="avatar-upload-container">
                 <img id="modalAvatarPreview" src="https://ui-avatars.com/api/?name=Admin&background=66e6c4&color=07111f" class="avatar-preview">
             </div>
-            
             <label for="avatarFile" class="upload-label">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                 <span>Haz clic o arrastra tu foto aquí</span>
             </label>
             <input type="file" id="avatarFile" class="file-input" accept="image/*" onchange="previewAndUpload(event)">
-
-            <div id="uploadSuccessMsg" class="success-message">
-                ✓ Foto subida y guardada en la base de datos exitosamente.
-            </div>
-            
+            <div id="uploadSuccessMsg" class="success-message">✓ Foto subida y guardada exitosamente.</div>
             <button class="btn-close" onclick="document.getElementById('profileModal').style.display = 'none'">Cerrar</button>
         </div>
     </div>
@@ -274,13 +265,11 @@
             if (!session) window.location.href = "login.html";
             else {
                 document.getElementById('userEmailDisplay').textContent = session.user.email;
-                
                 const { data: { user } } = await window.genesisSupabase.auth.getUser();
                 if (user && user.user_metadata && user.user_metadata.avatar_url) {
                     document.getElementById('profileImg').src = user.user_metadata.avatar_url;
                     document.getElementById('modalAvatarPreview').src = user.user_metadata.avatar_url;
                 }
-                
                 loadDashboardData();
             }
         });
@@ -293,7 +282,6 @@
         async function previewAndUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) { document.getElementById('modalAvatarPreview').src = e.target.result; };
             reader.readAsDataURL(file);
@@ -301,94 +289,66 @@
             const fileExt = file.name.split('.').pop();
             const fileName = `avatar-${Date.now()}.${fileExt}`;
             const filePath = `${fileName}`;
-
             const uploadLabel = document.querySelector('.upload-label span');
             const originalText = uploadLabel.textContent;
-            uploadLabel.textContent = "Subiendo foto...";
+            uploadLabel.textContent = "Subiendo...";
 
             try {
-                const { data: uploadData, error: uploadError } = await window.genesisSupabase.storage
-                    .from('avatars')
-                    .upload(filePath, file, { cacheControl: '3600', upsert: true });
-
+                const { error: uploadError } = await window.genesisSupabase.storage.from('avatars').upload(filePath, file, { cacheControl: '3600', upsert: true });
                 if (uploadError) throw uploadError;
-
                 const { data: publicUrlData } = window.genesisSupabase.storage.from('avatars').getPublicUrl(filePath);
                 const publicUrl = publicUrlData.publicUrl;
-
-                const { error: updateError } = await window.genesisSupabase.auth.updateUser({
-                    data: { avatar_url: publicUrl }
-                });
-
+                const { error: updateError } = await window.genesisSupabase.auth.updateUser({ data: { avatar_url: publicUrl } });
                 if (updateError) throw updateError;
 
                 document.getElementById('profileImg').src = publicUrl;
                 document.getElementById('uploadSuccessMsg').style.display = 'block';
-
-                setTimeout(() => {
-                    document.getElementById('uploadSuccessMsg').style.display = 'none';
-                }, 3000);
-
+                setTimeout(() => { document.getElementById('uploadSuccessMsg').style.display = 'none'; }, 3000);
             } catch (error) {
-                console.error("Error al subir:", error);
-                alert("❌ Error al subir la foto. Verifica el bucket 'avatars' en Supabase.");
+                alert("❌ Error al subir foto.");
             } finally {
                 uploadLabel.textContent = originalText;
             }
         }
 
-        // --- 2. CONTACTO INTELIGENTE ---
+        // --- 2. CONTACTO ---
         function openContactModal(name, wa, email, origin, destination, type) {
             document.getElementById('contactNameDisplay').textContent = name || 'Cliente';
-            
             let smartMessage = `Hola ${name || ''}, le saludamos de GÉNESIS GLOBAL. `;
             if (destination.toLowerCase().includes('cuba')) {
-                smartMessage += `Vimos que quiere viajar a Cuba desde ${origin}. ¡Estamos listos para ayudarle a organizar ese reencuentro familiar! `;
-            } else if (destination.toLowerCase().includes('brasil')) {
-                smartMessage += `Vimos que su destino es Brasil. Podemos ayudarle a encontrar el mejor vuelo y alojamiento. `;
+                smartMessage += `Vimos que quiere viajar a Cuba desde ${origin}. ¡Estamos listos para ayudarle! `;
             } else {
                 smartMessage += `Hemos recibido su solicitud para viajar a ${destination}. `;
             }
-            if (type.toLowerCase().includes('familiar')) {
-                smartMessage += `Entendemos que es una visita familiar y nos encargaremos de que todo sea muy seguro.`;
-            } else {
-                smartMessage += `Estamos a su disposición para cualquier consulta.`;
-            }
-
             document.getElementById('smartMessagePreview').textContent = smartMessage;
 
             const container = document.getElementById('contactOptions');
             container.innerHTML = '';
             let hasOption = false;
-
             if (wa && wa !== 'null' && wa.trim() !== '') {
                 const cleanWa = wa.replace(/\D/g, '');
                 container.innerHTML += `<a href="https://wa.me/${cleanWa}?text=${encodeURIComponent(smartMessage)}" target="_blank" class="contact-btn contact-wa">Enviar WhatsApp</a>`;
                 hasOption = true;
             }
             if (email && email !== 'null' && email.trim() !== '') {
-                container.innerHTML += `<a href="mailto:${email}?subject=Respuesta de GÉNESIS GLOBAL&body=${encodeURIComponent(smartMessage)}" class="contact-btn contact-email">Enviar Correo</a>`;
+                container.innerHTML += `<a href="mailto:${email}?subject=Respuesta GÉNESIS GLOBAL&body=${encodeURIComponent(smartMessage)}" class="contact-btn contact-email">Enviar Correo</a>`;
                 hasOption = true;
             }
             if (!hasOption) container.innerHTML = `<p style="color:#ff6b6b;">No hay datos de contacto.</p>`;
-
             document.getElementById('contactModal').style.display = 'flex';
         }
 
-        // --- 3. NAVEGACIÓN Y TABLAS ---
+        // --- 3. NAVEGACIÓN ---
         function showTab(tabName, element) {
             document.querySelectorAll('.nav-item').forEach(a => a.classList.remove('active'));
             if (element) element.classList.add('active');
             document.querySelectorAll('[id^="tab-"]').forEach(div => div.style.display = 'none');
             document.getElementById('tab-' + tabName).style.display = 'block';
-            const titles = { 
-                'dashboard': 'Resumen General', 'solicitudes': 'Solicitudes de Viaje', 
-                'mensajes': 'Mensajes (Avisos)', 'servicios': 'Servicios', 
-                'otros-servicios': 'Otros Servicios', 'opiniones': 'Opiniones', 'newsletter': 'Suscriptores' 
-            };
+            const titles = { 'dashboard': 'Resumen General', 'solicitudes': 'Solicitudes de Viaje', 'mensajes': 'Mensajes', 'servicios': 'Servicios', 'otros-servicios': 'Otros Servicios', 'opiniones': 'Opiniones', 'newsletter': 'Suscriptores' };
             document.getElementById('pageTitle').textContent = titles[tabName];
         }
 
+        // --- 4. CARGAR DATOS (LA CLAVE DEL ARREGLO) ---
         async function loadDashboardData() {
             const supabase = window.genesisSupabase;
             
@@ -400,41 +360,39 @@
             document.getElementById('statRequests').textContent = reqs || 0;
             document.getElementById('statSubs').textContent = subs || 0;
 
-            // Tabla Recientes
-            const { data: recent } = await supabase.from('solicitudes_viaje').select('*').order('created_at', { ascending: false }).limit(5);
-            const tbodyRecent = document.querySelector('#tableRecentRequests tbody');
-            if (recent && recent.length > 0) {
-                tbodyRecent.innerHTML = recent.map(r => `<tr><td>${new Date(r.created_at).toLocaleDateString()}</td><td>${r.nombre}</td><td>${r.origen} → ${r.destino}</td><td><span class="badge">${r.status || 'Recibida'}</span></td></tr>`).join('');
-            } else { tbodyRecent.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay solicitudes.</td></tr>'; }
-
-            // Tabla Solicitudes (La nueva)
-            const { data: allSol } = await supabase.from('solicitudes_viaje').select('*').order('created_at', { ascending: false });
+            // LA SOLUCIÓN: Quitamos el "order('created_at')" para que lea los datos tal cual.
+            const { data: allSol } = await supabase.from('solicitudes_viaje').select('*');
             const tbodySol = document.querySelector('#tableSolicitudesViaje tbody');
             if (allSol && allSol.length > 0) {
                 tbodySol.innerHTML = allSol.map(r => `
                     <tr>
-                        <td>${new Date(r.created_at).toLocaleDateString()}</td>
-                        <td>${r.nombre}</td>
-                        <td>${r.origen} → ${r.destino}</td>
-                        <td>${r.whatsapp || r.email}</td>
+                        <td>${r.nombre || 'Sin nombre'}</td>
+                        <td>${r.origen || '?'} → ${r.destino || '?'}</td>
+                        <td>${r.whatsapp || r.email || 'Sin contacto'}</td>
                         <td><span class="btn-contact" onclick="openContactModal('${r.nombre}', '${r.whatsapp}', '${r.email}', '${r.origen}', '${r.destino}', '${r.tipo_viaje}')">Contactar</span></td>
                     </tr>
                 `).join('');
-            } else { tbodySol.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay datos.</td></tr>'; }
+            } else { tbodySol.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay datos.</td></tr>'; }
 
-            // Tabla Avisos Mensajes
-            const { data: allReq } = await supabase.from('travel_requests').select('*').order('created_at', { ascending: false });
+            // Tabla Dashboard Recientes
+            const tbodyRecent = document.querySelector('#tableRecentRequests tbody');
+            if (allSol && allSol.length > 0) {
+                tbodyRecent.innerHTML = allSol.slice(0, 5).map(r => `<tr><td>${r.nombre || 'Sin nombre'}</td><td>${r.origen || '?'} → ${r.destino || '?'}</td><td><span class="badge">Recibida</span></td></tr>`).join('');
+            } else { tbodyRecent.innerHTML = '<tr><td colspan="3" style="text-align:center;">No hay solicitudes.</td></tr>'; }
+
+            // Tabla Mensajes
+            const { data: allReq } = await supabase.from('travel_requests').select('*');
             const tbodyAll = document.querySelector('#tableAllRequests tbody');
             if (allReq && allReq.length > 0) {
-                tbodyAll.innerHTML = allReq.map(r => `<tr><td>${new Date(r.created_at).toLocaleDateString()}</td><td>${r.name || 'Cliente Web'}</td><td>${r.origin} → ${r.destination}</td><td><span class="badge">${r.status || 'Recibida'}</span></td></tr>`).join('');
-            } else { tbodyAll.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay avisos.</td></tr>'; }
+                tbodyAll.innerHTML = allReq.map(r => `<tr><td>${r.name || r.client_id || 'Cliente'}</td><td>${r.origin} → ${r.destination}</td><td><span class="badge">Recibida</span></td></tr>`).join('');
+            } else { tbodyAll.innerHTML = '<tr><td colspan="3" style="text-align:center;">No hay avisos.</td></tr>'; }
 
             // Tabla Suscriptores
             const { data: subsData } = await supabase.from('newsletter_subscribers').select('*');
             const tbodySubs = document.querySelector('#tableSubs tbody');
             if (subsData && subsData.length > 0) {
-                tbodySubs.innerHTML = subsData.map(s => `<tr><td>${new Date(s.created_at).toLocaleDateString()}</td><td>${s.name || '-'}</td><td>${s.email}</td><td><span class="badge">${s.interests || 'Todos'}</span></td></tr>`).join('');
-            } else { tbodySubs.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay suscriptores.</td></tr>'; }
+                tbodySubs.innerHTML = subsData.map(s => `<tr><td>${s.name || '-'}</td><td>${s.email}</td><td><span class="badge">${s.interests || 'Todos'}</span></td></tr>`).join('');
+            } else { tbodySubs.innerHTML = '<tr><td colspan="3" style="text-align:center;">No hay suscriptores.</td></tr>'; }
         }
 
         async function logout() {
