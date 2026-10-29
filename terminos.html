@@ -44,7 +44,6 @@
             <a href="servicios.html">Servicios</a>
             <a href="como-funciona.html">Cómo funciona</a>
             <a href="nosotros.html">Nosotros</a>
-           
             <a href="otros-servicios.html">Otros Servicios</a>
         </div>
         <div class="nav-actions">
@@ -100,22 +99,39 @@
         </div>
         <div class="shell copy">
             <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
-                       <span>
+            <span>
                 <a href="faq.html">FAQ</a> &middot;
                 <a href="help-center.html">Help Center</a> &middot;
                 <a href="privacidad.html">Política de Privacidad</a> &middot;
-                <a href="terminos.html">Términos y Condiciones</a> &middot;
-                <a href="cookies.html" style="color: var(--accent);">Política de Cookies</a>
+                <a href="terminos.html" style="color: var(--accent);">Términos y Condiciones</a> &middot;
+                <a href="cookies.html">Política de Cookies</a>
             </span>
         </div>
     </footer>
 
+    <script src="i18n.js"></script>
     <script>
         function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        const pageTranslations = {
+            es: { title: 'Términos y <span class="text-gradient">Condiciones</span>' },
+            en: { title: 'Terms and <span class="text-gradient">Conditions</span>' },
+            pt: { title: 'Termos e <span class="text-gradient">Condições</span>' }
+        };
+
+        function applyPageTranslation(lang) {
+            const t = pageTranslations[lang] || pageTranslations.es;
+            const h1 = document.querySelector('.legal-page h1');
+            if (h1) h1.innerHTML = t.title;
+        }
+
+        const langObserver = new MutationObserver(() => applyPageTranslation(document.documentElement.lang || 'es'));
+        langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+        document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
     </script>
 </body>
 </html>
