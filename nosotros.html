@@ -63,11 +63,13 @@
             box-shadow: 0 10px 30px rgba(102, 230, 196, 0.05);
         }
 
+        /* --- MEJORA PROFESIONAL DE LAS FOTOS --- */
         .team-card img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
+            width: 100px; /* Un poco más grande */
+            height: 110px; /* Ligeramente más alto que ancho (formato retrato) */
+            border-radius: 16px; /* Bordes suaves redondeados, no un círculo perfecto */
             object-fit: cover;
+            object-position: top center; /* Enfoca la parte superior (la cara) */
             border: 2px solid var(--accent);
             margin-bottom: 15px;
             background: #0a1727;
