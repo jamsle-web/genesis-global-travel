@@ -145,7 +145,7 @@
                 <p style="color:#9db0c7;max-width:350px;">Completa los datos y nosotros organizamos el resto.</p>
             </div>
 
-            <!-- PASO 1: Origen y Destino -->
+            <!-- PASO 1 -->
             <div id="step1" class="planner-step active">
                 <div class="search-row">
                     <div class="search-field input-with-icon">
@@ -168,7 +168,7 @@
                 </div>
             </div>
 
-            <!-- PASO 2: Detalles del viaje -->
+            <!-- PASO 2 -->
             <div id="step2" class="planner-step">
                 <div class="detail-grid">
                     <div class="detail-field input-with-icon">
@@ -208,7 +208,7 @@
                 </div>
             </div>
 
-            <!-- PASO 3: Datos Personales -->
+            <!-- PASO 3 -->
             <div id="step3" class="planner-step">
                 <div class="detail-grid">
                     <div class="detail-field full input-with-icon">
@@ -243,7 +243,7 @@
                 </div>
             </div>
 
-            <!-- PASO 4: Resumen -->
+            <!-- PASO 4 -->
             <div id="step4" class="planner-step">
                 <div class="summary-card" id="summaryContent"></div>
                 <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
@@ -306,7 +306,7 @@
     </footer>
 
     <!-- ============================================================ -->
-    <!-- SCRIPT DEL GLOBO 3D (INCLUIDO) -->
+    <!-- SCRIPT DEL GLOBO 3D (CON MEJORAS REALISTAS) -->
     <script type="module">
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -350,7 +350,9 @@
         scene.add(backLight);
 
         const textureLoader = new THREE.TextureLoader();
-        const earthMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_4096.jpg');
+        
+        // --- MEJORA 1: Textura más realista (Blue Marble) ---
+        const earthMap = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
 
         const earthGeo = new THREE.SphereGeometry(1, 64, 64);
         const earthMat = new THREE.MeshPhongMaterial({
@@ -363,6 +365,18 @@
         });
         const earth = new THREE.Mesh(earthGeo, earthMat);
         scene.add(earth);
+
+        // --- MEJORA 2: Atmósfera (Halo azul) ---
+        const atmosphereMaterial = new THREE.MeshPhongMaterial({
+            color: 0x82a9ff,
+            transparent: true,
+            opacity: 0.15,
+            side: THREE.BackSide,
+            blending: THREE.AdditiveBlending
+        });
+        const atmosphereGeometry = new THREE.SphereGeometry(1.02, 64, 64);
+        const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+        scene.add(atmosphere);
 
         let worldFeatures = [];
         let countryBorders = null;
