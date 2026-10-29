@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Buscar Alojamiento | GÉNESIS GLOBAL</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <style>
+        .hero-flights { padding: 140px 0 60px; text-align: center; }
+        .hero-flights h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
+        .hero-flights p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
+
+        .search-box {
+            background: var(--glass); border: 1px solid var(--border); border-radius: 24px;
+            padding: 40px; max-width: 1000px; margin: -30px auto 60px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4); position: relative; z-index: 10;
+        }
+        
+        .search-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 15px; align-items: end; }
+
+        .input-group { display: flex; flex-direction: column; position: relative; width: 100%; }
+        .input-group label { font-size: 11px; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; margin-left: 10px; }
+        .input-group input, .input-group select {
+            background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px;
+            padding: 16px 16px 16px 45px; color: #fff; font-family: inherit; font-size: 15px;
+            outline: none; transition: all 0.3s; width: 100%;
+        }
+        .input-group input:focus, .input-group select:focus { border-color: var(--accent); background: rgba(102, 230, 196, 0.05); }
+        .input-group svg { position: absolute; left: 15px; bottom: 16px; width: 20px; height: 20px; stroke: var(--text-muted); pointer-events: none; }
+        .input-group input:focus + svg, .input-group select:focus + svg { stroke: var(--accent); }
+
+        .search-form button { height: 54px; padding: 0 30px; font-size: 16px; border-radius: 12px; margin-bottom: 1px; white-space: nowrap; }
+
+        @media (max-width: 900px) {
+            .search-form { grid-template-columns: 1fr; }
+            .search-form button { width: 100%; margin-top: 10px; }
+            .search-box { margin: -30px 20px 40px; padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav shell" id="nav">
+        <a href="index.html" class="brand">
+            <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+            <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
+        </a>
+        <div id="links" class="links">
+            <a href="index.html">Inicio</a>
+            <a href="servicios.html" style="color: var(--accent);">Servicios</a>
+            <a href="como-funciona.html">Cómo funciona</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="otros-servicios.html">Otros Servicios</a>
+        </div>
+        <div class="nav-actions">
+            <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
+        </div>
+        <button class="menu" onclick="toggleMenu()">☰</button>
+    </nav>
+
+    <section class="hero-flights shell reveal">
+        <span class="kicker">Alojamiento</span>
+        <h1>Encuentra tu <span class="text-gradient">hotel o casa.</span></h1>
+        <p>Buscamos las mejores opciones de alojamiento para que tu estancia sea perfecta.</p>
+    </section>
+
+    <section class="shell reveal">
+        <div class="search-box">
+            <form class="search-form" id="hotelSearchForm">
+                <div class="input-group">
+                    <label>Destino</label>
+                    <input type="text" id="destination" placeholder="Ciudad o País" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div class="input-group">
+                    <label>Llegada</label>
+                    <input type="date" id="checkinDate" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <div class="input-group">
+                    <label>Salida</label>
+                    <input type="date" id="checkoutDate" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <button type="submit" class="primary">Buscar Hoteles</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="shell footer-grid">
+            <div>
+                <div class="brand" style="cursor:default;">
+                    <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
+                    <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
+                </div>
+                <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
+            </div>
+            <div>
+                <h4>Empresa</h4>
+                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
+            </div>
+            <div>
+                <h4>Contacto Directo</h4>
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
+            </div>
+        </div>
+        <div class="shell copy">
+            <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
+            <span>
+                <a href="faq.html">FAQ</a> &middot;
+                <a href="help-center.html">Help Center</a> &middot;
+                <a href="privacidad.html">Privacidad</a> &middot;
+                <a href="terminos.html">Términos</a> &middot;
+                <a href="cookies.html">Cookies</a> &middot;
+                <a href="newsletter.html">Newsletter</a>
+            </span>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Redirigir a Booking.com (o cualquier buscador de hoteles)
+        document.getElementById('hotelSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const dest = document.getElementById('destination').value.trim();
+            const checkin = document.getElementById('checkinDate').value;
+            const checkout = document.getElementById('checkoutDate').value;
+
+            // Abrir Booking.com con los datos de búsqueda
+            const bookingUrl = `https://www.booking.com/searchresults.es.html?ss=${encodeURIComponent(dest)}&checkin=${checkin}&checkout=${checkout}`;
+            window.open(bookingUrl, '_blank');
+        });
+    </script>
+</body>
+</html>
