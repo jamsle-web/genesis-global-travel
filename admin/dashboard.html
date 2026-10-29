@@ -54,6 +54,7 @@
         .data-table { width: 100%; border-collapse: collapse; text-align: left; }
         .data-table th { padding: 16px 24px; font-size: 12px; color: var(--text-soft); text-transform: uppercase; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.2); }
         .data-table td { padding: 16px 24px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--text); }
+        .data-table img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
         .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(102, 230, 196, 0.1); color: var(--accent); }
         .btn-contact { color: var(--accent); cursor: pointer; text-decoration: underline; font-weight: 600; }
 
@@ -64,16 +65,7 @@
         .form-group label { display: block; font-size: 12px; color: var(--text-soft); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: white; font-family: inherit; box-sizing: border-box; }
         
-        /* Zona de subida de imágenes en formularios */
-        .image-upload-box {
-            border: 2px dashed rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            background: rgba(0,0,0,0.1);
-        }
+        .image-upload-box { border: 2px dashed rgba(255,255,255,0.1); border-radius: 12px; padding: 30px; text-align: center; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.1); }
         .image-upload-box:hover { border-color: var(--accent); background: rgba(102, 230, 196, 0.05); }
         .image-upload-box svg { width: 30px; height: 30px; stroke: var(--text-soft); margin-bottom: 10px; }
         .image-upload-box span { display: block; font-size: 13px; color: var(--text-soft); }
@@ -81,6 +73,9 @@
         .btn-primary { background: var(--accent); color: var(--bg); padding: 14px 28px; border: 0; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 10px; font-size: 14px; }
         .btn-toggle { background: rgba(255,255,255,0.05); color: var(--text); padding: 12px 24px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-weight: 700; margin-bottom: 25px; transition: 0.3s; }
         .btn-toggle:hover { background: rgba(255,255,255,0.1); }
+        
+        .btn-edit { color: var(--accent); cursor: pointer; font-weight: 600; margin-right: 10px; }
+        .btn-delete { color: #ff6b6b; cursor: pointer; font-weight: 600; }
 
         /* MODAL DE PERFIL */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px); }
@@ -222,23 +217,41 @@
             </div>
         </div>
 
-        <!-- OTROS SERVICIOS (PRODUCTOS) -->
+        <!-- OTROS SERVICIOS (PRODUCTOS REALES) -->
         <div id="tab-otros-servicios" style="display: none;">
             <div class="section-header"><h2>Gestión de Productos</h2></div>
-            <button class="btn-toggle" onclick="document.getElementById('formProduct').classList.toggle('active')">+ Agregar Producto</button>
+            <button class="btn-toggle" onclick="document.getElementById('formProduct').classList.toggle('active')">+ Agregar Nuevo Producto</button>
+            
             <div id="formProduct" class="admin-form">
-                <h3 style="margin-top:0;">Agregar Producto</h3>
+                <h3 style="margin-top:0;">Agregar / Editar Producto</h3>
+                <input type="hidden" id="productId">
+                
                 <div class="form-group">
-                    <label>Imagen del Producto / Cover</label>
+                    <label>Imagen del Producto</label>
                     <div class="image-upload-box" onclick="document.getElementById('productImage').click()">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                        <span>Haz clic para subir la imagen del producto</span>
+                        <span id="imageLabel">Haz clic para subir la foto</span>
                     </div>
-                    <input type="file" id="productImage" style="display:none;" accept="image/*">
+                    <input type="file" id="productImage" style="display:none;" accept="image/*" onchange="document.getElementById('imageLabel').textContent = event.target.files[0].name">
                 </div>
-                <div class="form-group"><label>Nombre del Producto</label><input type="text" placeholder="Ej: Recarga Móvil"></div>
-                <div class="form-group"><label>Precio</label><input type="number" placeholder="0.00"></div>
-                <button class="btn-primary" onclick="alert('¡Producto guardado (simulación)!')">Confirmar y Guardar</button>
+                
+                <div class="form-group"><label>Nombre del Producto</label><input type="text" id="productName" placeholder="Ej: Combo Estándar"></div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group"><label>Precio en USD ($)</label><input type="number" id="productPriceUsd" placeholder="40.00" step="0.01"></div>
+                    <div class="form-group"><label>Precio en Real (R$)</label><input type="number" id="productPriceBrl" placeholder="200.00" step="0.01"></div>
+                </div>
+
+                <div class="form-group"><label>Descripción</label><textarea id="productDesc" rows="2" placeholder="Incluye: 5 latas de atún..."></textarea></div>
+                
+                <button class="btn-primary" onclick="saveProduct()">Confirmar y Guardar</button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="tableProducts">
+                    <thead><tr><th>Imagen</th><th>Producto</th><th>Precio USD</th><th>Precio BRL</th><th>Acciones</th></tr></thead>
+                    <tbody><tr><td colspan="5" style="text-align:center;">Cargando...</td></tr></tbody>
+                </table>
             </div>
         </div>
 
@@ -383,7 +396,6 @@
             }
             
             if (email && email !== 'null' && email.trim() !== '') {
-                // Arreglo del mailto para que abra la app correctamente
                 const mailtoLink = `mailto:${email.trim()}?subject=${encodeURIComponent('Respuesta de GÉNESIS GLOBAL')}&body=${encodeURIComponent(smartMessage)}`;
                 container.innerHTML += `
                     <a href="${mailtoLink}" class="contact-btn contact-email">
@@ -405,9 +417,11 @@
             document.getElementById('tab-' + tabName).style.display = 'block';
             const titles = { 'dashboard': 'Resumen General', 'solicitudes': 'Solicitudes de Viaje', 'mensajes': 'Mensajes', 'servicios': 'Servicios', 'otros-servicios': 'Otros Servicios', 'opiniones': 'Opiniones', 'newsletter': 'Suscriptores' };
             document.getElementById('pageTitle').textContent = titles[tabName];
+            
+            if(tabName === 'otros-servicios') loadProducts();
         }
 
-        // --- 4. CARGAR DATOS ---
+        // --- 4. CARGAR DATOS GENERALES ---
         async function loadDashboardData() {
             const supabase = window.genesisSupabase;
             
@@ -448,6 +462,99 @@
             if (subsData && subsData.length > 0) {
                 tbodySubs.innerHTML = subsData.map(s => `<tr><td>${s.name || '-'}</td><td>${s.email}</td><td><span class="badge">${s.interests || 'Todos'}</span></td></tr>`).join('');
             } else { tbodySubs.innerHTML = '<tr><td colspan="3" style="text-align:center;">No hay suscriptores.</td></tr>'; }
+        }
+
+        // --- 5. GESTIÓN DE PRODUCTOS (REAL) ---
+        async function loadProducts() {
+            const supabase = window.genesisSupabase;
+            const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+            
+            const tbody = document.querySelector('#tableProducts tbody');
+            if (data && data.length > 0) {
+                tbody.innerHTML = data.map(p => `
+                    <tr>
+                        <td><img src="${p.image_url || 'https://via.placeholder.com/50'}" alt="${p.name}"></td>
+                        <td>${p.name}</td>
+                        <td>$${p.price_usd || '0.00'}</td>
+                        <td>R$ ${p.price_brl || '0.00'}</td>
+                        <td>
+                            <span class="btn-edit" onclick="editProduct('${p.id}')">Editar</span>
+                            <span class="btn-delete" onclick="deleteProduct('${p.id}')">Eliminar</span>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay productos. Agrega el primero.</td></tr>';
+            }
+        }
+
+        async function saveProduct() {
+            const id = document.getElementById('productId').value;
+            const name = document.getElementById('productName').value;
+            const priceUsd = document.getElementById('productPriceUsd').value;
+            const priceBrl = document.getElementById('productPriceBrl').value;
+            const description = document.getElementById('productDesc').value;
+            const imageFile = document.getElementById('productImage').files[0];
+
+            if (!name) { alert('El nombre es obligatorio'); return; }
+
+            let imageUrl = null;
+
+            if (imageFile) {
+                const fileExt = imageFile.name.split('.').pop();
+                const fileName = `product-${Date.now()}.${fileExt}`;
+                const { error: uploadError } = await window.genesisSupabase.storage.from('avatars').upload(fileName, imageFile);
+                if (uploadError) { alert("Error subiendo imagen"); return; }
+                const { data: urlData } = window.genesisSupabase.storage.from('avatars').getPublicUrl(fileName);
+                imageUrl = urlData.publicUrl;
+            }
+
+            const productData = {
+                name: name,
+                price_usd: parseFloat(priceUsd) || 0,
+                price_brl: parseFloat(priceBrl) || 0,
+                description: description,
+                ...(imageUrl && { image_url: imageUrl })
+            };
+
+            if (id) {
+                await window.genesisSupabase.from('products').update(productData).eq('id', id);
+            } else {
+                await window.genesisSupabase.from('products').insert([productData]);
+            }
+
+            alert('¡Producto guardado exitosamente!');
+            document.getElementById('formProduct').classList.remove('active');
+            clearForm();
+            loadProducts();
+        }
+
+        function clearForm() {
+            document.getElementById('productId').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('productPriceUsd').value = '';
+            document.getElementById('productPriceBrl').value = '';
+            document.getElementById('productDesc').value = '';
+            document.getElementById('imageLabel').textContent = 'Haz clic para subir la foto';
+        }
+
+        async function editProduct(id) {
+            const { data, error } = await window.genesisSupabase.from('products').select('*').eq('id', id).single();
+            if (data) {
+                document.getElementById('productId').value = data.id;
+                document.getElementById('productName').value = data.name;
+                document.getElementById('productPriceUsd').value = data.price_usd;
+                document.getElementById('productPriceBrl').value = data.price_brl;
+                document.getElementById('productDesc').value = data.description || '';
+                document.getElementById('formProduct').classList.add('active');
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (confirm('¿Estás seguro de eliminar este producto?')) {
+                await window.genesisSupabase.from('products').delete().eq('id', id);
+                loadProducts();
+            }
         }
 
         async function logout() {
