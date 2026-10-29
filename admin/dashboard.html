@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard | GÉNESIS GLOBAL</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Ruta relativa corregida -->
+    <script src="../supabase-client.js"></script>
+
+    <style>
+        :root {
+            --bg: #06101d;
+            --bg-secondary: #0a1727;
+            --accent: #66e6c4;
+            --text: #f3f8ff;
+            --text-soft: #9db0c7;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h2 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: var(--accent);
+            text-align: center;
+        }
+        .sidebar a {
+            display: block;
+            color: var(--text-soft);
+            text-decoration: none;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background: rgba(102, 230, 196, 0.1);
+            color: var(--accent);
+        }
+        .logout-btn {
+            margin-top: auto;
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+        .logout-btn:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .header h1 { font-family: 'Manrope', sans-serif; font-size: 28px; margin: 0; }
+        .user-email { color: var(--text-soft); font-size: 14px; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+        }
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: var(--text-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .stat-card .number {
+            font-size: 36px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        /* Tables */
+        .section-title {
+            font-family: 'Manrope', sans-serif;
+            font-size: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .data-table th {
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-soft);
+            font-weight: 600;
+        }
+        .data-table tr:hover { background: rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>GÉNESIS GLOBAL<br><small style="font-size:10px;color:var(--text-soft);">Admin Panel</small></h2>
+        <a class="active" onclick="showTab('dashboard')">📊 Dashboard</a>
+        <a onclick="showTab('mensajes')">✉️ Mensajes / Solicitudes</a>
+        <a onclick="showTab('newsletter')">👥 Suscriptores</a>
+        <a onclick="showTab('contenido')">📝 Editar Contenido</a>
+        <a class="logout-btn" onclick="logout()">🚪 Cerrar Sesión</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1 id="pageTitle">Dashboard</h1>
+            <div class="user-email" id="userEmail">Cargando...</div>
+        </div>
+
+        <!-- SECCIÓN: DASHBOARD -->
+        <div id="tab-dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Visitas Totales</h3>
+                    <div class="number" id="statVisits">...</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Solicitudes de Viaje</h3>
+                    <div class="number" id="statRequests">...</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Suscriptores</h3>
+                    <div class="number" id="statSubs">...</div>
+                </div>
+            </div>
+            <h2 class="section-title">Últimas Solicitudes</h2>
+            <table class="data-table" id="tableRecentRequests">
+                <thead><tr><th>Fecha</th><th>Nombre</th><th>Origen</th><th>Destino</th></tr></thead>
+                <tbody><tr><td colspan="4">Cargando datos...</td></tr></tbody>
+            </table>
+        </div>
+
+        <!-- SECCIÓN: MENSAJES -->
+        <div id="tab-mensajes" style="display: none;">
+            <h2 class="section-title">Todas las Solicitudes de Viaje</h2>
+            <table class="data-table" id="tableAllRequests">
+                <thead><tr><th>Fecha</th><th>Nombre</th><th>WhatsApp</th><th>Origen</th><th>Destino</th></tr></thead>
+                <tbody><tr><td colspan="5">Cargando datos...</td></tr></tbody>
+            </table>
+        </div>
+
+        <!-- SECCIÓN: NEWSLETTER -->
+        <div id="tab-newsletter" style="display: none;">
+            <h2 class="section-title">Lista de Suscriptores</h2>
+            <table class="data-table" id="tableSubs">
+                <thead><tr><th>Fecha</th><th>Nombre</th><th>Email</th><th>Intereses</th></tr></thead>
+                <tbody><tr><td colspan="4">Cargando datos...</td></tr></tbody>
+            </table>
+        </div>
+
+        <!-- SECCIÓN: EDITAR CONTENIDO -->
+        <div id="tab-contenido" style="display: none;">
+            <h2 class="section-title">Editor de Textos (Próximamente)</h2>
+            <p style="color: var(--text-soft);">Aquí podrás editar los textos de las secciones del sitio web de forma visual.</p>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. PROTECCIÓN DE RUTA ---
+        window.genesisSupabase.auth.getSession().then(({ data: { session } }) => {
+            if (!session) {
+                window.location.href = "login.html"; // Te expulsa al login de la misma carpeta
+            } else {
+                document.getElementById('userEmail').textContent = session.user.email;
+                loadDashboardData();
+            }
+        });
+
+        window.genesisSupabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT') { window.location.href = "login.html"; }
+        });
+
+        // --- 2. CERRAR SESIÓN ---
+        async function logout() {
+            await window.genesisSupabase.auth.signOut();
+            window.location.href = "login.html";
+        }
+
+        // --- 3. NAVEGACIÓN ---
+        function showTab(tabName) {
+            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('[id^="tab-"]').forEach(div => div.style.display = 'none');
+            document.getElementById('tab-' + tabName).style.display = 'block';
+
+            const titles = { 'dashboard': 'Dashboard', 'mensajes': 'Mensajes', 'newsletter': 'Suscriptores', 'contenido': 'Editar Contenido' };
+            document.getElementById('pageTitle').textContent = titles[tabName];
+        }
+
+        // --- 4. CARGAR DATOS ---
+        async function loadDashboardData() {
+            const supabase = window.genesisSupabase;
+
+            const { count: visits } = await supabase.from('site_page_views').select('*', { count: 'exact', head: true });
+            const { count: requests } = await supabase.from('travel_requests').select('*', { count: 'exact', head: true });
+            const { count: subs } = await supabase.from('newsletter_subscribers').select('*', { count: 'exact', head: true });
+
+            document.getElementById('statVisits').textContent = visits || 0;
+            document.getElementById('statRequests').textContent = requests || 0;
+            document.getElementById('statSubs').textContent = subs || 0;
+
+            const { data: recentReq } = await supabase.from('travel_requests').select('*').order('created_at', { ascending: false }).limit(5);
+            const tbodyRecent = document.querySelector('#tableRecentRequests tbody');
+            if (recentReq && recentReq.length > 0) {
+                tbodyRecent.innerHTML = recentReq.map(r => `
+                    <tr>
+                        <td>${new Date(r.created_at).toLocaleDateString()}</td>
+                        <td>${r.nombre}</td>
+                        <td>${r.origen}</td>
+                        <td>${r.destino}</td>
+                    </tr>
+                `).join('');
+            } else {
+                tbodyRecent.innerHTML = '<tr><td colspan="4">No hay solicitudes aún.</td></tr>';
+            }
+
+            const { data: allReq } = await supabase.from('travel_requests').select('*').order('created_at', { ascending: false });
+            const tbodyAll = document.querySelector('#tableAllRequests tbody');
+            if (allReq && allReq.length > 0) {
+                tbodyAll.innerHTML = allReq.map(r => `
+                    <tr>
+                        <td>${new Date(r.created_at).toLocaleDateString()}</td>
+                        <td>${r.nombre}</td>
+                        <td><a href="https://wa.me/${r.whatsapp.replace(/\D/g,'')}" target="_blank" style="color:var(--accent);">${r.whatsapp}</a></td>
+                        <td>${r.origen}</td>
+                        <td>${r.destino}</td>
+                    </tr>
+                `).join('');
+            } else {
+                tbodyAll.innerHTML = '<tr><td colspan="5">No hay solicitudes.</td></tr>';
+            }
+
+            const { data: subsData } = await supabase.from('newsletter_subscribers').select('*').order('created_at', { ascending: false });
+            const tbodySubs = document.querySelector('#tableSubs tbody');
+            if (subsData && subsData.length > 0) {
+                tbodySubs.innerHTML = subsData.map(s => `
+                    <tr>
+                        <td>${new Date(s.created_at).toLocaleDateString()}</td>
+                        <td>${s.name || '-'}</td>
+                        <td>${s.email}</td>
+                        <td>${s.interests || '-'}</td>
+                    </tr>
+                `).join('');
+            } else {
+                tbodySubs.innerHTML = '<tr><td colspan="4">No hay suscriptores.</td></tr>';
+            }
+        }
+    </script>
+</body>
+</html>
