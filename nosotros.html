@@ -203,47 +203,6 @@
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        const pageTranslations = {
-            es: {
-                kicker: "Nuestra Historia", title: 'Una marca creada para <br><span class="text-gradient">acercar personas.</span>',
-                subtitle: "Más que una agencia de viajes, un puente hacia tu familia.",
-                p1: "En GÉNESIS GLOBAL creemos firmemente que la distancia geográfica nunca debe ser más fuerte que los lazos familiares. Nacimos con la misión de facilitar los reencuentros, especialmente para aquellos que necesitan viajar entre Cuba, Brasil, Guyana y otras regiones.",
-                p2: "Nuestra tecnología y nuestro equipo humano trabajan de la mano para ofrecerte un proceso transparente, seguro y lleno de empatía. No solo gestionamos vuelos y documentos; gestionamos tranquilidad para que tu único pensamiento sea el abrazo que te espera al llegar.",
-                roleJamsle: "Tecnología &<br>Developer", roleArlen: "Marketing &<br>Redes Sociales", roleAntonio: "Administrador", roleAlber: "Dirección &<br>Estrategia CEO"
-            },
-            en: {
-                kicker: "Our Story", title: 'A brand created to <br><span class="text-gradient">bring people closer.</span>',
-                subtitle: "More than a travel agency, a bridge to your family.",
-                p1: "At GÉNESIS GLOBAL we firmly believe that geographic distance should never be stronger than family ties. We were born with the mission of facilitating reunions, especially for those who need to travel between Cuba, Brazil, Guyana and other regions.",
-                p2: "Our technology and our human team work hand in hand to offer you a transparent, safe and empathetic process. We don't just manage flights and documents; we manage peace of mind so that your only thought is the hug that awaits you upon arrival.",
-                roleJamsle: "Technology &<br>Developer", roleArlen: "Marketing &<br>Social Media", roleAntonio: "Administrator", roleAlber: "Management &<br>CEO Strategy"
-            },
-            pt: {
-                kicker: "Nossa História", title: 'Uma marca criada para <br><span class="text-gradient">aproximar pessoas.</span>',
-                subtitle: "Mais que uma agência de viagens, uma ponte para sua família.",
-                p1: "Na GÉNESIS GLOBAL acreditamos firmemente que a distância geográfica nunca deve ser mais forte que os laços familiares. Nascemos com a missão de facilitar os reencontros, especialmente para aqueles que precisam viajar entre Cuba, Brasil, Guiana e outras regiões.",
-                p2: "Nossa tecnologia e nossa equipe humana trabalham de mãos dadas para oferecer a você um processo transparente, seguro e cheio de empatia. Não apenas gerenciamos voos e documentos; gerenciamos tranquilidade para que seu único pensamento seja o abraço que o espera ao chegar.",
-                roleJamsle: "Tecnologia &<br>Developer", roleArlen: "Marketing &<br>Redes Sociais", roleAntonio: "Administrador", roleAlber: "Direção &<br>Estratégia CEO"
-            }
-        };
-
-        function applyPageTranslation(lang) {
-            const t = pageTranslations[lang] || pageTranslations.es;
-            document.getElementById('about-kicker').textContent = t.kicker;
-            document.getElementById('about-title').innerHTML = t.title;
-            document.getElementById('about-subtitle').textContent = t.subtitle;
-            document.getElementById('about-p1').textContent = t.p1;
-            document.getElementById('about-p2').textContent = t.p2;
-            document.getElementById('role-jamsle').innerHTML = t.roleJamsle;
-            document.getElementById('role-arlen').innerHTML = t.roleArlen;
-            document.getElementById('role-antonio').innerHTML = t.roleAntonio;
-            document.getElementById('role-alber').innerHTML = t.roleAlber;
-        }
-
-        const langObserver = new MutationObserver(() => applyPageTranslation(document.documentElement.lang || 'es'));
-        langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
-        document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
     </script>
 </body>
 </html>
