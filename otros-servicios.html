@@ -40,17 +40,53 @@
         .products-section .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
         .products-section h2 { font-size: 32px; }
         .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .product-card { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: transform 0.3s; }
-        .product-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .product-image { width: 100%; height: 180px; object-fit: cover; background: #0a1727; }
-        .product-info { padding: 20px; }
-        .product-info h4 { font-size: 16px; margin-bottom: 8px; color: var(--text); }
-        .product-info .price { font-size: 20px; font-weight: 800; color: var(--accent); margin-bottom: 15px; display: block; }
-        .product-info .btn-buy { display: block; text-align: center; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.3s; }
-        .product-info .btn-buy:hover { background: var(--accent); color: #07111f; }
+        
+        /* Estilos mejorados para las tarjetas de producto */
+        .product-card { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .product-image { width: 100%; height: 180px; object-fit: cover; background: #0a1727; transition: transform 0.5s; }
+        .product-card:hover .product-image { transform: scale(1.05); }
+        .product-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-info h4 { font-size: 16px; margin-bottom: 8px; color: var(--text); font-weight: 700; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-info .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .product-info .price { font-size: 20px; font-weight: 800; color: var(--accent); }
+        .product-info .price-brl { font-size: 14px; color: var(--text-soft); }
+        .product-info .short-desc { font-size: 12px; color: var(--text-soft); margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5; }
+        .btn-details { display: block; width: 100%; text-align: center; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.3s; cursor: pointer; }
+        .btn-details:hover { background: var(--accent); color: #07111f; border-color: var(--accent); }
+
+        /* MODAL DE DETALLES (EFECTO PROFESIONAL) */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 16, 29, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-content { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 24px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(30px) scale(0.95); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 25px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+        
+        .modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: var(--text); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.3s; backdrop-filter: blur(4px); }
+        .modal-close:hover { background: #ff6b6b; color: white; border-color: #ff6b6b; transform: rotate(90deg); }
+        
+        .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+        .modal-image-container { background: #0a1727; min-height: 300px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 24px 0 0 24px; }
+        .modal-image { width: 100%; height: 100%; object-fit: cover; }
+        
+        .modal-details { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .modal-details h2 { font-size: 28px; font-family: 'Manrope', sans-serif; margin: 0 0 10px 0; color: var(--text); }
+        .modal-details .modal-prices { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; }
+        .modal-details .modal-price-usd { font-size: 28px; font-weight: 800; color: var(--accent); }
+        .modal-details .modal-price-brl { font-size: 16px; color: var(--text-soft); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 8px; }
+        .modal-details .modal-desc { font-size: 15px; color: var(--text-soft); line-height: 1.7; margin-bottom: 30px; white-space: pre-wrap; }
+        
+        .btn-buy-modal { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--accent); color: #07111f; padding: 16px 24px; border-radius: 12px; text-decoration: none; font-size: 16px; font-weight: 800; transition: 0.3s; border: 0; cursor: pointer; width: 100%; }
+        .btn-buy-modal:hover { background: #4cd1a9; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102, 230, 196, 0.2); }
 
         @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } .product-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 768px) { .services-grid, .product-grid { grid-template-columns: 1fr; } .products-section .section-header { flex-direction: column; align-items: flex-start; gap: 10px; } }
+        @media (max-width: 768px) { 
+            .services-grid, .product-grid { grid-template-columns: 1fr; } 
+            .products-section .section-header { flex-direction: column; align-items: flex-start; gap: 10px; } 
+            .modal-body { grid-template-columns: 1fr; }
+            .modal-image-container { border-radius: 24px 24px 0 0; min-height: 200px; max-height: 250px; }
+            .modal-details { padding: 25px; }
+        }
     </style>
 </head>
 <body>
@@ -121,6 +157,32 @@
             <p style="color: var(--text-soft); text-align: center; width: 100%; grid-column: 1/-1;" id="otros-loading">Cargando productos...</p>
         </div>
     </section>
+
+    <!-- MODAL DE DETALLES DEL PRODUCTO -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProductModal()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div class="modal-body">
+                <div class="modal-image-container">
+                    <img id="modalProductImage" src="" alt="Producto" class="modal-image">
+                </div>
+                <div class="modal-details">
+                    <h2 id="modalProductName">Nombre del Producto</h2>
+                    <div class="modal-prices">
+                        <span class="modal-price-usd" id="modalProductPriceUsd">$0.00</span>
+                        <span class="modal-price-brl" id="modalProductPriceBrl">R$ 0.00</span>
+                    </div>
+                    <p class="modal-desc" id="modalProductDesc">Descripción completa del producto...</p>
+                    <a href="#" id="modalBuyBtn" target="_blank" class="btn-buy-modal">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        Comprar por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="shell footer-grid">
@@ -214,7 +276,7 @@
         langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
         document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
 
-        // Cargar Productos desde Supabase
+        // Cargar Productos desde Supabase y crear Modal
         document.addEventListener('DOMContentLoaded', async () => {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
@@ -222,20 +284,29 @@
                 const { data: products, error } = await window.genesisSupabase.from('products').select('*').order('created_at', { ascending: false });
                 if (error) throw error;
                 if (products && products.length > 0) {
-                    grid.innerHTML = products.map(p => `
+                    grid.innerHTML = products.map(p => {
+                        // Guardamos los datos del producto en atributos data-* para leerlos desde el modal
+                        return `
                         <article class="product-card">
                             <img src="${p.image_url || 'https://via.placeholder.com/400'}" alt="${p.name}" class="product-image" loading="lazy">
                             <div class="product-info">
                                 <h4>${p.name}</h4>
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
-                                    <span class="price" style="margin:0;">$${parseFloat(p.price_usd || 0).toFixed(2)} USD</span>
-                                    <span style="font-size: 14px; color: var(--text-soft);">R$ ${parseFloat(p.price_brl || 0).toFixed(2)}</span>
+                                <div class="price-row">
+                                    <span class="price">$${parseFloat(p.price_usd || 0).toFixed(2)} USD</span>
+                                    <span class="price-brl">R$ ${parseFloat(p.price_brl || 0).toFixed(2)}</span>
                                 </div>
-                                <p style="font-size: 12px; color: var(--text-soft); margin-bottom: 15px;">${p.description || ''}</p>
-                                <a href="https://wa.me/18099995904?text=Hola,%20quiero%20comprar%20${encodeURIComponent(p.name)}" class="btn-buy" target="_blank">Comprar</a>
+                                <p class="short-desc">${p.description || 'Sin descripción.'}</p>
+                                <button class="btn-details" 
+                                    onclick="openProductModal(this)"
+                                    data-name="${p.name.replace(/"/g, '&quot;')}"
+                                    data-image="${p.image_url || 'https://via.placeholder.com/400'}"
+                                    data-price-usd="${parseFloat(p.price_usd || 0).toFixed(2)}"
+                                    data-price-brl="${parseFloat(p.price_brl || 0).toFixed(2)}"
+                                    data-desc="${(p.description || '').replace(/"/g, '&quot;').replace(/\n/g, ' ')}"
+                                >Ver Detalles</button>
                             </div>
                         </article>
-                    `).join('');
+                    `}).join('');
                 } else {
                     grid.innerHTML = '<p style="color: var(--text-soft); text-align: center; width: 100%; grid-column: 1/-1;">No hay productos disponibles por el momento.</p>';
                 }
@@ -243,6 +314,43 @@
                 console.error("Error cargando productos:", error);
                 grid.innerHTML = '<p style="color: #ff6b6b; text-align: center; width: 100%; grid-column: 1/-1;">Error al cargar los productos.</p>';
             }
+        });
+
+        // Lógica del Modal
+        function openProductModal(button) {
+            const name = button.getAttribute('data-name');
+            const image = button.getAttribute('data-image');
+            const priceUsd = button.getAttribute('data-price-usd');
+            const priceBrl = button.getAttribute('data-price-brl');
+            const desc = button.getAttribute('data-desc');
+
+            document.getElementById('modalProductName').textContent = name;
+            document.getElementById('modalProductImage').src = image;
+            document.getElementById('modalProductPriceUsd').textContent = `$${priceUsd} USD`;
+            document.getElementById('modalProductPriceBrl').textContent = `R$ ${priceBrl}`;
+            document.getElementById('modalProductDesc').textContent = desc;
+            
+            // Configurar botón de compra de WhatsApp
+            const waMessage = encodeURIComponent(`Hola, quiero comprar el producto: ${name}`);
+            document.getElementById('modalBuyBtn').href = `https://wa.me/18099995904?text=${waMessage}`;
+
+            document.getElementById('productModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Evitar scroll de fondo
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) closeProductModal();
+        });
+
+        // Cerrar modal con la tecla Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeProductModal();
         });
     </script>
 </body>
