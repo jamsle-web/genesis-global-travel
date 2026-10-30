@@ -122,6 +122,53 @@
             stroke: var(--accent);
         }
         .input-with-icon.textarea-icon svg { top: 16px; transform: none; }
+
+        /* ===== ESTILOS PARA LAS OPINIONES PÚBLICAS ===== */
+        .review-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            transition: transform 0.3s, border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .review-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 230, 196, 0.4);
+        }
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .review-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            background: #0a1727;
+        }
+        .review-stars {
+            color: #FFD700; 
+            font-size: 14px;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+        .review-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+        }
+        .review-text {
+            color: var(--text-soft);
+            font-size: 14px;
+            line-height: 1.6;
+            font-style: italic;
+            flex-grow: 1;
+        }
     </style>
 
     <!-- VERCEL ANALYTICS -->
@@ -328,7 +375,20 @@
             <a href="servicios.html" class="primary" style="padding: 16px 32px; font-size: 16px;">Ver Servicios →</a>
         </div>
     </section>
-
+    
+    <!-- SECCIÓN DE OPINIONES / TESTIMONIOS -->
+    <section class="shell reveal" style="padding: 60px 0;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <span class="kicker">Testimonios</span>
+            <h2 class="section-title">Lo que dicen <span class="text-gradient">nuestros clientes</span></h2>
+        </div>
+        
+        <!-- Aquí se cargarán las opiniones desde Supabase -->
+        <div id="public-reviews-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            <p style="text-align: center; color: var(--text-soft); grid-column: 1/-1;">Cargando opiniones...</p>
+        </div>
+    </section>
+    
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="shell footer-grid">
@@ -773,5 +833,43 @@
     <script src="js/planner.js"></script>
     <script src="js/newsletter.js"></script>
     <script src="js/secret-trigger.js"></script>
+
+    <!-- SCRIPT PARA CARGAR OPINIONES EN EL SITIO PÚBLICO -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('public-reviews-grid');
+            if (!grid) return;
+
+            try {
+                const { data: reviews, error } = await window.genesisSupabase
+                    .from('reviews')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(6); // Muestra solo las 6 más recientes
+
+                if (error) throw error;
+
+                if (reviews && reviews.length > 0) {
+                    grid.innerHTML = reviews.map(r => `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <img src="${r.image_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(r.client_name) + '&background=66e6c4&color=07111f'}" alt="${r.client_name}" class="review-avatar">
+                                <div>
+                                    <div class="review-stars">${'⭐'.repeat(r.stars || 5)}</div>
+                                    <div class="review-name">${r.client_name}</div>
+                                </div>
+                            </div>
+                            <p class="review-text">"${r.review_text}"</p>
+                        </div>
+                    `).join('');
+                } else {
+                    grid.innerHTML = '<p style="text-align: center; color: var(--text-soft); grid-column: 1/-1;">Aún no hay opiniones. ¡Sé el primero en viajar con nosotros!</p>';
+                }
+            } catch (error) {
+                console.error("Error cargando opiniones:", error);
+                grid.innerHTML = '<p style="text-align: center; color: var(--text-soft); grid-column: 1/-1;">No se pudieron cargar las opiniones en este momento.</p>';
+            }
+        });
+    </script>
 </body>
 </html>
