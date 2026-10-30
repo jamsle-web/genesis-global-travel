@@ -291,24 +291,46 @@
             </div>
         </div>
 
-        <!-- OPINIONES -->
+        <!-- OPINIONES (AHORA FUNCIONAL) -->
         <div id="tab-opiniones" style="display: none;">
             <div class="section-header"><h2>Gestión de Opiniones</h2></div>
             <button class="btn-toggle" onclick="document.getElementById('formReview').classList.toggle('active')">+ Agregar Opinión</button>
+            
             <div id="formReview" class="admin-form">
-                <h3 style="margin-top:0;">Agregar Opinión</h3>
+                <h3 style="margin-top:0;">Agregar / Editar Opinión</h3>
+                <input type="hidden" id="reviewId">
+                
                 <div class="form-group">
                     <label>Foto del Cliente</label>
                     <div class="image-upload-box" onclick="document.getElementById('reviewImage').click()">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        <span>Haz clic para subir la foto del cliente</span>
+                        <span id="reviewImageLabel">Haz clic para subir la foto del cliente</span>
                     </div>
-                    <input type="file" id="reviewImage" style="display:none;" accept="image/*">
+                    <input type="file" id="reviewImage" style="display:none;" accept="image/*" onchange="document.getElementById('reviewImageLabel').textContent = event.target.files[0].name">
                 </div>
-                <div class="form-group"><label>Nombre del Cliente</label><input type="text"></div>
-                <div class="form-group"><label>Opinión</label><textarea rows="2"></textarea></div>
-                <div class="form-group"><label>Estrellas (1-5)</label><input type="number" min="1" max="5" value="5"></div>
-                <button class="btn-primary" onclick="alert('¡Opinión guardada (simulación)!')">Confirmar y Guardar</button>
+                
+                <div class="form-group"><label>Nombre del Cliente</label><input type="text" id="reviewName" placeholder="Ej: Juan Pérez"></div>
+                <div class="form-group"><label>Opinión</label><textarea id="reviewText" rows="3" placeholder="Escribe la opinión del cliente aquí..."></textarea></div>
+                
+                <div class="form-group">
+                    <label>Estrellas (1-5)</label>
+                    <select id="reviewStars">
+                        <option value="5">⭐⭐⭐⭐⭐ (5 Estrellas)</option>
+                        <option value="4">⭐⭐⭐⭐ (4 Estrellas)</option>
+                        <option value="3">⭐⭐⭐ (3 Estrellas)</option>
+                        <option value="2">⭐⭐ (2 Estrellas)</option>
+                        <option value="1">⭐ (1 Estrella)</option>
+                    </select>
+                </div>
+                
+                <button class="btn-primary" onclick="saveReview()">Confirmar y Guardar</button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="tableReviews">
+                    <thead><tr><th>Foto</th><th>Cliente</th><th>Opinión</th><th>Estrellas</th><th>Acciones</th></tr></thead>
+                    <tbody><tr><td colspan="5" style="text-align:center;">Cargando...</td></tr></tbody>
+                </table>
             </div>
         </div>
 
@@ -455,6 +477,7 @@
             document.getElementById('pageTitle').textContent = titles[tabName];
             
             if(tabName === 'otros-servicios') loadProducts();
+            if(tabName === 'opiniones') loadReviews(); // Cargar opiniones al entrar
         }
 
         // --- 4. CARGAR DATOS GENERALES ---
@@ -590,6 +613,95 @@
             if (confirm('¿Estás seguro de eliminar este producto?')) {
                 await window.genesisSupabase.from('products').delete().eq('id', id);
                 loadProducts();
+            }
+        }
+
+        // --- 6. GESTIÓN DE OPINIONES (NUEVO Y FUNCIONAL) ---
+        async function loadReviews() {
+            const supabase = window.genesisSupabase;
+            const { data, error } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
+            
+            const tbody = document.querySelector('#tableReviews tbody');
+            if (data && data.length > 0) {
+                tbody.innerHTML = data.map(r => `
+                    <tr>
+                        <td><img src="${r.image_url || 'https://via.placeholder.com/50'}" alt="${r.client_name}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"></td>
+                        <td>${r.client_name}</td>
+                        <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.review_text}</td>
+                        <td>${'⭐'.repeat(r.stars || 5)}</td>
+                        <td>
+                            <span class="btn-edit" onclick="editReview('${r.id}')">Editar</span>
+                            <span class="btn-delete" onclick="deleteReview('${r.id}')">Eliminar</span>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay opiniones. Agrega la primera.</td></tr>';
+            }
+        }
+
+        async function saveReview() {
+            const id = document.getElementById('reviewId').value;
+            const name = document.getElementById('reviewName').value;
+            const text = document.getElementById('reviewText').value;
+            const stars = document.getElementById('reviewStars').value;
+            const imageFile = document.getElementById('reviewImage').files[0];
+
+            if (!name || !text) { alert('El nombre y la opinión son obligatorios'); return; }
+
+            let imageUrl = null;
+
+            if (imageFile) {
+                const fileExt = imageFile.name.split('.').pop();
+                const fileName = `review-${Date.now()}.${fileExt}`;
+                const { error: uploadError } = await window.genesisSupabase.storage.from('avatars').upload(fileName, imageFile);
+                if (uploadError) { alert("Error subiendo imagen"); return; }
+                const { data: urlData } = window.genesisSupabase.storage.from('avatars').getPublicUrl(fileName);
+                imageUrl = urlData.publicUrl;
+            }
+
+            const reviewData = {
+                client_name: name,
+                review_text: text,
+                stars: parseInt(stars),
+                ...(imageUrl && { image_url: imageUrl })
+            };
+
+            if (id) {
+                await window.genesisSupabase.from('reviews').update(reviewData).eq('id', id);
+            } else {
+                await window.genesisSupabase.from('reviews').insert([reviewData]);
+            }
+
+            alert('¡Opinión guardada exitosamente!');
+            document.getElementById('formReview').classList.remove('active');
+            clearReviewForm();
+            loadReviews();
+        }
+
+        function clearReviewForm() {
+            document.getElementById('reviewId').value = '';
+            document.getElementById('reviewName').value = '';
+            document.getElementById('reviewText').value = '';
+            document.getElementById('reviewStars').value = '5';
+            document.getElementById('reviewImageLabel').textContent = 'Haz clic para subir la foto del cliente';
+        }
+
+        async function editReview(id) {
+            const { data, error } = await window.genesisSupabase.from('reviews').select('*').eq('id', id).single();
+            if (data) {
+                document.getElementById('reviewId').value = data.id;
+                document.getElementById('reviewName').value = data.client_name;
+                document.getElementById('reviewText').value = data.review_text;
+                document.getElementById('reviewStars').value = data.stars || 5;
+                document.getElementById('formReview').classList.add('active');
+            }
+        }
+
+        async function deleteReview(id) {
+            if (confirm('¿Estás seguro de eliminar esta opinión?')) {
+                await window.genesisSupabase.from('reviews').delete().eq('id', id);
+                loadReviews();
             }
         }
 
