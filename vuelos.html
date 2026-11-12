@@ -3,10 +3,9 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#06101d">
-    <meta name="description" content="Busca vuelos desde cualquier ciudad o país, compara opciones y explora las rutas de Sky High Dominicana con GÉNESIS GLOBAL.">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1020">
+    <meta name="description" content="Encuentra opciones de vuelos y recibe orientación personalizada para organizar tu viaje con GÉNESIS GLOBAL.">
     <title>Buscar Vuelos | GÉNESIS GLOBAL</title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -25,15 +24,16 @@
 
     <style>
         .hero-flights {
-            padding: 140px 0 60px;
+            padding: 140px 20px 60px;
             text-align: center;
             position: relative;
         }
 
         .hero-flights h1 {
-            font-size: clamp(40px, 6vw, 70px);
+            font-size: clamp(36px, 6vw, 70px);
             margin: 20px 0;
             letter-spacing: -0.05em;
+            line-height: 1.12;
         }
 
         .hero-flights p {
@@ -48,17 +48,17 @@
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 40px;
+            padding: 36px;
             max-width: 1100px;
-            margin: -30px auto 60px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            margin: -30px auto 70px;
+            box-shadow: 0 30px 60px rgba(0,0,0,.4);
             position: relative;
             z-index: 10;
         }
 
         .search-form {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
             gap: 15px;
             align-items: end;
         }
@@ -76,334 +76,140 @@
             font-weight: 700;
             color: var(--text-soft);
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 8px;
-            margin-left: 10px;
+            letter-spacing: .1em;
+            margin: 0 0 8px 10px;
         }
 
-        .input-group input,
-        .input-group select {
-            background: rgba(0,0,0,0.3);
+        .input-group input {
+            background: rgba(0,0,0,.3);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 16px 12px 16px 45px;
+            padding: 16px 14px 16px 45px;
             color: #fff;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 15px;
             outline: none;
-            transition: all 0.3s;
+            transition: border-color .2s, background .2s, box-shadow .2s;
             width: 100%;
-            min-height: 54px;
             min-width: 0;
+            min-height: 54px;
+            color-scheme: dark;
         }
 
         .input-group input::placeholder {
             color: var(--text-muted);
-            opacity: 0.8;
+            opacity: .85;
         }
 
         .input-group input:focus {
             border-color: var(--accent);
-            background: rgba(102,230,196,0.05);
+            background: rgba(102,230,196,.05);
+            box-shadow: 0 0 0 3px rgba(102,230,196,.08);
         }
 
-        .input-group input:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
-
-        .input-group svg {
+        .input-group svg.field-icon {
             position: absolute;
             left: 15px;
-            bottom: 16px;
+            bottom: 17px;
             width: 20px;
             height: 20px;
             stroke: var(--text-muted);
             pointer-events: none;
         }
 
-        .input-group input:focus + svg {
+        .input-group input:focus ~ svg.field-icon {
             stroke: var(--accent);
         }
 
-        .search-form button {
-            height: 54px;
-            padding: 0 30px;
-            font-size: 16px;
-            border-radius: 12px;
-            margin-bottom: 1px;
+        .suggestions {
+            display: none;
+            position: absolute;
+            top: calc(100% + 7px);
+            left: 0;
+            right: 0;
+            z-index: 100;
+            max-height: 240px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            padding: 6px;
+            margin: 0;
+            list-style: none;
+            background: #111827;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 18px 40px rgba(0,0,0,.4);
+            scrollbar-width: thin;
+        }
+
+        .suggestions.is-open {
+            display: block;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            padding: 12px;
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: #fff;
+            text-align: left;
+            font: inherit;
+            cursor: pointer;
+            transition: background .18s ease;
+        }
+
+        .suggestion-item:hover,
+        .suggestion-item:focus-visible {
+            background: rgba(255,255,255,.08);
+            outline: none;
+        }
+
+        .suggestion-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .suggestion-code {
+            color: var(--text-muted);
+            font-size: 11px;
             white-space: nowrap;
+        }
+
+        .search-form button {
+            min-height: 54px;
+            padding: 0 25px;
+            font-size: 15px;
+            border-radius: 12px;
+            white-space: nowrap;
+            margin-bottom: 1px;
+            cursor: pointer;
         }
 
         .search-hint {
             font-size: 12px;
             color: var(--text-muted);
-            margin-top: 15px;
-            text-align: center;
             line-height: 1.7;
-        }
-
-        .external-disclaimer {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.7;
+            margin: 18px auto 0;
             text-align: center;
-            margin-top: 12px;
-        }
-
-        .search-feedback {
-            margin-top: 15px;
-            padding: 12px 15px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            color: var(--text-soft);
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .search-feedback:empty {
-            display: none;
-        }
-
-        .search-feedback.error {
-            border-color: rgba(255,100,100,0.35);
-            color: #ffaaaa;
-        }
-
-        .search-feedback.success {
-            border-color: rgba(102,230,196,0.3);
-            color: var(--accent);
-        }
-
-        .search-secondary {
-            margin-top: 12px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .search-secondary a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .search-secondary a:hover {
-            text-decoration: underline;
-        }
-
-        /* SKY HIGH SECTION */
-
-        .skyhigh-section {
-            max-width: 1100px;
-            margin: 0 auto 100px;
-        }
-
-        .skyhigh-card {
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            background:
-                radial-gradient(circle at 90% 10%, rgba(102,230,196,0.09), transparent 35%),
-                var(--glass);
-            box-shadow: var(--shadow);
-        }
-
-        .skyhigh-content {
-            padding: 42px;
-        }
-
-        .skyhigh-topline {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .skyhigh-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 12px;
-            border: 1px solid rgba(102,230,196,0.25);
-            background: rgba(102,230,196,0.08);
-            color: var(--accent);
-            border-radius: 100px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .skyhigh-label svg {
-            width: 15px;
-            height: 15px;
-        }
-
-        .skyhigh-title {
-            font-size: clamp(28px, 4vw, 43px);
-            line-height: 1.15;
-            letter-spacing: -0.04em;
-            margin-bottom: 15px;
-        }
-
-        .skyhigh-description {
             max-width: 760px;
-            color: var(--text-soft);
-            line-height: 1.8;
-            font-size: 15px;
-            margin-bottom: 30px;
         }
-
-        .skyhigh-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 15px;
-        }
-
-        .skyhigh-option {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 20px;
-            background: rgba(255,255,255,0.025);
-            border: 1px solid var(--border);
-            border-radius: 17px;
-            transition: transform 0.3s var(--ease), border-color 0.3s;
-        }
-
-        .skyhigh-option:hover {
-            transform: translateY(-3px);
-            border-color: rgba(102,230,196,0.35);
-        }
-
-        .skyhigh-option-icon {
-            width: 42px;
-            height: 42px;
-            flex-shrink: 0;
-            display: grid;
-            place-items: center;
-            background: rgba(102,230,196,0.09);
-            border-radius: 13px;
-            color: var(--accent);
-        }
-
-        .skyhigh-option-icon svg {
-            width: 21px;
-            height: 21px;
-        }
-
-        .skyhigh-option h3 {
-            font-size: 15px;
-            margin-bottom: 6px;
-        }
-
-        .skyhigh-option p {
-            color: var(--text-soft);
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-
-        .skyhigh-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
-            transition: opacity 0.2s;
-        }
-
-        .skyhigh-link:hover {
-            opacity: 0.75;
-        }
-
-        .skyhigh-link svg {
-            width: 15px;
-            height: 15px;
-        }
-
-        .skyhigh-notice {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 16px 18px;
-            margin-top: 20px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.025);
-            border-radius: 14px;
-            color: var(--text-soft);
-            font-size: 12px;
-            line-height: 1.7;
-        }
-
-        .skyhigh-notice svg {
-            width: 19px;
-            height: 19px;
-            flex-shrink: 0;
-            color: var(--accent);
-        }
-
-        .skyhigh-support {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 25px;
-            padding: 23px;
-            background: rgba(102,230,196,0.045);
-            border: 1px solid rgba(102,230,196,0.15);
-            border-radius: 17px;
-        }
-
-        .skyhigh-support h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .skyhigh-support p {
-            color: var(--text-soft);
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .skyhigh-support .primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            text-decoration: none;
-            padding: 13px 20px;
-            border-radius: 12px;
-            white-space: nowrap;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .skyhigh-support .primary svg {
-            width: 17px;
-            height: 17px;
-        }
-
-        /* FEATURES */
 
         .features {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
             max-width: 1000px;
-            margin: 0 auto 100px;
+            margin: 0 auto 80px;
         }
 
         .feature-card {
             text-align: center;
             padding: 30px;
-            background: rgba(255,255,255,0.02);
+            background: rgba(255,255,255,.02);
             border-radius: 20px;
             border: 1px solid var(--border);
         }
@@ -423,98 +229,194 @@
         .feature-card p {
             font-size: 14px;
             color: var(--text-soft);
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
-        .feature-card a {
+        .travel-contact {
+            max-width: 1000px;
+            margin: 0 auto 100px;
+            padding: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.2);
+        }
+
+        .travel-contact-content {
+            max-width: 620px;
+        }
+
+        .travel-contact .kicker {
             color: var(--accent);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .travel-contact h2 {
+            font-family: Manrope, sans-serif;
+            font-size: clamp(24px, 3vw, 34px);
+            line-height: 1.2;
+            margin: 12px 0;
+        }
+
+        .travel-contact p {
+            color: var(--text-soft);
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .travel-contact-action {
+            flex-shrink: 0;
+        }
+
+        .whatsapp-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 0 22px;
+            border-radius: 12px;
+            background: #20b76b;
+            color: #fff;
             text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: transform .2s ease, background .2s ease;
         }
 
-        .feature-card a:hover {
-            text-decoration: underline;
+        .whatsapp-cta:hover {
+            background: #169d59;
+            transform: translateY(-2px);
         }
 
-        .menu:focus-visible,
-        .skyhigh-link:focus-visible,
-        .skyhigh-support a:focus-visible,
-        .nav a:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 4px;
+        .whatsapp-cta svg {
+            width: 19px;
+            height: 19px;
+            stroke: currentColor;
         }
 
-        @media (max-width: 1024px) {
+        .footer-grid {
+            min-width: 0;
+        }
+
+        @media (max-width: 1100px) {
             .search-form {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .search-form button {
+                grid-column: 1 / -1;
+                width: 100%;
             }
         }
 
         @media (max-width: 768px) {
-            .search-form {
-                grid-template-columns: 1fr;
-            }
-
-            .search-form button {
-                width: 100%;
-                margin-top: 10px;
-            }
-
-            .features {
-                grid-template-columns: 1fr;
-            }
-
-            .search-box {
-                margin: -30px 20px 40px;
-                padding: 30px 20px;
-            }
-
             .hero-flights {
-                padding: 120px 20px 40px;
+                padding: 115px 20px 45px;
             }
 
-            .skyhigh-section {
-                margin: 0 20px 65px;
-            }
-
-            .skyhigh-content {
-                padding: 25px 20px;
-            }
-
-            .skyhigh-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .skyhigh-support {
-                align-items: stretch;
-                flex-direction: column;
-            }
-
-            .skyhigh-support .primary {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
             .hero-flights h1 {
-                font-size: clamp(36px, 10vw, 48px);
+                font-size: clamp(34px, 9vw, 48px);
             }
 
             .hero-flights p {
                 font-size: 15px;
+                line-height: 1.65;
             }
 
             .search-box {
+                margin: -20px 15px 55px;
                 padding: 24px 18px;
+                border-radius: 20px;
+            }
+
+            .search-form {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 17px;
+            }
+
+            .search-form button {
+                grid-column: auto;
+                width: 100%;
+                min-height: 54px;
+                margin-top: 3px;
+            }
+
+            .input-group input {
+                min-height: 54px;
+                font-size: 16px;
+            }
+
+            .suggestions {
+                max-height: 190px;
+            }
+
+            .features {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 15px;
+                margin: 0 15px 60px;
+            }
+
+            .feature-card {
+                padding: 25px 20px;
+            }
+
+            .travel-contact {
+                margin: 0 15px 65px;
+                padding: 28px 22px;
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 22px;
+            }
+
+            .travel-contact-action,
+            .whatsapp-cta {
+                width: 100%;
+            }
+
+            .footer-grid {
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .hero-flights {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .search-box {
+                margin-left: 10px;
+                margin-right: 10px;
+                padding: 20px 14px;
+            }
+
+            .input-group input {
+                padding-left: 42px;
+                font-size: 16px;
+            }
+
+            .travel-contact {
+                margin-left: 10px;
+                margin-right: 10px;
+                padding: 24px 17px;
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .skyhigh-option {
+            .input-group input,
+            .suggestion-item,
+            .whatsapp-cta {
                 transition: none;
-            }
-
-            .skyhigh-option:hover {
-                transform: none;
             }
         }
     </style>
@@ -522,16 +424,10 @@
 
 <body>
 
-    <!-- NAVIGATION -->
-
     <nav class="nav shell" id="nav">
-
         <a href="index.html" class="brand">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
-            <span>
-                <b>GÉNESIS GLOBAL</b>
-                <small>Donde comienzan nuevas oportunidades.</small>
-            </span>
+            <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
         </a>
 
         <div id="links" class="links">
@@ -543,642 +439,184 @@
         </div>
 
         <div class="nav-actions">
-            <a href="index.html?scroll=planner" class="cta">
-                Planificar mi viaje
-            </a>
+            <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
         </div>
 
-        <button
-            class="menu"
-            type="button"
-            onclick="toggleMenu()"
-            aria-label="Abrir menú de navegación"
-            aria-controls="links"
-            aria-expanded="false"
-        >
-            ☰
-        </button>
-
+        <button class="menu" type="button" aria-label="Abrir menú" aria-controls="links" aria-expanded="false" onclick="toggleMenu()">☰</button>
     </nav>
 
-    <!-- HERO -->
-
     <section class="hero-flights shell reveal">
-
         <span class="kicker" id="flights-kicker">Vuelos</span>
-
-        <h1 id="flights-title">
-            Encuentra los mejores <span class="text-gradient">vuelos.</span>
-        </h1>
-
-        <p id="flights-desc">
-            Explora opciones de viaje, consulta rutas y encuentra el camino perfecto para reunirte con tu familia.
-        </p>
-
+        <h1 id="flights-title">Encuentra los mejores <span class="text-gradient">vuelos.</span></h1>
+        <p id="flights-desc">Comparamos cientos de aerolíneas para que encuentres la ruta perfecta hacia tu familia.</p>
     </section>
 
-    <!-- FLIGHT SEARCH -->
-
     <section class="shell reveal">
-
         <div class="search-box">
-
             <form class="search-form" id="flightSearchForm" novalidate>
-
-                <!-- ORIGIN -->
-
                 <div class="input-group">
-
-                    <label for="origin" id="flights-label-origin">
-                        Ciudad o país de origen
-                    </label>
-
+                    <label for="origin" id="flights-label-origin">Origen</label>
                     <input
                         type="text"
                         id="origin"
                         name="origin"
-                        list="airportSuggestions"
-                        placeholder="Ej. Santo Domingo, Cuba..."
+                        placeholder="Ciudad, país o aeropuerto"
                         autocomplete="off"
-                        maxlength="100"
+                        autocapitalize="words"
+                        spellcheck="false"
+                        aria-autocomplete="list"
+                        aria-controls="origin-suggestions"
+                        aria-expanded="false"
                         required
-                        aria-describedby="flights-hint"
                     >
-
-                    <svg viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"
-                        aria-hidden="true">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
                     </svg>
-
+                    <ul class="suggestions" id="origin-suggestions" role="listbox"></ul>
                 </div>
 
-                <!-- DESTINATION -->
-
                 <div class="input-group">
-
-                    <label for="destination" id="flights-label-dest">
-                        Ciudad o país de destino
-                    </label>
-
+                    <label for="destination" id="flights-label-dest">Destino</label>
                     <input
                         type="text"
                         id="destination"
                         name="destination"
-                        list="airportSuggestions"
-                        placeholder="Ej. Miami, Brasil, España..."
+                        placeholder="Ciudad, país o aeropuerto"
                         autocomplete="off"
-                        maxlength="100"
+                        autocapitalize="words"
+                        spellcheck="false"
+                        aria-autocomplete="list"
+                        aria-controls="destination-suggestions"
+                        aria-expanded="false"
                         required
-                        aria-describedby="flights-hint"
                     >
-
-                    <svg viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"
-                        aria-hidden="true">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 2 11 13"/>
                         <path d="M22 2 15 22l-4-9-9-4Z"/>
                     </svg>
-
+                    <ul class="suggestions" id="destination-suggestions" role="listbox"></ul>
                 </div>
 
-                <!-- SUGGESTIONS -->
-
-                <datalist id="airportSuggestions">
-
-                    <option value="Santo Domingo, República Dominicana">
-                    <option value="Punta Cana, República Dominicana">
-                    <option value="Santiago, República Dominicana">
-                    <option value="La Habana, Cuba">
-                    <option value="Santiago de Cuba, Cuba">
-                    <option value="Puerto Príncipe, Haití">
-                    <option value="Miami, Estados Unidos">
-                    <option value="Nueva York, Estados Unidos">
-                    <option value="Orlando, Estados Unidos">
-                    <option value="Madrid, España">
-                    <option value="Barcelona, España">
-                    <option value="París, Francia">
-                    <option value="São Paulo, Brasil">
-                    <option value="Río de Janeiro, Brasil">
-                    <option value="Ciudad de México, México">
-                    <option value="Bogotá, Colombia">
-                    <option value="Medellín, Colombia">
-                    <option value="Panamá, Panamá">
-                    <option value="San Juan, Puerto Rico">
-                    <option value="Toronto, Canadá">
-                    <option value="Londres, Reino Unido">
-                    <option value="Roma, Italia">
-                    <option value="Lisboa, Portugal">
-                    <option value="Santo Domingo (SDQ)">
-                    <option value="La Habana (HAV)">
-                    <option value="Miami (MIA)">
-
-                </datalist>
-
-                <!-- DEPARTURE -->
-
                 <div class="input-group">
-
-                    <label for="departDate" id="flights-label-depart">
-                        Salida
-                    </label>
-
-                    <input
-                        type="date"
-                        id="departDate"
-                        name="departDate"
-                        required
-                    >
-
-                    <svg viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"
-                        aria-hidden="true">
+                    <label for="departDate" id="flights-label-depart">Fecha de salida</label>
+                    <input type="date" id="departDate" name="departDate" required>
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="18" height="18" x="3" y="4" rx="2"/>
                         <line x1="16" x2="16" y1="2" y2="6"/>
                         <line x1="8" x2="8" y1="2" y2="6"/>
                         <line x1="3" x2="21" y1="10" y2="10"/>
                     </svg>
-
                 </div>
 
-                <!-- RETURN -->
-
                 <div class="input-group">
-
-                    <label for="returnDate" id="flights-label-return">
-                        Regreso (Opcional)
-                    </label>
-
-                    <input
-                        type="date"
-                        id="returnDate"
-                        name="returnDate"
-                    >
-
-                    <svg viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"
-                        aria-hidden="true">
+                    <label for="returnDate" id="flights-label-return">Fecha de regreso (opcional)</label>
+                    <input type="date" id="returnDate" name="returnDate">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="18" height="18" x="3" y="4" rx="2"/>
                         <line x1="16" x2="16" y1="2" y2="6"/>
                         <line x1="8" x2="8" y1="2" y2="6"/>
                         <line x1="3" x2="21" y1="10" y2="10"/>
                     </svg>
-
                 </div>
 
-                <button type="submit" class="primary" id="flights-btn">
-                    Buscar Vuelos
-                </button>
-
+                <button type="submit" class="primary" id="flights-btn">Buscar vuelos</button>
             </form>
 
             <p class="search-hint" id="flights-hint">
-                Puedes escribir una ciudad o un país completo.
-                No necesitas conocer los códigos de los aeropuertos.
+                Escribe una ciudad, un país o un código de aeropuerto. Ejemplos: Santo Domingo, Cuba, Miami, SDQ o MIA.
+                La búsqueda se abrirá en una plataforma externa. Las tarifas y la disponibilidad dependen de sus proveedores.
             </p>
-
-            <p class="external-disclaimer" id="flights-disclaimer">
-                Las búsquedas se realizan mediante plataformas externas.
-                Las tarifas, rutas y disponibilidad deben confirmarse
-                directamente con los proveedores.
-            </p>
-
-            <p
-                id="searchFeedback"
-                class="search-feedback"
-                role="status"
-                aria-live="polite"
-            ></p>
-
-            <p class="search-secondary">
-                También puedes consultar directamente:
-                <a href="https://www.skyscanner.net/"
-                    target="_blank" rel="noopener noreferrer">
-                    Skyscanner
-                </a>
-                ·
-                <a href="https://www.google.com/travel/flights"
-                    target="_blank" rel="noopener noreferrer">
-                    Google Flights
-                </a>
-            </p>
-
         </div>
-
     </section>
-
-    <!-- SKY HIGH DOMINICANA -->
-
-    <section class="shell reveal skyhigh-section" id="skyhigh">
-
-        <div class="skyhigh-card">
-
-            <div class="skyhigh-content">
-
-                <div class="skyhigh-topline">
-
-                    <span class="skyhigh-label">
-
-                        <svg viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round"
-                            aria-hidden="true">
-                            <path d="M3 12h18"/>
-                            <path d="m12 3 9 9-9 9"/>
-                        </svg>
-
-                        <span id="skyhigh-badge">
-                            Aerolínea destacada
-                        </span>
-
-                    </span>
-
-                </div>
-
-                <h2 class="skyhigh-title" id="skyhigh-title">
-                    Descubre <span class="text-gradient">SKYhigh Dominicana.</span>
-                </h2>
-
-                <p class="skyhigh-description" id="skyhigh-description">
-                    Conoce las opciones de viaje de SKYhigh Dominicana.
-                    Explora sus rutas, consulta información oficial sobre
-                    sus servicios y accede a sus canales de reservas.
-                </p>
-
-                <div class="skyhigh-grid">
-
-                    <article class="skyhigh-option">
-
-                        <div class="skyhigh-option-icon">
-                            <svg viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                aria-hidden="true">
-                                <circle cx="6" cy="19" r="3"/>
-                                <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7H13a3 3 0 0 1 0-6h2"/>
-                                <circle cx="18" cy="5" r="3"/>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <h3 id="skyhigh-routes-title">Rutas y destinos</h3>
-
-                            <p id="skyhigh-routes-desc">
-                                Explora el mapa de rutas y descubre los destinos asociados a SKYhigh Dominicana.
-                            </p>
-
-                            <a
-                                class="skyhigh-link"
-                                href="https://www.flightconnections.com/es/vuelos-sky-high-do"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                id="skyhigh-routes-link"
-                            >
-                                Explorar rutas
-
-                                <svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    aria-hidden="true">
-                                    <path d="M7 17 17 7"/>
-                                    <path d="M7 7h10v10"/>
-                                </svg>
-                            </a>
-                        </div>
-
-                    </article>
-
-                    <article class="skyhigh-option">
-
-                        <div class="skyhigh-option-icon">
-                            <svg viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                aria-hidden="true">
-                                <path d="M3 7h18"/>
-                                <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/>
-                                <path d="m9 14 2 2 4-4"/>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <h3 id="skyhigh-booking-title">Reservas oficiales</h3>
-
-                            <p id="skyhigh-booking-desc">
-                                Consulta los destinos, condiciones y opciones de compra directamente con la aerolínea.
-                            </p>
-
-                            <a
-                                class="skyhigh-link"
-                                href="https://skyhighdo.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                id="skyhigh-booking-link"
-                            >
-                                Visitar SKYhigh
-
-                                <svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    aria-hidden="true">
-                                    <path d="M7 17 17 7"/>
-                                    <path d="M7 7h10v10"/>
-                                </svg>
-                            </a>
-                        </div>
-
-                    </article>
-
-                    <article class="skyhigh-option">
-
-                        <div class="skyhigh-option-icon">
-                            <svg viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                aria-hidden="true">
-                                <rect x="3" y="7" width="18" height="14" rx="2"/>
-                                <path d="M8 7V5a4 4 0 0 1 8 0v2"/>
-                                <path d="M12 11v6"/>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <h3 id="skyhigh-baggage-title">Equipaje y servicios</h3>
-
-                            <p id="skyhigh-baggage-desc">
-                                Consulta las políticas oficiales de equipaje, mascotas y servicios especiales.
-                            </p>
-
-                            <a
-                                class="skyhigh-link"
-                                href="https://skyhighdo.com/politicas-de-equipaje/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                id="skyhigh-baggage-link"
-                            >
-                                Consultar equipaje
-
-                                <svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    aria-hidden="true">
-                                    <path d="M7 17 17 7"/>
-                                    <path d="M7 7h10v10"/>
-                                </svg>
-                            </a>
-                        </div>
-
-                    </article>
-
-                    <article class="skyhigh-option">
-
-                        <div class="skyhigh-option-icon">
-                            <svg viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                aria-hidden="true">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M9.5 9a2.5 2.5 0 1 1 4.1 1.9c-1 .8-1.6 1.1-1.6 2.6"/>
-                                <path d="M12 17h.01"/>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <h3 id="skyhigh-faq-title">Preguntas frecuentes</h3>
-
-                            <p id="skyhigh-faq-desc">
-                                Encuentra información sobre cambios, cancelaciones, documentación y condiciones de viaje.
-                            </p>
-
-                            <a
-                                class="skyhigh-link"
-                                href="https://skyhighdo.com/preguntas-frecuentes/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                id="skyhigh-faq-link"
-                            >
-                                Consultar información
-
-                                <svg viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    aria-hidden="true">
-                                    <path d="M7 17 17 7"/>
-                                    <path d="M7 7h10v10"/>
-                                </svg>
-                            </a>
-                        </div>
-
-                    </article>
-
-                </div>
-
-                <div class="skyhigh-notice">
-
-                    <svg viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"
-                        aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 16v-4"/>
-                        <path d="M12 8h.01"/>
-                    </svg>
-
-                    <p id="skyhigh-notice">
-                        Los mapas de rutas son herramientas informativas.
-                        No garantizan disponibilidad de asientos ni operación
-                        de vuelos en fechas concretas. Las tarifas y
-                        condiciones deben confirmarse directamente con la aerolínea.
-                    </p>
-
-                </div>
-
-                <div class="skyhigh-support">
-
-                    <div>
-                        <h3 id="skyhigh-support-title">
-                            ¿Necesitas ayuda para organizar tu viaje?
-                        </h3>
-
-                        <p id="skyhigh-support-desc">
-                            Nuestro equipo puede orientarte sobre tu solicitud de viaje.
-                        </p>
-                    </div>
-
-                    <a
-                        class="primary"
-                        id="skyhigh-whatsapp"
-                        href="https://wa.me/18099995904?text=Hola%2C%20G%C3%89NESIS%20GLOBAL.%20Quisiera%20recibir%20asistencia%20para%20consultar%20un%20vuelo%20con%20SKYhigh%20Dominicana."
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-
-                        <svg viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round"
-                            aria-hidden="true">
-                            <path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 21l2-5.5A8.5 8.5 0 1 1 21 11.5Z"/>
-                            <path d="M9 9c.5 2 2 3.5 4 4l1-1 2 1c-.5 2-2 2-3 2-3-1-5-3-6-6 0-1 0-2.5 2-3l1 2Z"/>
-                        </svg>
-
-                        <span id="skyhigh-support-button">
-                            Solicitar asistencia
-                        </span>
-
-                    </a>
-
-                </div>
-
-            </div>
-        </div>
-
-    </section>
-
-    <!-- FEATURES -->
 
     <section class="shell reveal">
-
         <div class="features">
-
             <div class="feature-card">
-
-                <svg viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round"
-                    aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <line x1="12" y1="16" x2="12" y2="12"/>
                     <line x1="12" y1="8" x2="12.01" y2="8"/>
                 </svg>
-
-                <h3 id="flights-f1-title">Comparación de vuelos</h3>
-
-                <p id="flights-f1-desc">
-                    Accede a Skyscanner para consultar opciones y comparar tarifas.
-                </p>
-
+                <h3 id="flights-f1-title">Consulta de vuelos</h3>
+                <p id="flights-f1-desc">Accede a plataformas de búsqueda para consultar rutas y opciones de distintas aerolíneas.</p>
             </div>
 
             <div class="feature-card">
-
-                <svg viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round"
-                    aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
-
-                <h3 id="flights-f2-title">Consulta externa</h3>
-
-                <p id="flights-f2-desc">
-                    Las búsquedas se realizan en plataformas externas.
-                    Revisa las condiciones antes de completar una compra.
-                </p>
-
+                <h3 id="flights-f2-title">Orientación transparente</h3>
+                <p id="flights-f2-desc">Te orientamos durante la planificación. Las condiciones finales dependen de cada proveedor.</p>
             </div>
 
             <div class="feature-card">
-
-                <svg viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round"
-                    aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                     <circle cx="9" cy="7" r="4"/>
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                     <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
-
                 <h3 id="flights-f3-title">Atención personalizada</h3>
-
-                <p id="flights-f3-desc">
-                    Contacta con GÉNESIS GLOBAL mediante WhatsApp si necesitas orientación.
-                </p>
-
+                <p id="flights-f3-desc">Contacta con nuestro equipo para recibir orientación y organizar mejor tu viaje.</p>
             </div>
-
         </div>
-
     </section>
 
-    <!-- FOOTER -->
+    <section class="shell reveal">
+        <div class="travel-contact">
+            <div class="travel-contact-content">
+                <span class="kicker">Asistencia GÉNESIS GLOBAL</span>
+                <h2>Organiza tu viaje con orientación personalizada.</h2>
+                <p>
+                    ¿Tienes dudas sobre tu destino, las opciones de vuelo o los preparativos?
+                    Escríbenos por WhatsApp. Nuestro equipo podrá orientarte para planificar
+                    tu viaje con mayor claridad y seguridad.
+                </p>
+            </div>
+
+            <div class="travel-contact-action">
+                <a
+                    class="whatsapp-cta"
+                    href="https://wa.me/18099995904?text=Hola%2C%20G%C3%89NESIS%20GLOBAL.%20Quiero%20recibir%20orientaci%C3%B3n%20para%20organizar%20mi%20viaje.%20%C2%BFPodr%C3%ADan%20ayudarme%20con%20los%20destinos%2C%20vuelos%20y%20preparativos%3F"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                    </svg>
+                    Organizar mi viaje por WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
 
     <footer class="footer">
-
         <div class="shell footer-grid">
-
             <div>
-
                 <div class="brand" style="cursor:default;">
-
                     <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
-
-                    <span>
-                        <b>GÉNESIS GLOBAL</b>
-                        <small>Donde comienzan nuevas oportunidades.</small>
-                    </span>
-
+                    <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
                 </div>
-
-                <p style="margin-top:8px;">
-                    Conectamos destinos. Reunimos familias.
-                </p>
-
+                <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
             </div>
 
             <div>
-
                 <h4>Empresa</h4>
-
-                <a href="nosotros.html" style="display:block;color:var(--text-soft);text-decoration:none;font-size:12px;padding:4px 0;">
-                    Nosotros
-                </a>
-
-                <a href="servicios.html" style="display:block;color:var(--text-soft);text-decoration:none;font-size:12px;padding:4px 0;">
-                    Servicios
-                </a>
-
-                <a href="faq.html" style="display:block;color:var(--text-soft);text-decoration:none;font-size:12px;padding:4px 0;">
-                    FAQ
-                </a>
-
+                <a href="nosotros.html" style="display:block;color:var(--text-soft);text-decoration:none;font-size:12px;padding:4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block;color:var(--text-soft);text-decoration:none;font-size:12px;padding:4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block;color:var(--text-soft);text-decoration:none;font-size:12px;padding:4px 0;">FAQ</a>
             </div>
 
             <div>
-
                 <h4>Contacto Directo</h4>
-
-                <a href="https://wa.me/5359508420" class="whatsapp-link"
-                    target="_blank" rel="noopener noreferrer"
-                    style="margin-bottom:6px;">
-                    Cuba (CEO): +53 5 9508420
-                </a>
-
-                <a href="https://wa.me/554187097183" class="whatsapp-link"
-                    target="_blank" rel="noopener noreferrer"
-                    style="margin-bottom:6px;">
-                    Brasil: +55 41 8709-7183
-                </a>
-
-                <a href="https://wa.me/18099995904" class="whatsapp-link"
-                    target="_blank" rel="noopener noreferrer">
-                    WhatsApp General
-                </a>
-
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" rel="noopener noreferrer" style="margin-bottom:6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" rel="noopener noreferrer" style="margin-bottom:6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank" rel="noopener noreferrer">WhatsApp General</a>
             </div>
-
         </div>
 
         <div class="shell copy">
-
-            <span>
-                © 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.
-            </span>
-
+            <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
             <span>
                 <a href="faq.html">FAQ</a> &middot;
                 <a href="help-center.html">Help Center</a> &middot;
@@ -1187,972 +625,337 @@
                 <a href="cookies.html">Cookies</a> &middot;
                 <a href="newsletter.html">Newsletter</a>
             </span>
-
         </div>
-
     </footer>
 
-    <!-- INTERNATIONALIZATION -->
-
     <script src="i18n.js"></script>
-
-    <!-- FLIGHT SEARCH ENGINE -->
-
     <script>
-        "use strict";
-
-        /* ==========================================
-           NAVIGATION
-        ========================================== */
-
         function toggleMenu() {
-
-            const links = document.getElementById("links");
-            const button = document.querySelector(".menu");
-
-            if (!links || !button) return;
-
-            const isOpen = links.classList.toggle("open");
-
-            button.setAttribute("aria-expanded", String(isOpen));
-
-            button.setAttribute(
-                "aria-label",
-                isOpen
-                    ? "Cerrar menú de navegación"
-                    : "Abrir menú de navegación"
-            );
-
+            const links = document.getElementById('links');
+            const button = document.querySelector('.menu');
+            const isOpen = links.classList.toggle('open');
+            button.setAttribute('aria-expanded', String(isOpen));
         }
 
-        document.querySelectorAll("#links a").forEach(link => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('show');
+            });
+        }, { threshold: 0.1 });
 
-            link.addEventListener("click", () => {
+        document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
 
-                document.getElementById("links")?.classList.remove("open");
+        const locations = [
+            { name: 'Santo Domingo', country: 'República Dominicana', code: 'SDQ', aliases: ['santo domingo', 'republica dominicana', 'república dominicana', 'dominican republic', 'sdq'] },
+            { name: 'La Habana', country: 'Cuba', code: 'HAV', aliases: ['la habana', 'habana', 'havana', 'cuba', 'hav'] },
+            { name: 'Santiago de Cuba', country: 'Cuba', code: 'SCU', aliases: ['santiago de cuba', 'scu'] },
+            { name: 'Miami', country: 'Estados Unidos', code: 'MIA', aliases: ['miami', 'mia'] },
+            { name: 'Nueva York', country: 'Estados Unidos', code: 'JFK', aliases: ['nueva york', 'new york', 'nyc', 'jfk'] },
+            { name: 'Orlando', country: 'Estados Unidos', code: 'MCO', aliases: ['orlando', 'mco'] },
+            { name: 'Madrid', country: 'España', code: 'MAD', aliases: ['madrid', 'espana', 'españa', 'spain', 'mad'] },
+            { name: 'São Paulo', country: 'Brasil', code: 'GRU', aliases: ['sao paulo', 'são paulo', 'brasil', 'brazil', 'gru'] },
+            { name: 'Río de Janeiro', country: 'Brasil', code: 'GIG', aliases: ['rio de janeiro', 'río de janeiro', 'gig'] },
+            { name: 'Bogotá', country: 'Colombia', code: 'BOG', aliases: ['bogota', 'bogotá', 'colombia', 'bog'] },
+            { name: 'Panamá', country: 'Panamá', code: 'PTY', aliases: ['panama', 'panamá', 'pty'] },
+            { name: 'San Juan', country: 'Puerto Rico', code: 'SJU', aliases: ['san juan', 'puerto rico', 'sju'] },
+            { name: 'París', country: 'Francia', code: 'CDG', aliases: ['paris', 'parís', 'francia', 'france', 'cdg'] },
+            { name: 'Londres', country: 'Reino Unido', code: 'LHR', aliases: ['londres', 'london', 'reino unido', 'united kingdom', 'lhr'] },
+            { name: 'Toronto', country: 'Canadá', code: 'YYZ', aliases: ['toronto', 'canada', 'canadá', 'yyz'] },
+            { name: 'Puerto Príncipe', country: 'Haití', code: 'PAP', aliases: ['puerto principe', 'puerto príncipe', 'port au prince', 'port-au-prince', 'haiti', 'haití', 'pap'] },
+            { name: 'Kingston', country: 'Jamaica', code: 'KIN', aliases: ['kingston', 'jamaica', 'kin'] },
+            { name: 'Cancún', country: 'México', code: 'CUN', aliases: ['cancun', 'cancún', 'mexico', 'méxico', 'cun'] },
+            { name: 'Lima', country: 'Perú', code: 'LIM', aliases: ['lima', 'peru', 'perú', 'lim'] },
+            { name: 'Quito', country: 'Ecuador', code: 'UIO', aliases: ['quito', 'ecuador', 'uio'] },
+            { name: 'Buenos Aires', country: 'Argentina', code: 'EZE', aliases: ['buenos aires', 'argentina', 'eze'] },
+            { name: 'Brasilia', country: 'Brasil', code: 'BSB', aliases: ['brasilia', 'brasília', 'bsb'] },
+            { name: 'Santiago', country: 'Chile', code: 'SCL', aliases: ['santiago de chile', 'chile', 'scl'] },
+            { name: 'La Paz', country: 'Bolivia', code: 'LPB', aliases: ['la paz', 'bolivia', 'lpb'] },
+            { name: 'San José', country: 'Costa Rica', code: 'SJO', aliases: ['san jose', 'san josé', 'costa rica', 'sjo'] },
+            { name: 'Guatemala', country: 'Guatemala', code: 'GUA', aliases: ['guatemala', 'gua'] },
+            { name: 'San Salvador', country: 'El Salvador', code: 'SAL', aliases: ['san salvador', 'el salvador', 'sal'] },
+            { name: 'Managua', country: 'Nicaragua', code: 'MGA', aliases: ['managua', 'nicaragua', 'mga'] },
+            { name: 'Tegucigalpa', country: 'Honduras', code: 'TGU', aliases: ['tegucigalpa', 'honduras', 'tgu'] },
+            { name: 'Bruselas', country: 'Bélgica', code: 'BRU', aliases: ['bruselas', 'brussels', 'belgica', 'bélgica', 'bru'] }
+        ];
 
-                document.querySelector(".menu")
-                    ?.setAttribute("aria-expanded", "false");
+        const normalize = value => value
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim()
+            .toLowerCase();
 
+        function findLocation(value) {
+            const query = normalize(value);
+            if (!query) return null;
+
+            return locations.find(location =>
+                location.aliases.some(alias => normalize(alias) === query)
+            ) || null;
+        }
+
+        function renderSuggestions(input, list) {
+            const query = normalize(input.value);
+            list.innerHTML = '';
+
+            if (!query) {
+                list.classList.remove('is-open');
+                input.setAttribute('aria-expanded', 'false');
+                return;
+            }
+
+            const matches = locations
+                .filter(location => {
+                    const searchable = [
+                        location.name,
+                        location.country,
+                        location.code,
+                        ...location.aliases
+                    ].map(normalize);
+
+                    return searchable.some(item => item.includes(query));
+                })
+                .slice(0, 7);
+
+            if (!matches.length) {
+                list.classList.remove('is-open');
+                input.setAttribute('aria-expanded', 'false');
+                return;
+            }
+
+            matches.forEach(location => {
+                const item = document.createElement('li');
+                const button = document.createElement('button');
+
+                button.type = 'button';
+                button.className = 'suggestion-item';
+                button.setAttribute('role', 'option');
+
+                const name = document.createElement('span');
+                name.className = 'suggestion-name';
+                name.textContent = `${location.name}, ${location.country}`;
+
+                const code = document.createElement('span');
+                code.className = 'suggestion-code';
+                code.textContent = location.code;
+
+                button.append(name, code);
+                item.appendChild(button);
+
+                button.addEventListener('pointerdown', event => {
+                    event.preventDefault();
+                    input.value = location.name;
+                    list.classList.remove('is-open');
+                    input.setAttribute('aria-expanded', 'false');
+                });
+
+                list.appendChild(item);
             });
 
-        });
+            list.classList.add('is-open');
+            input.setAttribute('aria-expanded', 'true');
+        }
 
+        function setupAutocomplete(inputId, listId) {
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
 
-        /* ==========================================
-           REVEAL ANIMATIONS
-        ========================================== */
+            input.addEventListener('input', () => renderSuggestions(input, list));
+            input.addEventListener('focus', () => renderSuggestions(input, list));
 
-        if ("IntersectionObserver" in window) {
+            input.addEventListener('keydown', event => {
+                if (event.key === 'Escape') {
+                    list.classList.remove('is-open');
+                    input.setAttribute('aria-expanded', 'false');
+                }
 
-            const observer = new IntersectionObserver((entries) => {
-
-                entries.forEach(entry => {
-
-                    if (entry.isIntersecting) {
-
-                        entry.target.classList.add("show");
-
-                        observer.unobserve(entry.target);
-
+                if (event.key === 'Enter' && list.classList.contains('is-open')) {
+                    const firstOption = list.querySelector('button');
+                    if (firstOption) {
+                        event.preventDefault();
+                        firstOption.click();
                     }
-
-                });
-
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll(".reveal").forEach(element => {
-                observer.observe(element);
+                }
             });
 
-        } else {
-
-            document.querySelectorAll(".reveal").forEach(element => {
-                element.classList.add("show");
+            document.addEventListener('pointerdown', event => {
+                if (!input.parentElement.contains(event.target)) {
+                    list.classList.remove('is-open');
+                    input.setAttribute('aria-expanded', 'false');
+                }
             });
-
         }
 
-
-        /* ==========================================
-           AIRPORT DATABASE
-           
-           Alias -> IATA
-        ========================================== */
-
-        const airportDatabase = {
-
-            // REPÚBLICA DOMINICANA
-
-            "santo domingo": "SDQ",
-            "santo domingo republica dominicana": "SDQ",
-            "republica dominicana": "SDQ",
-            "republica dominicana rd": "SDQ",
-            "dominican republic": "SDQ",
-            "dominican republic sdq": "SDQ",
-            "rd": "SDQ",
-            "sdq": "SDQ",
-
-            "punta cana": "PUJ",
-            "punta cana republica dominicana": "PUJ",
-            "puj": "PUJ",
-
-            "santiago": "STI",
-            "santiago republica dominicana": "STI",
-            "santiago de los caballeros": "STI",
-            "sti": "STI",
-
-            "puerto plata": "POP",
-            "pop": "POP",
-
-            // CUBA
-
-            "cuba": "HAV",
-            "la habana": "HAV",
-            "havana": "HAV",
-            "la habana cuba": "HAV",
-            "hav": "HAV",
-
-            "santiago de cuba": "SCU",
-            "scu": "SCU",
-
-            "holguin": "HOG",
-            "holguin cuba": "HOG",
-            "hog": "HOG",
-
-            "varadero": "VRA",
-            "vra": "VRA",
-
-            // HAITÍ
-
-            "haiti": "PAP",
-            "haití": "PAP",
-            "puerto principe": "PAP",
-            "port au prince": "PAP",
-            "port-au-prince": "PAP",
-            "pap": "PAP",
-
-            // ESTADOS UNIDOS
-
-            "miami": "MIA",
-            "miami florida": "MIA",
-            "mia": "MIA",
-
-            "nueva york": "JFK",
-            "new york": "JFK",
-            "nyc": "JFK",
-            "jfk": "JFK",
-
-            "orlando": "MCO",
-            "mco": "MCO",
-
-            "los angeles": "LAX",
-            "lax": "LAX",
-
-            "fort lauderdale": "FLL",
-            "fll": "FLL",
-
-            "estados unidos": "MIA",
-            "united states": "MIA",
-            "usa": "MIA",
-            "eeuu": "MIA",
-
-            // BRASIL
-
-            "brasil": "GRU",
-            "brazil": "GRU",
-            "sao paulo": "GRU",
-            "sao paulo brasil": "GRU",
-            "sao paulo brazil": "GRU",
-            "gru": "GRU",
-
-            "rio de janeiro": "GIG",
-            "rio de janeiro brasil": "GIG",
-            "gig": "GIG",
-
-            "brasilia": "BSB",
-            "bsb": "BSB",
-
-            // MÉXICO
-
-            "mexico": "MEX",
-            "ciudad de mexico": "MEX",
-            "mexico city": "MEX",
-            "mex": "MEX",
-
-            "cancun": "CUN",
-            "cun": "CUN",
-
-            // COLOMBIA
-
-            "colombia": "BOG",
-            "bogota": "BOG",
-            "bogotá": "BOG",
-            "bog": "BOG",
-
-            "medellin": "MDE",
-            "medellín": "MDE",
-            "mde": "MDE",
-
-            "cartagena": "CTG",
-            "ctg": "CTG",
-
-            // PANAMÁ
-
-            "panama": "PTY",
-            "panamá": "PTY",
-            "ciudad de panama": "PTY",
-            "pty": "PTY",
-
-            // PUERTO RICO
-
-            "puerto rico": "SJU",
-            "san juan puerto rico": "SJU",
-            "san juan": "SJU",
-            "sju": "SJU",
-
-            // ESPAÑA
-
-            "espana": "MAD",
-            "españa": "MAD",
-            "spain": "MAD",
-            "madrid": "MAD",
-            "mad": "MAD",
-
-            "barcelona": "BCN",
-            "bcn": "BCN",
-
-            // FRANCIA
-
-            "francia": "CDG",
-            "france": "CDG",
-            "paris": "CDG",
-            "parís": "CDG",
-            "cdg": "CDG",
-
-            // REINO UNIDO
-
-            "reino unido": "LHR",
-            "united kingdom": "LHR",
-            "londres": "LHR",
-            "london": "LHR",
-            "lhr": "LHR",
-
-            // ITALIA
-
-            "italia": "FCO",
-            "italy": "FCO",
-            "roma": "FCO",
-            "rome": "FCO",
-            "fco": "FCO",
-
-            // PORTUGAL
-
-            "portugal": "LIS",
-            "lisboa": "LIS",
-            "lisbon": "LIS",
-            "lis": "LIS",
-
-            // CANADÁ
-
-            "canada": "YYZ",
-            "canadá": "YYZ",
-            "toronto": "YYZ",
-            "yyz": "YYZ",
-
-            "montreal": "YUL",
-            "yul": "YUL",
-
-            // OTROS DESTINOS
-
-            "jamaica": "KIN",
-            "kingston": "KIN",
-            "kin": "KIN",
-
-            "costa rica": "SJO",
-            "san jose costa rica": "SJO",
-            "sjo": "SJO",
-
-            "argentina": "EZE",
-            "buenos aires": "EZE",
-            "eze": "EZE",
-
-            "chile": "SCL",
-            "santiago de chile": "SCL",
-            "scl": "SCL",
-
-            "peru": "LIM",
-            "perú": "LIM",
-            "lima": "LIM",
-            "lim": "LIM",
-
-            "ecuador": "UIO",
-            "quito": "UIO",
-            "uio": "UIO",
-
-            "turquia": "IST",
-            "turquía": "IST",
-            "estambul": "IST",
-            "istanbul": "IST",
-            "ist": "IST",
-
-            "alemania": "FRA",
-            "germany": "FRA",
-            "frankfurt": "FRA",
-            "fra": "FRA"
-
-        };
-
-
-        /* ==========================================
-           NORMALIZE DESTINATION
-        ========================================== */
-
-        function normalizeLocation(value) {
-
-            return value
-                .trim()
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/[(),]/g, " ")
-                .replace(/\s+/g, " ")
-                .trim();
-
-        }
-
-
-        /* ==========================================
-           RESOLVE AIRPORT
-        ========================================== */
-
-        function resolveAirport(value) {
-
-            const normalized = normalizeLocation(value);
-
-            if (!normalized) return null;
-
-            // Código IATA escrito directamente
-
-            if (/^[a-z]{3}$/i.test(normalized)) {
-
-                return {
-                    code: normalized.toUpperCase(),
-                    source: "iata",
-                    original: value
-                };
-
-            }
-
-            // Alias conocido
-
-            const code = airportDatabase[normalized];
-
-            if (code) {
-
-                return {
-                    code,
-                    source: "database",
-                    original: value
-                };
-
-            }
-
-            // Buscar alias que contengan la ciudad escrita
-
-            const matchingAliases = Object.keys(airportDatabase)
-                .filter(alias => {
-
-                    return alias.includes(normalized);
-
-                });
-
-            if (matchingAliases.length === 1) {
-
-                return {
-                    code: airportDatabase[matchingAliases[0]],
-                    source: "database",
-                    original: value
-                };
-
-            }
-
-            return null;
-
-        }
-
-
-        /* ==========================================
-           LOCAL DATE VALIDATION
-        ========================================== */
-
-        const originInput = document.getElementById("origin");
-
-        const destinationInput = document.getElementById("destination");
-
-        const departInput = document.getElementById("departDate");
-
-        const returnInput = document.getElementById("returnDate");
-
-        const feedback = document.getElementById("searchFeedback");
+        setupAutocomplete('origin', 'origin-suggestions');
+        setupAutocomplete('destination', 'destination-suggestions');
+
+        const departInput = document.getElementById('departDate');
+        const returnInput = document.getElementById('returnDate');
 
         function getLocalDateString() {
-
             const now = new Date();
-
-            const year = now.getFullYear();
-
-            const month = String(now.getMonth() + 1).padStart(2, "0");
-
-            const day = String(now.getDate()).padStart(2, "0");
-
-            return `${year}-${month}-${day}`;
-
+            const offset = now.getTimezoneOffset();
+            const local = new Date(now.getTime() - offset * 60000);
+            return local.toISOString().split('T')[0];
         }
 
-        function updateDateRestrictions() {
+        const today = getLocalDateString();
+        departInput.min = today;
+        returnInput.min = today;
 
-            const today = getLocalDateString();
-
-            departInput.min = today;
-
+        departInput.addEventListener('change', () => {
             returnInput.min = departInput.value || today;
 
-            if (
-                returnInput.value &&
-                departInput.value &&
-                returnInput.value < departInput.value
-            ) {
-
-                returnInput.value = "";
-
+            if (returnInput.value && returnInput.value < departInput.value) {
+                returnInput.value = '';
             }
-
-        }
-
-        updateDateRestrictions();
-
-        departInput.addEventListener(
-            "change",
-            updateDateRestrictions
-        );
-
-        /* ==========================================
-           FEEDBACK
-        ========================================== */
-
-        function showFeedback(message, type = "success") {
-
-            feedback.textContent = message;
-
-            feedback.className = "search-feedback " + type;
-
-        }
-
-        function clearFeedback() {
-
-            feedback.textContent = "";
-
-            feedback.className = "search-feedback";
-
-        }
-
-        [originInput, destinationInput, departInput, returnInput]
-            .forEach(input => {
-
-                input.addEventListener("input", clearFeedback);
-
-                input.addEventListener("change", clearFeedback);
-
-            });
-
-
-        /* ==========================================
-           DATE FORMAT FOR SKYSCANNER
-        ========================================== */
-
-        function formatSkyscannerDate(dateString) {
-
-            if (!dateString) return "";
-
-            const [year, month, day] = dateString.split("-");
-
-            return `${year.slice(-2)}${month}${day}`;
-
-        }
-
-
-        /* ==========================================
-           BUILD SEARCH URLS
-        ========================================== */
-
-        function buildSkyscannerUrl(origin, destination, departure, returnDate) {
-
-            const depart = formatSkyscannerDate(departure);
-
-            const returning = formatSkyscannerDate(returnDate);
-
-            let url =
-                `https://www.skyscanner.net/transport/flights/` +
-                `${origin.toLowerCase()}/` +
-                `${destination.toLowerCase()}/` +
-                `${depart}/`;
-
-            if (returning) {
-
-                url += `${returning}/`;
-
-            }
-
-            return url;
-
-        }
-
-
-        function buildGoogleFlightsUrl(origin, destination, departure, returnDate) {
-
-            let query =
-                `Flights from ${origin} to ${destination} on ${departure}`;
-
-            if (returnDate) {
-
-                query += ` returning ${returnDate}`;
-
-            }
-
-            return (
-                "https://www.google.com/travel/flights?q=" +
-                encodeURIComponent(query)
-            );
-
-        }
-
-
-        /* ==========================================
-           OPEN EXTERNAL SEARCH SAFELY
-        ========================================== */
-
-        function openExternalSearch(url) {
-
-            const link = document.createElement("a");
-
-            link.href = url;
-
-            link.target = "_blank";
-
-            link.rel = "noopener noreferrer";
-
-            link.style.display = "none";
-
-            document.body.appendChild(link);
-
-            link.click();
-
-            link.remove();
-
-        }
-
-
-        /* ==========================================
-           MAIN SEARCH
-        ========================================== */
-
-        document.getElementById("flightSearchForm")
-            .addEventListener("submit", function(event) {
-
-                event.preventDefault();
-
-                clearFeedback();
-
-                const origin = originInput.value.trim();
-
-                const destination = destinationInput.value.trim();
-
-                const departure = departInput.value;
-
-                const returnDate = returnInput.value;
-
-                if (!origin || !destination) {
-
-                    showFeedback(
-                        "Debes introducir una ciudad o país de origen y destino.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-                if (
-                    normalizeLocation(origin) ===
-                    normalizeLocation(destination)
-                ) {
-
-                    showFeedback(
-                        "El origen y el destino no pueden ser iguales.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-                if (!departure) {
-
-                    showFeedback(
-                        "Selecciona una fecha de salida.",
-                        "error"
-                    );
-
-                    departInput.focus();
-
-                    return;
-
-                }
-
-                if (departure < getLocalDateString()) {
-
-                    showFeedback(
-                        "La fecha de salida no puede ser anterior a hoy.",
-                        "error"
-                    );
-
-                    departInput.focus();
-
-                    return;
-
-                }
-
-                if (returnDate && returnDate < departure) {
-
-                    showFeedback(
-                        "La fecha de regreso debe ser posterior o igual a la fecha de salida.",
-                        "error"
-                    );
-
-                    returnInput.focus();
-
-                    return;
-
-                }
-
-                const resolvedOrigin = resolveAirport(origin);
-
-                const resolvedDestination = resolveAirport(destination);
-
-                let searchUrl;
-
-                let searchProvider;
-
-                /*
-                 * Si ambos destinos están reconocidos,
-                 * se utiliza Skyscanner con códigos IATA.
-                 */
-
-                if (resolvedOrigin && resolvedDestination) {
-
-                    if (resolvedOrigin.code === resolvedDestination.code) {
-
-                        showFeedback(
-                            "El origen y el destino corresponden al mismo aeropuerto.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-                    searchUrl = buildSkyscannerUrl(
-                        resolvedOrigin.code,
-                        resolvedDestination.code,
-                        departure,
-                        returnDate
-                    );
-
-                    searchProvider = "Skyscanner";
-
-                    const countryNotice =
-                        resolvedOrigin.source === "database" ||
-                        resolvedDestination.source === "database";
-
-                    showFeedback(
-                        countryNotice
-                            ? `Destino reconocido. Se utilizará Skyscanner con los aeropuertos ${resolvedOrigin.code} y ${resolvedDestination.code}. Si escribiste solamente un país, se utiliza su aeropuerto de referencia.`
-                            : "Códigos aeroportuarios reconocidos. Abriendo Skyscanner.",
-                        "success"
-                    );
-
-                } else {
-
-                    /*
-                     * Si uno o ambos destinos no están
-                     * en nuestro catálogo, no inventamos
-                     * un código aeroportuario.
-                     *
-                     * Se utiliza Google Flights para
-                     * conservar el texto original.
-                     */
-
-                    searchUrl = buildGoogleFlightsUrl(
-                        origin,
-                        destination,
-                        departure,
-                        returnDate
-                    );
-
-                    searchProvider = "Google Flights";
-
-                    showFeedback(
-                        "Este destino no está en nuestro catálogo de aeropuertos. Tu búsqueda se abrirá en Google Flights utilizando los nombres completos de las ciudades o países.",
-                        "success"
-                    );
-
-                }
-
-                openExternalSearch(searchUrl);
-
-            });
-
-
-        /* ==========================================
-           INTERNATIONALIZATION
-        ========================================== */
+        });
 
         const pageTranslations = {
-
             es: {
-                kicker: "Vuelos",
+                kicker: 'Vuelos',
                 title: 'Encuentra los mejores <span class="text-gradient">vuelos.</span>',
-                desc: "Explora opciones de viaje, consulta rutas y encuentra el camino perfecto para reunirte con tu familia.",
-                origin: "Ciudad o país de origen",
-                destination: "Ciudad o país de destino",
-                departure: "Salida",
-                returning: "Regreso (Opcional)",
-                button: "Buscar Vuelos",
-                hint: "Puedes escribir una ciudad o un país completo. No necesitas conocer los códigos de los aeropuertos.",
-                disclaimer: "Las búsquedas se realizan mediante plataformas externas. Las tarifas, rutas y disponibilidad deben confirmarse directamente con los proveedores.",
-                skyBadge: "Aerolínea destacada",
-                skyTitle: 'Descubre <span class="text-gradient">SKYhigh Dominicana.</span>',
-                skyDesc: "Conoce las opciones de viaje de SKYhigh Dominicana. Explora sus rutas, consulta información oficial sobre sus servicios y accede a sus canales de reservas.",
-                routesTitle: "Rutas y destinos",
-                routesDesc: "Explora el mapa de rutas y descubre los destinos asociados a SKYhigh Dominicana.",
-                routesLink: "Explorar rutas",
-                bookingTitle: "Reservas oficiales",
-                bookingDesc: "Consulta los destinos, condiciones y opciones de compra directamente con la aerolínea.",
-                bookingLink: "Visitar SKYhigh",
-                baggageTitle: "Equipaje y servicios",
-                baggageDesc: "Consulta las políticas oficiales de equipaje, mascotas y servicios especiales.",
-                baggageLink: "Consultar equipaje",
-                faqTitle: "Preguntas frecuentes",
-                faqDesc: "Encuentra información sobre cambios, cancelaciones, documentación y condiciones de viaje.",
-                faqLink: "Consultar información",
-                notice: "Los mapas de rutas son herramientas informativas y no garantizan disponibilidad de asientos ni operación de vuelos en fechas concretas. Las tarifas y condiciones deben confirmarse directamente con la aerolínea.",
-                supportTitle: "¿Necesitas ayuda para organizar tu viaje?",
-                supportDesc: "Nuestro equipo puede orientarte sobre tu solicitud de viaje.",
-                supportButton: "Solicitar asistencia",
-                f1Title: "Comparación de vuelos",
-                f1Desc: "Accede a Skyscanner para consultar opciones y comparar tarifas.",
-                f2Title: "Consulta externa",
-                f2Desc: "Las búsquedas se realizan en plataformas externas. Revisa las condiciones antes de completar una compra.",
-                f3Title: "Atención personalizada",
-                f3Desc: "Contacta con GÉNESIS GLOBAL mediante WhatsApp si necesitas orientación."
+                desc: 'Comparamos cientos de aerolíneas para que encuentres la ruta perfecta hacia tu familia.',
+                labelOrigin: 'Origen',
+                labelDest: 'Destino',
+                labelDepart: 'Fecha de salida',
+                labelReturn: 'Fecha de regreso (opcional)',
+                btn: 'Buscar vuelos',
+                hint: 'Escribe una ciudad, un país o un código de aeropuerto. Ejemplos: Santo Domingo, Cuba, Miami, SDQ o MIA. La búsqueda se abrirá en una plataforma externa. Las tarifas y la disponibilidad dependen de sus proveedores.',
+                f1Title: 'Consulta de vuelos',
+                f1Desc: 'Accede a plataformas de búsqueda para consultar rutas y opciones de distintas aerolíneas.',
+                f2Title: 'Orientación transparente',
+                f2Desc: 'Te orientamos durante la planificación. Las condiciones finales dependen de cada proveedor.',
+                f3Title: 'Atención personalizada',
+                f3Desc: 'Contacta con nuestro equipo para recibir orientación y organizar mejor tu viaje.'
             },
-
             en: {
-                kicker: "Flights",
+                kicker: 'Flights',
                 title: 'Find the best <span class="text-gradient">flights.</span>',
-                desc: "Explore travel options, check routes and find the right way to reunite with your family.",
-                origin: "Origin city or country",
-                destination: "Destination city or country",
-                departure: "Departure",
-                returning: "Return (Optional)",
-                button: "Search Flights",
-                hint: "Enter a full city or country name. You do not need to know airport codes.",
-                disclaimer: "Searches are performed through external platforms. Fares, routes and availability must be confirmed with the providers.",
-                skyBadge: "Featured airline",
-                skyTitle: 'Discover <span class="text-gradient">SKYhigh Dominicana.</span>',
-                skyDesc: "Explore travel options from SKYhigh Dominicana, discover its routes and access official service and reservation information.",
-                routesTitle: "Routes and destinations",
-                routesDesc: "Explore the route map and discover destinations associated with SKYhigh Dominicana.",
-                routesLink: "Explore routes",
-                bookingTitle: "Official reservations",
-                bookingDesc: "Check destinations, conditions and booking options directly with the airline.",
-                bookingLink: "Visit SKYhigh",
-                baggageTitle: "Baggage and services",
-                baggageDesc: "Review official baggage, pet and special service policies.",
-                baggageLink: "Check baggage policy",
-                faqTitle: "Frequently asked questions",
-                faqDesc: "Find information about changes, cancellations, documentation and travel conditions.",
-                faqLink: "View information",
-                notice: "Route maps are informational tools and do not guarantee seat availability or flight operation on specific dates. Fares and conditions must be confirmed directly with the airline.",
-                supportTitle: "Need help planning your trip?",
-                supportDesc: "Our team can guide you with your travel request.",
-                supportButton: "Request assistance",
-                f1Title: "Flight comparison",
-                f1Desc: "Visit Skyscanner to explore options and compare fares.",
-                f2Title: "External search",
-                f2Desc: "Searches take place on external platforms. Review conditions before purchasing.",
-                f3Title: "Personal assistance",
-                f3Desc: "Contact GÉNESIS GLOBAL through WhatsApp if you need guidance."
+                desc: 'Explore flight options and find a route that works for your journey.',
+                labelOrigin: 'Origin',
+                labelDest: 'Destination',
+                labelDepart: 'Departure date',
+                labelReturn: 'Return date (optional)',
+                btn: 'Search flights',
+                hint: 'Enter a city, country or airport code. Examples: Santo Domingo, Cuba, Miami, SDQ or MIA. Your search will open on an external platform. Fares and availability depend on its providers.',
+                f1Title: 'Flight search',
+                f1Desc: 'Access search platforms to explore routes and options from different airlines.',
+                f2Title: 'Clear guidance',
+                f2Desc: 'We can guide you during planning. Final conditions depend on each provider.',
+                f3Title: 'Personal assistance',
+                f3Desc: 'Contact our team for guidance and help organizing your trip.'
             },
-
             pt: {
-                kicker: "Voos",
+                kicker: 'Voos',
                 title: 'Encontre os melhores <span class="text-gradient">voos.</span>',
-                desc: "Explore opções de viagem, consulte rotas e encontre o caminho ideal para se reunir com sua família.",
-                origin: "Cidade ou país de origem",
-                destination: "Cidade ou país de destino",
-                departure: "Partida",
-                returning: "Retorno (Opcional)",
-                button: "Buscar Voos",
-                hint: "Digite o nome completo de uma cidade ou país. Você não precisa conhecer os códigos dos aeroportos.",
-                disclaimer: "As buscas são realizadas em plataformas externas. Tarifas, rotas e disponibilidade devem ser confirmadas diretamente com os fornecedores.",
-                skyBadge: "Companhia aérea em destaque",
-                skyTitle: 'Conheça a <span class="text-gradient">SKYhigh Dominicana.</span>',
-                skyDesc: "Conheça as opções de viagem da SKYhigh Dominicana. Explore suas rotas e consulte informações oficiais sobre seus serviços.",
-                routesTitle: "Rotas e destinos",
-                routesDesc: "Explore o mapa de rotas e descubra os destinos associados à SKYhigh Dominicana.",
-                routesLink: "Explorar rotas",
-                bookingTitle: "Reservas oficiais",
-                bookingDesc: "Consulte destinos, condições e opções de compra diretamente com a companhia aérea.",
-                bookingLink: "Visitar SKYhigh",
-                baggageTitle: "Bagagem e serviços",
-                baggageDesc: "Consulte as políticas oficiais de bagagem, animais de estimação e serviços especiais.",
-                baggageLink: "Consultar bagagem",
-                faqTitle: "Perguntas frequentes",
-                faqDesc: "Encontre informações sobre alterações, cancelamentos, documentação e condições de viagem.",
-                faqLink: "Consultar informações",
-                notice: "Os mapas de rotas são ferramentas informativas e não garantem disponibilidade de assentos nem operação de voos em datas específicas. Tarifas e condições devem ser confirmadas diretamente com a companhia aérea.",
-                supportTitle: "Precisa de ajuda para organizar sua viagem?",
-                supportDesc: "Nossa equipe pode orientar sua solicitação de viagem.",
-                supportButton: "Solicitar assistência",
-                f1Title: "Comparação de voos",
-                f1Desc: "Acesse o Skyscanner para consultar opções e comparar tarifas.",
-                f2Title: "Consulta externa",
-                f2Desc: "As buscas são realizadas em plataformas externas. Confira as condições antes de concluir uma compra.",
-                f3Title: "Atendimento personalizado",
-                f3Desc: "Entre em contato com a GÉNESIS GLOBAL pelo WhatsApp se precisar de orientação."
+                desc: 'Explore opções de voos e encontre uma rota adequada para sua viagem.',
+                labelOrigin: 'Origem',
+                labelDest: 'Destino',
+                labelDepart: 'Data de partida',
+                labelReturn: 'Data de retorno (opcional)',
+                btn: 'Buscar voos',
+                hint: 'Digite uma cidade, país ou código de aeroporto. Exemplos: Santo Domingo, Cuba, Miami, SDQ ou MIA. Sua busca será aberta em uma plataforma externa. Tarifas e disponibilidade dependem dos fornecedores.',
+                f1Title: 'Busca de voos',
+                f1Desc: 'Acesse plataformas de busca para consultar rotas e opções de diferentes companhias aéreas.',
+                f2Title: 'Orientação transparente',
+                f2Desc: 'Podemos orientar você durante o planejamento. As condições finais dependem de cada fornecedor.',
+                f3Title: 'Atendimento personalizado',
+                f3Desc: 'Entre em contato com nossa equipe para receber orientação e organizar sua viagem.'
             }
-
         };
 
+        function applyPageTranslation(lang) {
+            const t = pageTranslations[lang] || pageTranslations.es;
 
-        /* ==========================================
-           APPLY LANGUAGE
-        ========================================== */
+            document.getElementById('flights-kicker').textContent = t.kicker;
+            document.getElementById('flights-title').innerHTML = t.title;
+            document.getElementById('flights-desc').textContent = t.desc;
+            document.getElementById('flights-label-origin').textContent = t.labelOrigin;
+            document.getElementById('flights-label-dest').textContent = t.labelDest;
+            document.getElementById('flights-label-depart').textContent = t.labelDepart;
+            document.getElementById('flights-label-return').textContent = t.labelReturn;
+            document.getElementById('flights-btn').textContent = t.btn;
+            document.getElementById('flights-hint').textContent = t.hint;
+            document.getElementById('flights-f1-title').textContent = t.f1Title;
+            document.getElementById('flights-f1-desc').textContent = t.f1Desc;
+            document.getElementById('flights-f2-title').textContent = t.f2Title;
+            document.getElementById('flights-f2-desc').textContent = t.f2Desc;
+            document.getElementById('flights-f3-title').textContent = t.f3Title;
+            document.getElementById('flights-f3-desc').textContent = t.f3Desc;
+        }
 
-        function applyPageTranslation(language) {
+        const langObserver = new MutationObserver(() => {
+            applyPageTranslation(document.documentElement.lang || 'es');
+        });
 
-            const t = pageTranslations[language] || pageTranslations.es;
+        langObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['lang']
+        });
 
-            const elements = {
+        document.addEventListener('DOMContentLoaded', () => {
+            applyPageTranslation(document.documentElement.lang || 'es');
+        });
 
-                "flights-kicker": "kicker",
-                "flights-desc": "desc",
-                "flights-label-origin": "origin",
-                "flights-label-dest": "destination",
-                "flights-label-depart": "departure",
-                "flights-label-return": "returning",
-                "flights-btn": "button",
-                "flights-hint": "hint",
-                "flights-disclaimer": "disclaimer",
+        document.getElementById('flightSearchForm').addEventListener('submit', event => {
+            event.preventDefault();
 
-                "skyhigh-badge": "skyBadge",
-                "skyhigh-description": "skyDesc",
+            const originValue = document.getElementById('origin').value.trim();
+            const destinationValue = document.getElementById('destination').value.trim();
+            const departure = departInput.value;
+            const returnDate = returnInput.value;
 
-                "skyhigh-routes-title": "routesTitle",
-                "skyhigh-routes-desc": "routesDesc",
-                "skyhigh-routes-link": "routesLink",
+            if (!originValue || !destinationValue) {
+                alert('Introduce una ciudad, país o código de aeropuerto para el origen y el destino.');
+                return;
+            }
 
-                "skyhigh-booking-title": "bookingTitle",
-                "skyhigh-booking-desc": "bookingDesc",
-                "skyhigh-booking-link": "bookingLink",
+            if (normalize(originValue) === normalize(destinationValue)) {
+                alert('El origen y el destino deben ser diferentes.');
+                return;
+            }
 
-                "skyhigh-baggage-title": "baggageTitle",
-                "skyhigh-baggage-desc": "baggageDesc",
-                "skyhigh-baggage-link": "baggageLink",
+            if (!departure || departure < today) {
+                alert('Selecciona una fecha de salida válida.');
+                departInput.focus();
+                return;
+            }
 
-                "skyhigh-faq-title": "faqTitle",
-                "skyhigh-faq-desc": "faqDesc",
-                "skyhigh-faq-link": "faqLink",
+            if (returnDate && returnDate < departure) {
+                alert('La fecha de regreso no puede ser anterior a la fecha de salida.');
+                returnInput.focus();
+                return;
+            }
 
-                "skyhigh-notice": "notice",
-                "skyhigh-support-title": "supportTitle",
-                "skyhigh-support-desc": "supportDesc",
-                "skyhigh-support-button": "supportButton",
+            const originLocation = findLocation(originValue);
+            const destinationLocation = findLocation(destinationValue);
 
-                "flights-f1-title": "f1Title",
-                "flights-f1-desc": "f1Desc",
-                "flights-f2-title": "f2Title",
-                "flights-f2-desc": "f2Desc",
-                "flights-f3-title": "f3Title",
-                "flights-f3-desc": "f3Desc"
-
+            const formatDate = date => {
+                const [year, month, day] = date.split('-');
+                return `${year.substring(2)}${month}${day}`;
             };
 
-            Object.entries(elements).forEach(([id, key]) => {
+            let searchUrl;
 
-                const element = document.getElementById(id);
+            if (originLocation && destinationLocation) {
+                const depart = formatDate(departure);
+                const returnPart = returnDate ? `${formatDate(returnDate)}/` : '';
 
-                if (element) {
+                searchUrl = `https://www.skyscanner.net/transport/flights/${originLocation.code.toLowerCase()}/${destinationLocation.code.toLowerCase()}/${depart}/${returnPart}`;
+            } else {
+                const query = new URLSearchParams({
+                    q: `Flights from ${originValue} to ${destinationValue} on ${departure}${returnDate ? ` returning ${returnDate}` : ''}`
+                });
 
-                    element.textContent = t[key];
+                searchUrl = `https://www.google.com/travel/flights?${query.toString()}`;
+            }
 
-                }
+            const newWindow = window.open(searchUrl, '_blank', 'noopener,noreferrer');
 
-            });
-
-            const title = document.getElementById("flights-title");
-
-            const skyTitle = document.getElementById("skyhigh-title");
-
-            if (title) title.innerHTML = t.title;
-
-            if (skyTitle) skyTitle.innerHTML = t.skyTitle;
-
-            originInput.placeholder = language === "en"
-                ? "E.g. Santo Domingo, Cuba..."
-                : language === "pt"
-                    ? "Ex. Santo Domingo, Cuba..."
-                    : "Ej. Santo Domingo, Cuba...";
-
-            destinationInput.placeholder = language === "en"
-                ? "E.g. Miami, Brazil, Spain..."
-                : language === "pt"
-                    ? "Ex. Miami, Brasil, Espanha..."
-                    : "Ej. Miami, Brasil, España...";
-
-        }
-
-
-        /* ==========================================
-           OBSERVE LANGUAGE CHANGES
-        ========================================== */
-
-        function getPageLanguage() {
-
-            const lang = (
-                document.documentElement.lang || "es"
-            ).toLowerCase().split("-")[0];
-
-            return pageTranslations[lang] ? lang : "es";
-
-        }
-
-        applyPageTranslation(getPageLanguage());
-
-        const languageObserver = new MutationObserver(() => {
-
-            applyPageTranslation(getPageLanguage());
-
+            if (!newWindow) {
+                window.location.href = searchUrl;
+            }
         });
-
-        languageObserver.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ["lang"]
-        });
-
     </script>
-
 </body>
 </html>
