@@ -496,3 +496,138 @@ document.addEventListener('genesis:languagechange', () => {
         renderSummary(lastSummaryData);
     }
 });
+
+/* =========================================================
+   11. ENVÍO DE SOLICITUD A SUPABASE
+   Integración con la RPC submit_travel_request
+   Idiomas: ES / EN / FR / PT
+   ========================================================= */
+
+window.submitRequest = async function () {
+    const button = document.getElementById('enviarBtn');
+
+    if (!button || !lastSummaryData || button.disabled) {
+        return;
+    }
+
+    const language = getPlannerLanguage();
+
+    const messages = {
+        es: {
+            loading: 'Enviando tu solicitud...',
+            success: 'Tu solicitud fue enviada correctamente. Nuestro equipo revisará la información y se pondrá en contacto contigo.',
+            error: 'No fue posible enviar tu solicitud. Inténtalo nuevamente o contáctanos por WhatsApp.',
+            sent: 'Solicitud enviada'
+        },
+        en: {
+            loading: 'Sending your request...',
+            success: 'Your request was sent successfully. Our team will review the information and contact you.',
+            error: 'Your request could not be sent. Please try again or contact us via WhatsApp.',
+            sent: 'Request sent'
+        },
+        fr: {
+            loading: 'Envoi de votre demande...',
+            success: 'Votre demande a été envoyée. Notre équipe examinera les informations et vous contactera.',
+            error: 'Votre demande n’a pas pu être envoyée. Veuillez réessayer ou nous contacter sur WhatsApp.',
+            sent: 'Demande envoyée'
+        },
+        pt: {
+            loading: 'Enviando sua solicitação...',
+            success: 'Sua solicitação foi enviada. Nossa equipe analisará as informações e entrará em contato.',
+            error: 'Não foi possível enviar sua solicitação. Tente novamente ou entre em contato pelo WhatsApp.',
+            sent: 'Solicitação enviada'
+        }
+    };
+
+    const t = messages[language] || messages.es;
+
+    function showSubmissionMessage(type) {
+        const summary = document.getElementById('summaryContent');
+
+        if (!summary) return;
+
+        let message = document.getElementById('plannerSubmitStatus');
+
+        if (!message) {
+            message = document.createElement('p');
+            message.id = 'plannerSubmitStatus';
+            message.setAttribute('role', 'status');
+            message.setAttribute('aria-live', 'polite');
+            summary.insertAdjacentElement('afterend', message);
+        }
+
+        message.textContent = t[type];
+
+        message.style.marginTop = '16px';
+        message.style.fontSize = '14px';
+        message.style.lineHeight = '1.6';
+        message.style.color =
+            type === 'success' ? '#66e6c4' :
+            type === 'error' ? '#ff6b6b' :
+            'inherit';
+    }
+
+    // Comprobar que Supabase está disponible.
+    if (typeof window.saveTravelRequest !== 'function') {
+        console.error(
+            'GÉNESIS GLOBAL: saveTravelRequest no está disponible.'
+        );
+
+        showSubmissionMessage('error');
+        return;
+    }
+
+    // Convertir los valores del selector a los tipos
+    // reconocidos por la función SQL.
+    const travelType = document.getElementById('tipoViaje');
+
+    const tripTypeMap = {
+        'visita-familiar': 'family_visit',
+        'personal': 'other',
+        'turismo': 'tourism',
+        'otro': 'other'
+    };
+
+    const tipo = tripTypeMap[travelType?.value] || 'other';
+
+    const originalText = button.textContent;
+
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+
+    showSubmissionMessage('loading');
+
+    try {
+        const result = await window.saveTravelRequest({
+            ...lastSummaryData,
+            tipo
+        });
+
+        // La RPC actual devuelve success: true al completar
+        // correctamente las inserciones.
+        if (!result || result.success !== true) {
+            throw new Error(
+                'Supabase no confirmó el registro de la solicitud.'
+            );
+        }
+
+        showSubmissionMessage('success');
+
+        button.textContent = t.sent;
+        button.setAttribute('aria-busy', 'false');
+
+        // No reactivar: evita enviar dos veces la misma solicitud.
+
+    } catch (error) {
+        console.error(
+            'GÉNESIS GLOBAL — Error al enviar solicitud:',
+            error
+        );
+
+        showSubmissionMessage('error');
+
+        button.disabled = false;
+        button.textContent = originalText;
+        button.removeAttribute('aria-busy');
+    }
+};
