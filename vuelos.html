@@ -1,10 +1,13 @@
+
 <!doctype html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1020">
+    <meta name="description" content="Encuentra opciones de vuelos y recibe orientación personalizada para organizar tu viaje con GÉNESIS GLOBAL.">
     <title>Buscar Vuelos | GÉNESIS GLOBAL</title>
-    
+
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -14,35 +17,48 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
-    
+
     <style>
         .hero-flights {
-            padding: 140px 0 60px;
+            padding: 140px 20px 60px;
             text-align: center;
             position: relative;
         }
-        .hero-flights h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
-        .hero-flights p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
+
+        .hero-flights h1 {
+            font-size: clamp(36px, 6vw, 70px);
+            margin: 20px 0;
+            letter-spacing: -0.05em;
+            line-height: 1.12;
+        }
+
+        .hero-flights p {
+            color: var(--text-soft);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.7;
+        }
 
         .search-box {
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 40px;
+            padding: 36px;
             max-width: 1100px;
-            margin: -30px auto 60px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            margin: -30px auto 70px;
+            box-shadow: 0 30px 60px rgba(0,0,0,.4);
             position: relative;
             z-index: 10;
         }
-        
+
         .search-form {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
             gap: 15px;
             align-items: end;
         }
@@ -52,84 +68,360 @@
             flex-direction: column;
             position: relative;
             width: 100%;
+            min-width: 0;
         }
+
         .input-group label {
             font-size: 11px;
             font-weight: 700;
             color: var(--text-soft);
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 8px;
-            margin-left: 10px;
+            letter-spacing: .1em;
+            margin: 0 0 8px 10px;
         }
-        .input-group input, .input-group select {
-            background: rgba(0,0,0,0.3);
+
+        .input-group input {
+            background: rgba(0,0,0,.3);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 16px 16px 16px 45px;
+            padding: 16px 14px 16px 45px;
             color: #fff;
             font-family: inherit;
             font-size: 15px;
             outline: none;
-            transition: all 0.3s;
+            transition: border-color .2s, background .2s, box-shadow .2s;
             width: 100%;
+            min-width: 0;
+            min-height: 54px;
+            color-scheme: dark;
         }
-        .input-group input:focus, .input-group select:focus {
+
+        .input-group input::placeholder {
+            color: var(--text-muted);
+            opacity: .85;
+        }
+
+        .input-group input:focus {
             border-color: var(--accent);
-            background: rgba(102, 230, 196, 0.05);
+            background: rgba(102,230,196,.05);
+            box-shadow: 0 0 0 3px rgba(102,230,196,.08);
         }
-        .input-group svg {
+
+        .input-group svg.field-icon {
             position: absolute;
             left: 15px;
-            bottom: 16px;
+            bottom: 17px;
             width: 20px;
             height: 20px;
             stroke: var(--text-muted);
             pointer-events: none;
         }
-        .input-group input:focus + svg, .input-group select:focus + svg {
+
+        .input-group input:focus ~ svg.field-icon {
             stroke: var(--accent);
         }
 
-        .search-form button {
-            height: 54px;
-            padding: 0 30px;
-            font-size: 16px;
-            border-radius: 12px;
-            margin-bottom: 1px;
+        .suggestions {
+            display: none;
+            position: absolute;
+            top: calc(100% + 7px);
+            left: 0;
+            right: 0;
+            z-index: 100;
+            max-height: 240px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            padding: 6px;
+            margin: 0;
+            list-style: none;
+            background: #111827;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 18px 40px rgba(0,0,0,.4);
+            scrollbar-width: thin;
+        }
+
+        .suggestions.is-open {
+            display: block;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            padding: 12px;
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: #fff;
+            text-align: left;
+            font: inherit;
+            cursor: pointer;
+            transition: background .18s ease;
+        }
+
+        .suggestion-item:hover,
+        .suggestion-item:focus-visible {
+            background: rgba(255,255,255,.08);
+            outline: none;
+        }
+
+        .suggestion-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .suggestion-code {
+            color: var(--text-muted);
+            font-size: 11px;
             white-space: nowrap;
+        }
+
+        .search-form button {
+            min-height: 54px;
+            padding: 0 25px;
+            font-size: 15px;
+            border-radius: 12px;
+            white-space: nowrap;
+            margin-bottom: 1px;
+            cursor: pointer;
+        }
+
+        .search-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin: 18px auto 0;
+            text-align: center;
+            max-width: 760px;
         }
 
         .features {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
             max-width: 1000px;
-            margin: 0 auto 100px;
+            margin: 0 auto 80px;
         }
+
         .feature-card {
             text-align: center;
             padding: 30px;
-            background: rgba(255,255,255,0.02);
+            background: rgba(255,255,255,.02);
             border-radius: 20px;
             border: 1px solid var(--border);
         }
-        .feature-card svg { width: 40px; height: 40px; stroke: var(--accent); margin-bottom: 15px; }
-        .feature-card h3 { font-size: 18px; margin-bottom: 10px; }
-        .feature-card p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
 
-        @media (max-width: 1024px) {
-            .search-form { grid-template-columns: 1fr 1fr; }
+        .feature-card svg {
+            width: 40px;
+            height: 40px;
+            stroke: var(--accent);
+            margin-bottom: 15px;
         }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-soft);
+            line-height: 1.7;
+        }
+
+        .travel-contact {
+            max-width: 1000px;
+            margin: 0 auto 100px;
+            padding: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.2);
+        }
+
+        .travel-contact-content {
+            max-width: 620px;
+        }
+
+        .travel-contact .kicker {
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .travel-contact h2 {
+            font-family: Manrope, sans-serif;
+            font-size: clamp(24px, 3vw, 34px);
+            line-height: 1.2;
+            margin: 12px 0;
+        }
+
+        .travel-contact p {
+            color: var(--text-soft);
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .travel-contact-action {
+            flex-shrink: 0;
+        }
+
+        .whatsapp-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 0 22px;
+            border-radius: 12px;
+            background: #20b76b;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: transform .2s ease, background .2s ease;
+        }
+
+        .whatsapp-cta:hover {
+            background: #169d59;
+            transform: translateY(-2px);
+        }
+
+        .whatsapp-cta svg {
+            width: 19px;
+            height: 19px;
+            stroke: currentColor;
+        }
+
+        .footer-grid {
+            min-width: 0;
+        }
+
+        @media (max-width: 1100px) {
+            .search-form {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .search-form button {
+                grid-column: 1 / -1;
+                width: 100%;
+            }
+        }
+
         @media (max-width: 768px) {
-            .search-form { grid-template-columns: 1fr; }
-            .search-form button { width: 100%; margin-top: 10px; }
-            .features { grid-template-columns: 1fr; }
-            .search-box { margin: -30px 20px 40px; padding: 30px 20px; }
-            .hero-flights { padding: 120px 20px 40px; }
+            .hero-flights {
+                padding: 115px 20px 45px;
+            }
+
+            .hero-flights h1 {
+                font-size: clamp(34px, 9vw, 48px);
+            }
+
+            .hero-flights p {
+                font-size: 15px;
+                line-height: 1.65;
+            }
+
+            .search-box {
+                margin: -20px 15px 55px;
+                padding: 24px 18px;
+                border-radius: 20px;
+            }
+
+            .search-form {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 17px;
+            }
+
+            .search-form button {
+                grid-column: auto;
+                width: 100%;
+                min-height: 54px;
+                margin-top: 3px;
+            }
+
+            .input-group input {
+                min-height: 54px;
+                font-size: 16px;
+            }
+
+            .suggestions {
+                max-height: 190px;
+            }
+
+            .features {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 15px;
+                margin: 0 15px 60px;
+            }
+
+            .feature-card {
+                padding: 25px 20px;
+            }
+
+            .travel-contact {
+                margin: 0 15px 65px;
+                padding: 28px 22px;
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 22px;
+            }
+
+            .travel-contact-action,
+            .whatsapp-cta {
+                width: 100%;
+            }
+
+            .footer-grid {
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .hero-flights {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .search-box {
+                margin-left: 10px;
+                margin-right: 10px;
+                padding: 20px 14px;
+            }
+
+            .input-group input {
+                padding-left: 42px;
+                font-size: 16px;
+            }
+
+            .travel-contact {
+                margin-left: 10px;
+                margin-right: 10px;
+                padding: 24px 17px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .input-group input,
+            .suggestion-item,
+            .whatsapp-cta {
+                transition: none;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <nav class="nav shell" id="nav">
@@ -137,6 +429,7 @@
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
             <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
         </a>
+
         <div id="links" class="links">
             <a href="index.html">Inicio</a>
             <a href="servicios.html">Servicios</a>
@@ -144,10 +437,12 @@
             <a href="nosotros.html">Nosotros</a>
             <a href="otros-servicios.html">Otros Servicios</a>
         </div>
+
         <div class="nav-actions">
             <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
         </div>
-        <button class="menu" onclick="toggleMenu()">☰</button>
+
+        <button class="menu" type="button" aria-label="Abrir menú" aria-controls="links" aria-expanded="false" onclick="toggleMenu()">☰</button>
     </nav>
 
     <section class="hero-flights shell reveal">
@@ -158,49 +453,139 @@
 
     <section class="shell reveal">
         <div class="search-box">
-            <form class="search-form" id="flightSearchForm">
+            <form class="search-form" id="flightSearchForm" novalidate>
                 <div class="input-group">
-                    <label id="flights-label-origin">Origen (Código IATA)</label>
-                    <input type="text" id="origin" placeholder="Ej: HAV, GRU, MIA" required maxlength="3" style="text-transform: uppercase;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+                    <label for="origin" id="flights-label-origin">Origen</label>
+                    <input
+                        type="text"
+                        id="origin"
+                        name="origin"
+                        placeholder="Ciudad, país o aeropuerto"
+                        autocomplete="off"
+                        autocapitalize="words"
+                        spellcheck="false"
+                        aria-autocomplete="list"
+                        aria-controls="origin-suggestions"
+                        aria-expanded="false"
+                        required
+                    >
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+                    </svg>
+                    <ul class="suggestions" id="origin-suggestions" role="listbox"></ul>
                 </div>
+
                 <div class="input-group">
-                    <label id="flights-label-dest">Destino (Código IATA)</label>
-                    <input type="text" id="destination" placeholder="Ej: HAV, GRU, MIA" required maxlength="3" style="text-transform: uppercase;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+                    <label for="destination" id="flights-label-dest">Destino</label>
+                    <input
+                        type="text"
+                        id="destination"
+                        name="destination"
+                        placeholder="Ciudad, país o aeropuerto"
+                        autocomplete="off"
+                        autocapitalize="words"
+                        spellcheck="false"
+                        aria-autocomplete="list"
+                        aria-controls="destination-suggestions"
+                        aria-expanded="false"
+                        required
+                    >
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 2 11 13"/>
+                        <path d="M22 2 15 22l-4-9-9-4Z"/>
+                    </svg>
+                    <ul class="suggestions" id="destination-suggestions" role="listbox"></ul>
                 </div>
+
                 <div class="input-group">
-                    <label id="flights-label-depart">Salida</label>
-                    <input type="date" id="departDate" required>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                    <label for="departDate" id="flights-label-depart">Fecha de salida</label>
+                    <input type="date" id="departDate" name="departDate" required>
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="4" rx="2"/>
+                        <line x1="16" x2="16" y1="2" y2="6"/>
+                        <line x1="8" x2="8" y1="2" y2="6"/>
+                        <line x1="3" x2="21" y1="10" y2="10"/>
+                    </svg>
                 </div>
+
                 <div class="input-group">
-                    <label id="flights-label-return">Regreso (Opc.)</label>
-                    <input type="date" id="returnDate">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                    <label for="returnDate" id="flights-label-return">Fecha de regreso (opcional)</label>
+                    <input type="date" id="returnDate" name="returnDate">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="4" rx="2"/>
+                        <line x1="16" x2="16" y1="2" y2="6"/>
+                        <line x1="8" x2="8" y1="2" y2="6"/>
+                        <line x1="3" x2="21" y1="10" y2="10"/>
+                    </svg>
                 </div>
-                <button type="submit" class="primary" id="flights-btn">Buscar Vuelos</button>
+
+                <button type="submit" class="primary" id="flights-btn">Buscar vuelos</button>
             </form>
-            <p style="font-size: 12px; color: var(--text-muted); margin-top: 15px; text-align: center;" id="flights-hint">Usa códigos de aeropuerto (ej. HAV para La Habana, GRU para São Paulo).</p>
+
+            <p class="search-hint" id="flights-hint">
+                Escribe una ciudad, un país o un código de aeropuerto. Ejemplos: Santo Domingo, Cuba, Miami, SDQ o MIA.
+                La búsqueda se abrirá en una plataforma externa. Las tarifas y la disponibilidad dependen de sus proveedores.
+            </p>
         </div>
     </section>
 
     <section class="shell reveal">
         <div class="features">
             <div class="feature-card">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                <h3 id="flights-f1-title">Precios Reales</h3>
-                <p id="flights-f1-desc">Conectamos con Skyscanner para mostrarte tarifas actualizadas de cientos de aerolíneas.</p>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <h3 id="flights-f1-title">Consulta de vuelos</h3>
+                <p id="flights-f1-desc">Accede a plataformas de búsqueda para consultar rutas y opciones de distintas aerolíneas.</p>
             </div>
+
             <div class="feature-card">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <h3 id="flights-f2-title">Búsqueda Segura</h3>
-                <p id="flights-f2-desc">Te redirigimos a la plataforma oficial para que realices tu reserva con total confianza.</p>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <h3 id="flights-f2-title">Orientación transparente</h3>
+                <p id="flights-f2-desc">Te orientamos durante la planificación. Las condiciones finales dependen de cada proveedor.</p>
             </div>
+
             <div class="feature-card">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <h3 id="flights-f3-title">Atención Humana</h3>
-                <p id="flights-f3-desc">Si tienes dudas con tu vuelo, nuestro equipo en Cuba y Brasil está para ayudarte.</p>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <h3 id="flights-f3-title">Atención personalizada</h3>
+                <p id="flights-f3-desc">Contacta con nuestro equipo para recibir orientación y organizar mejor tu viaje.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="shell reveal">
+        <div class="travel-contact">
+            <div class="travel-contact-content">
+                <span class="kicker">Asistencia GÉNESIS GLOBAL</span>
+                <h2>Organiza tu viaje con orientación personalizada.</h2>
+                <p>
+                    ¿Tienes dudas sobre tu destino, las opciones de vuelo o los preparativos?
+                    Escríbenos por WhatsApp. Nuestro equipo podrá orientarte para planificar
+                    tu viaje con mayor claridad y seguridad.
+                </p>
+            </div>
+
+            <div class="travel-contact-action">
+                <a
+                    class="whatsapp-cta"
+                    href="https://wa.me/18099995904?text=Hola%2C%20G%C3%89NESIS%20GLOBAL.%20Quiero%20recibir%20orientaci%C3%B3n%20para%20organizar%20mi%20viaje.%20%C2%BFPodr%C3%ADan%20ayudarme%20con%20los%20destinos%2C%20vuelos%20y%20preparativos%3F"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                    </svg>
+                    Organizar mi viaje por WhatsApp
+                </a>
             </div>
         </div>
     </section>
@@ -214,19 +599,22 @@
                 </div>
                 <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
             </div>
+
             <div>
                 <h4>Empresa</h4>
-                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
-                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
-                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
+                <a href="nosotros.html" style="display:block;color:var(--text-soft);text-decoration:none;font-size:12px;padding:4px 0;">Nosotros</a>
+                <a href="servicios.html" style="display:block;color:var(--text-soft);text-decoration:none;font-size:12px;padding:4px 0;">Servicios</a>
+                <a href="faq.html" style="display:block;color:var(--text-soft);text-decoration:none;font-size:12px;padding:4px 0;">FAQ</a>
             </div>
+
             <div>
                 <h4>Contacto Directo</h4>
-                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
-                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
-                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
+                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" rel="noopener noreferrer" style="margin-bottom:6px;">Cuba (CEO): +53 5 9508420</a>
+                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" rel="noopener noreferrer" style="margin-bottom:6px;">Brasil: +55 41 8709-7183</a>
+                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank" rel="noopener noreferrer">WhatsApp General</a>
             </div>
         </div>
+
         <div class="shell copy">
             <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
             <span>
@@ -242,38 +630,243 @@
 
     <script src="i18n.js"></script>
     <script>
-        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
+        function toggleMenu() {
+            const links = document.getElementById('links');
+            const button = document.querySelector('.menu');
+            const isOpen = links.classList.toggle('open');
+            button.setAttribute('aria-expanded', String(isOpen));
+        }
+
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('show');
+            });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
+
+        const locations = [
+            { name: 'Santo Domingo', country: 'República Dominicana', code: 'SDQ', aliases: ['santo domingo', 'republica dominicana', 'república dominicana', 'dominican republic', 'sdq'] },
+            { name: 'La Habana', country: 'Cuba', code: 'HAV', aliases: ['la habana', 'habana', 'havana', 'cuba', 'hav'] },
+            { name: 'Santiago de Cuba', country: 'Cuba', code: 'SCU', aliases: ['santiago de cuba', 'scu'] },
+            { name: 'Miami', country: 'Estados Unidos', code: 'MIA', aliases: ['miami', 'mia'] },
+            { name: 'Nueva York', country: 'Estados Unidos', code: 'JFK', aliases: ['nueva york', 'new york', 'nyc', 'jfk'] },
+            { name: 'Orlando', country: 'Estados Unidos', code: 'MCO', aliases: ['orlando', 'mco'] },
+            { name: 'Madrid', country: 'España', code: 'MAD', aliases: ['madrid', 'espana', 'españa', 'spain', 'mad'] },
+            { name: 'São Paulo', country: 'Brasil', code: 'GRU', aliases: ['sao paulo', 'são paulo', 'brasil', 'brazil', 'gru'] },
+            { name: 'Río de Janeiro', country: 'Brasil', code: 'GIG', aliases: ['rio de janeiro', 'río de janeiro', 'gig'] },
+            { name: 'Bogotá', country: 'Colombia', code: 'BOG', aliases: ['bogota', 'bogotá', 'colombia', 'bog'] },
+            { name: 'Panamá', country: 'Panamá', code: 'PTY', aliases: ['panama', 'panamá', 'pty'] },
+            { name: 'San Juan', country: 'Puerto Rico', code: 'SJU', aliases: ['san juan', 'puerto rico', 'sju'] },
+            { name: 'París', country: 'Francia', code: 'CDG', aliases: ['paris', 'parís', 'francia', 'france', 'cdg'] },
+            { name: 'Londres', country: 'Reino Unido', code: 'LHR', aliases: ['londres', 'london', 'reino unido', 'united kingdom', 'lhr'] },
+            { name: 'Toronto', country: 'Canadá', code: 'YYZ', aliases: ['toronto', 'canada', 'canadá', 'yyz'] },
+            { name: 'Puerto Príncipe', country: 'Haití', code: 'PAP', aliases: ['puerto principe', 'puerto príncipe', 'port au prince', 'port-au-prince', 'haiti', 'haití', 'pap'] },
+            { name: 'Kingston', country: 'Jamaica', code: 'KIN', aliases: ['kingston', 'jamaica', 'kin'] },
+            { name: 'Cancún', country: 'México', code: 'CUN', aliases: ['cancun', 'cancún', 'mexico', 'méxico', 'cun'] },
+            { name: 'Lima', country: 'Perú', code: 'LIM', aliases: ['lima', 'peru', 'perú', 'lim'] },
+            { name: 'Quito', country: 'Ecuador', code: 'UIO', aliases: ['quito', 'ecuador', 'uio'] },
+            { name: 'Buenos Aires', country: 'Argentina', code: 'EZE', aliases: ['buenos aires', 'argentina', 'eze'] },
+            { name: 'Brasilia', country: 'Brasil', code: 'BSB', aliases: ['brasilia', 'brasília', 'bsb'] },
+            { name: 'Santiago', country: 'Chile', code: 'SCL', aliases: ['santiago de chile', 'chile', 'scl'] },
+            { name: 'La Paz', country: 'Bolivia', code: 'LPB', aliases: ['la paz', 'bolivia', 'lpb'] },
+            { name: 'San José', country: 'Costa Rica', code: 'SJO', aliases: ['san jose', 'san josé', 'costa rica', 'sjo'] },
+            { name: 'Guatemala', country: 'Guatemala', code: 'GUA', aliases: ['guatemala', 'gua'] },
+            { name: 'San Salvador', country: 'El Salvador', code: 'SAL', aliases: ['san salvador', 'el salvador', 'sal'] },
+            { name: 'Managua', country: 'Nicaragua', code: 'MGA', aliases: ['managua', 'nicaragua', 'mga'] },
+            { name: 'Tegucigalpa', country: 'Honduras', code: 'TGU', aliases: ['tegucigalpa', 'honduras', 'tgu'] },
+            { name: 'Bruselas', country: 'Bélgica', code: 'BRU', aliases: ['bruselas', 'brussels', 'belgica', 'bélgica', 'bru'] }
+        ];
+
+        const normalize = value => value
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim()
+            .toLowerCase();
+
+        function findLocation(value) {
+            const query = normalize(value);
+            if (!query) return null;
+
+            return locations.find(location =>
+                location.aliases.some(alias => normalize(alias) === query)
+            ) || null;
+        }
+
+        function renderSuggestions(input, list) {
+            const query = normalize(input.value);
+            list.innerHTML = '';
+
+            if (!query) {
+                list.classList.remove('is-open');
+                input.setAttribute('aria-expanded', 'false');
+                return;
+            }
+
+            const matches = locations
+                .filter(location => {
+                    const searchable = [
+                        location.name,
+                        location.country,
+                        location.code,
+                        ...location.aliases
+                    ].map(normalize);
+
+                    return searchable.some(item => item.includes(query));
+                })
+                .slice(0, 7);
+
+            if (!matches.length) {
+                list.classList.remove('is-open');
+                input.setAttribute('aria-expanded', 'false');
+                return;
+            }
+
+            matches.forEach(location => {
+                const item = document.createElement('li');
+                const button = document.createElement('button');
+
+                button.type = 'button';
+                button.className = 'suggestion-item';
+                button.setAttribute('role', 'option');
+
+                const name = document.createElement('span');
+                name.className = 'suggestion-name';
+                name.textContent = `${location.name}, ${location.country}`;
+
+                const code = document.createElement('span');
+                code.className = 'suggestion-code';
+                code.textContent = location.code;
+
+                button.append(name, code);
+                item.appendChild(button);
+
+                button.addEventListener('pointerdown', event => {
+                    event.preventDefault();
+                    input.value = location.name;
+                    list.classList.remove('is-open');
+                    input.setAttribute('aria-expanded', 'false');
+                });
+
+                list.appendChild(item);
+            });
+
+            list.classList.add('is-open');
+            input.setAttribute('aria-expanded', 'true');
+        }
+
+        function setupAutocomplete(inputId, listId) {
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
+
+            input.addEventListener('input', () => renderSuggestions(input, list));
+            input.addEventListener('focus', () => renderSuggestions(input, list));
+
+            input.addEventListener('keydown', event => {
+                if (event.key === 'Escape') {
+                    list.classList.remove('is-open');
+                    input.setAttribute('aria-expanded', 'false');
+                }
+
+                if (event.key === 'Enter' && list.classList.contains('is-open')) {
+                    const firstOption = list.querySelector('button');
+                    if (firstOption) {
+                        event.preventDefault();
+                        firstOption.click();
+                    }
+                }
+            });
+
+            document.addEventListener('pointerdown', event => {
+                if (!input.parentElement.contains(event.target)) {
+                    list.classList.remove('is-open');
+                    input.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        setupAutocomplete('origin', 'origin-suggestions');
+        setupAutocomplete('destination', 'destination-suggestions');
+
+        const departInput = document.getElementById('departDate');
+        const returnInput = document.getElementById('returnDate');
+
+        function getLocalDateString() {
+            const now = new Date();
+            const offset = now.getTimezoneOffset();
+            const local = new Date(now.getTime() - offset * 60000);
+            return local.toISOString().split('T')[0];
+        }
+
+        const today = getLocalDateString();
+        departInput.min = today;
+        returnInput.min = today;
+
+        departInput.addEventListener('change', () => {
+            returnInput.min = departInput.value || today;
+
+            if (returnInput.value && returnInput.value < departInput.value) {
+                returnInput.value = '';
+            }
+        });
 
         const pageTranslations = {
             es: {
-                kicker: "Vuelos", title: 'Encuentra los mejores <span class="text-gradient">vuelos.</span>', desc: "Comparamos cientos de aerolíneas para que encuentres la ruta perfecta hacia tu familia.",
-                labelOrigin: "Origen (Código IATA)", labelDest: "Destino (Código IATA)", labelDepart: "Salida", labelReturn: "Regreso (Opc.)", btn: "Buscar Vuelos", hint: "Usa códigos de aeropuerto (ej. HAV para La Habana, GRU para São Paulo).",
-                f1Title: "Precios Reales", f1Desc: "Conectamos con Skyscanner para mostrarte tarifas actualizadas de cientos de aerolíneas.",
-                f2Title: "Búsqueda Segura", f2Desc: "Te redirigimos a la plataforma oficial para que realices tu reserva con total confianza.",
-                f3Title: "Atención Humana", f3Desc: "Si tienes dudas con tu vuelo, nuestro equipo en Cuba y Brasil está para ayudarte."
+                kicker: 'Vuelos',
+                title: 'Encuentra los mejores <span class="text-gradient">vuelos.</span>',
+                desc: 'Comparamos cientos de aerolíneas para que encuentres la ruta perfecta hacia tu familia.',
+                labelOrigin: 'Origen',
+                labelDest: 'Destino',
+                labelDepart: 'Fecha de salida',
+                labelReturn: 'Fecha de regreso (opcional)',
+                btn: 'Buscar vuelos',
+                hint: 'Escribe una ciudad, un país o un código de aeropuerto. Ejemplos: Santo Domingo, Cuba, Miami, SDQ o MIA. La búsqueda se abrirá en una plataforma externa. Las tarifas y la disponibilidad dependen de sus proveedores.',
+                f1Title: 'Consulta de vuelos',
+                f1Desc: 'Accede a plataformas de búsqueda para consultar rutas y opciones de distintas aerolíneas.',
+                f2Title: 'Orientación transparente',
+                f2Desc: 'Te orientamos durante la planificación. Las condiciones finales dependen de cada proveedor.',
+                f3Title: 'Atención personalizada',
+                f3Desc: 'Contacta con nuestro equipo para recibir orientación y organizar mejor tu viaje.'
             },
             en: {
-                kicker: "Flights", title: 'Find the best <span class="text-gradient">flights.</span>', desc: "We compare hundreds of airlines so you can find the perfect route to your family.",
-                labelOrigin: "Origin (IATA Code)", labelDest: "Destination (IATA Code)", labelDepart: "Departure", labelReturn: "Return (Opt.)", btn: "Search Flights", hint: "Use airport codes (e.g., HAV for Havana, GRU for São Paulo).",
-                f1Title: "Real Prices", f1Desc: "We connect with Skyscanner to show you updated fares from hundreds of airlines.",
-                f2Title: "Secure Search", f2Desc: "We redirect you to the official platform so you can make your reservation with total confidence.",
-                f3Title: "Human Support", f3Desc: "If you have questions about your flight, our team in Cuba and Brazil is here to help."
+                kicker: 'Flights',
+                title: 'Find the best <span class="text-gradient">flights.</span>',
+                desc: 'Explore flight options and find a route that works for your journey.',
+                labelOrigin: 'Origin',
+                labelDest: 'Destination',
+                labelDepart: 'Departure date',
+                labelReturn: 'Return date (optional)',
+                btn: 'Search flights',
+                hint: 'Enter a city, country or airport code. Examples: Santo Domingo, Cuba, Miami, SDQ or MIA. Your search will open on an external platform. Fares and availability depend on its providers.',
+                f1Title: 'Flight search',
+                f1Desc: 'Access search platforms to explore routes and options from different airlines.',
+                f2Title: 'Clear guidance',
+                f2Desc: 'We can guide you during planning. Final conditions depend on each provider.',
+                f3Title: 'Personal assistance',
+                f3Desc: 'Contact our team for guidance and help organizing your trip.'
             },
             pt: {
-                kicker: "Voos", title: 'Encontre os melhores <span class="text-gradient">voos.</span>', desc: "Comparamos centenas de companhias aéreas para que você encontre a rota perfeita para sua família.",
-                labelOrigin: "Origem (Código IATA)", labelDest: "Destino (Código IATA)", labelDepart: "Partida", labelReturn: "Retorno (Opc.)", btn: "Buscar Voos", hint: "Use códigos de aeroporto (ex.: HAV para Havana, GRU para São Paulo).",
-                f1Title: "Preços Reais", f1Desc: "Conectamos com o Skyscanner para mostrar tarifas atualizadas de centenas de companhias aéreas.",
-                f2Title: "Busca Segura", f2Desc: "Redirecionamos você para a plataforma oficial para que faça sua reserva com total confiança.",
-                f3Title: "Atendimento Humano", f3Desc: "Se tiver dúvidas sobre seu voo, nossa equipe em Cuba e no Brasil está aqui para ajudar."
+                kicker: 'Voos',
+                title: 'Encontre os melhores <span class="text-gradient">voos.</span>',
+                desc: 'Explore opções de voos e encontre uma rota adequada para sua viagem.',
+                labelOrigin: 'Origem',
+                labelDest: 'Destino',
+                labelDepart: 'Data de partida',
+                labelReturn: 'Data de retorno (opcional)',
+                btn: 'Buscar voos',
+                hint: 'Digite uma cidade, país ou código de aeroporto. Exemplos: Santo Domingo, Cuba, Miami, SDQ ou MIA. Sua busca será aberta em uma plataforma externa. Tarifas e disponibilidade dependem dos fornecedores.',
+                f1Title: 'Busca de voos',
+                f1Desc: 'Acesse plataformas de busca para consultar rotas e opções de diferentes companhias aéreas.',
+                f2Title: 'Orientação transparente',
+                f2Desc: 'Podemos orientar você durante o planejamento. As condições finais dependem de cada fornecedor.',
+                f3Title: 'Atendimento personalizado',
+                f3Desc: 'Entre em contato com nossa equipe para receber orientação e organizar sua viagem.'
             }
         };
 
         function applyPageTranslation(lang) {
             const t = pageTranslations[lang] || pageTranslations.es;
+
             document.getElementById('flights-kicker').textContent = t.kicker;
             document.getElementById('flights-title').innerHTML = t.title;
             document.getElementById('flights-desc').textContent = t.desc;
@@ -291,35 +884,77 @@
             document.getElementById('flights-f3-desc').textContent = t.f3Desc;
         }
 
-        const langObserver = new MutationObserver(() => applyPageTranslation(document.documentElement.lang || 'es'));
-        langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
-        document.addEventListener('DOMContentLoaded', () => setTimeout(() => applyPageTranslation(document.documentElement.lang || 'es'), 100));
+        const langObserver = new MutationObserver(() => {
+            applyPageTranslation(document.documentElement.lang || 'es');
+        });
 
-        // Lógica de búsqueda de vuelos
-        document.getElementById('flightSearchForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const origin = document.getElementById('origin').value.trim().toUpperCase();
-            const destination = document.getElementById('destination').value.trim().toUpperCase();
-            const departDate = document.getElementById('departDate').value;
-            const returnDate = document.getElementById('returnDate').value;
+        langObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['lang']
+        });
 
-            if (origin.length !== 3 || destination.length !== 3) {
-                alert("Por favor, usa códigos de aeropuerto de 3 letras (Ej: HAV, GRU, MIA).");
+        document.addEventListener('DOMContentLoaded', () => {
+            applyPageTranslation(document.documentElement.lang || 'es');
+        });
+
+        document.getElementById('flightSearchForm').addEventListener('submit', event => {
+            event.preventDefault();
+
+            const originValue = document.getElementById('origin').value.trim();
+            const destinationValue = document.getElementById('destination').value.trim();
+            const departure = departInput.value;
+            const returnDate = returnInput.value;
+
+            if (!originValue || !destinationValue) {
+                alert('Introduce una ciudad, país o código de aeropuerto para el origen y el destino.');
                 return;
             }
 
-            const formatDate = (dateString) => {
-                if (!dateString) return '';
-                const parts = dateString.split('-');
-                return parts[0].substring(2) + parts[1] + parts[2];
+            if (normalize(originValue) === normalize(destinationValue)) {
+                alert('El origen y el destino deben ser diferentes.');
+                return;
+            }
+
+            if (!departure || departure < today) {
+                alert('Selecciona una fecha de salida válida.');
+                departInput.focus();
+                return;
+            }
+
+            if (returnDate && returnDate < departure) {
+                alert('La fecha de regreso no puede ser anterior a la fecha de salida.');
+                returnInput.focus();
+                return;
+            }
+
+            const originLocation = findLocation(originValue);
+            const destinationLocation = findLocation(destinationValue);
+
+            const formatDate = date => {
+                const [year, month, day] = date.split('-');
+                return `${year.substring(2)}${month}${day}`;
             };
 
-            const dep = formatDate(departDate);
-            const ret = formatDate(returnDate);
+            let searchUrl;
 
-            let skyscannerUrl = `https://www.skyscanner.net/transport/flights/${origin}/${destination}/${dep}/`;
-            if (ret) skyscannerUrl += `${ret}/`;
-            window.open(skyscannerUrl, '_blank');
+            if (originLocation && destinationLocation) {
+                const depart = formatDate(departure);
+                const returnPart = returnDate ? `${formatDate(returnDate)}/` : '';
+
+                searchUrl = `https://www.skyscanner.net/transport/flights/${originLocation.code.toLowerCase()}/${destinationLocation.code.toLowerCase()}/${depart}/${returnPart}`;
+            } else {
+                const query = new URLSearchParams({
+                    q: `Flights from ${originValue} to ${destinationValue} on ${departure}${returnDate ? ` returning ${returnDate}` : ''}`
+                });
+
+                searchUrl = `https://www.google.com/travel/flights?${query.toString()}`;
+            }
+
+            const newWindow = window.open(searchUrl, '_blank', 'noopener,noreferrer');
+
+            if (!newWindow) {
+                window.location.href = searchUrl;
+            }
         });
     </script>
 </body>

@@ -1,11 +1,15 @@
+
 <!doctype html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Servicios de Viaje | GÉNESIS GLOBAL</title>
-    <meta name="description" content="Vuelos, hoteles, planificación de viajes familiares y más. Descubre todo lo que GÉNESIS GLOBAL tiene para ti.">
-    
+    <meta name="description" content="Descubre los servicios de GÉNESIS GLOBAL: búsqueda de vuelos, alojamiento, planificación de viajes familiares y orientación documental.">
+
+    <meta name="theme-color" content="#0b1020">
+
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -15,157 +19,536 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
-    
+
     <style>
-        .hero-services { padding: 140px 0 60px; text-align: center; position: relative; }
-        .hero-services h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
-        .hero-services p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
-        .services-grid-page { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; padding-bottom: 100px; }
-        .service-box { background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)); border: 1px solid var(--border); border-radius: 30px; padding: 40px; display: flex; flex-direction: column; transition: transform 0.4s var(--ease), border-color 0.4s; position: relative; overflow: hidden; }
-        .service-box:hover { transform: translateY(-8px); border-color: rgba(102, 230, 196, 0.3); }
-        .service-box::before { content: ""; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(102,230,196,0.1), transparent 70%); border-radius: 50%; }
-        .service-box .icon-wrap { width: 60px; height: 60px; background: rgba(102, 230, 196, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--accent); margin-bottom: 24px; }
-        .service-box h2 { font-size: 24px; margin-bottom: 16px; font-family: 'Manrope', sans-serif; }
-        .service-box p { color: var(--text-soft); font-size: 15px; line-height: 1.7; margin-bottom: 30px; flex-grow: 1; }
-        .service-box ul { list-style: none; padding: 0; margin: 0 0 30px 0; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
-        .service-box ul li { display: flex; align-items: center; gap: 8px; }
-        .service-box ul li::before { content: "✓"; color: var(--accent); font-weight: bold; }
-        @media (max-width: 900px) { .services-grid-page { grid-template-columns: 1fr; gap: 20px; } .hero-services { padding: 120px 0 40px; } .service-box { padding: 30px; } }
+        .hero-services {
+            padding: 140px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-services h1 {
+            font-size: clamp(40px, 6vw, 70px);
+            margin: 20px 0;
+            letter-spacing: -0.05em;
+        }
+
+        .hero-services p {
+            color: var(--text-soft);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .services-grid-page {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 30px;
+            padding-bottom: 100px;
+        }
+
+        .service-box {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.05),
+                rgba(255, 255, 255, 0.01)
+            );
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            transition:
+                transform 0.4s var(--ease),
+                border-color 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-box:hover {
+            transform: translateY(-8px);
+            border-color: rgba(102, 230, 196, 0.3);
+        }
+
+        .service-box::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(
+                circle,
+                rgba(102, 230, 196, 0.1),
+                transparent 70%
+            );
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .service-box .icon-wrap {
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+            background: rgba(102, 230, 196, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .service-box h2 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .service-box p {
+            color: var(--text-soft);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .service-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .service-box ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .service-box ul li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .service-box a {
+            text-align: center;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .services-cta {
+            padding-bottom: 100px;
+        }
+
+        .services-cta-inner {
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            background: linear-gradient(
+                135deg,
+                rgba(102, 230, 196, 0.1),
+                rgba(130, 169, 255, 0.05)
+            );
+        }
+
+        .services-cta-inner p {
+            color: var(--text-soft);
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.7;
+        }
+
+        .service-box a:focus-visible,
+        .services-cta a:focus-visible,
+        .menu:focus-visible,
+        .nav a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        @media (max-width: 900px) {
+            .services-grid-page {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .hero-services {
+                padding: 120px 0 40px;
+            }
+
+            .service-box {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-services h1 {
+                font-size: clamp(36px, 10vw, 48px);
+            }
+
+            .hero-services p {
+                font-size: 16px;
+                padding: 0 8px;
+            }
+
+            .services-cta-inner {
+                padding: 32px 22px;
+            }
+
+            .service-box {
+                border-radius: 24px;
+            }
+
+            .service-box h2 {
+                font-size: 22px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .service-box {
+                transition: none;
+            }
+
+            .service-box:hover {
+                transform: none;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-    <nav class="nav shell" id="nav">
-        <a href="index.html" class="brand">
+    <nav class="nav shell" id="nav" aria-label="Navegación principal">
+
+        <a href="index.html" class="brand" aria-label="GÉNESIS GLOBAL - Inicio">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
             <span>
                 <b>GÉNESIS GLOBAL</b>
                 <small>Donde comienzan nuevas oportunidades.</small>
             </span>
         </a>
+
         <div id="links" class="links">
             <a href="index.html">Inicio</a>
-            <a href="servicios.html" style="color: var(--accent);">Servicios</a>
+            <a href="servicios.html" style="color: var(--accent);" aria-current="page">Servicios</a>
             <a href="como-funciona.html">Cómo funciona</a>
             <a href="nosotros.html">Nosotros</a>
             <a href="otros-servicios.html">Otros Servicios</a>
         </div>
+
         <div class="nav-actions">
-             <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
+            <a href="index.html?scroll=planner" class="cta">
+                Planificar mi viaje
+            </a>
         </div>
-        <button class="menu" onclick="toggleMenu()">☰</button>
+
+        <button
+            class="menu"
+            id="menu-toggle"
+            type="button"
+            aria-label="Abrir menú de navegación"
+            aria-controls="links"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
+
     </nav>
 
-    <section class="hero-services shell reveal">
-        <span class="kicker" id="srv-kicker">Nuestra Agencia</span>
-        <h1 id="srv-title">Servicios diseñados para <br><span class="text-gradient">conectar distancias.</span></h1>
-        <p id="srv-desc">No solo organizamos viajes; creamos puentes para que vuelvas a abrazar a los tuyos. Descubre todo lo que podemos hacer por ti.</p>
-    </section>
+    <main>
 
-    <section class="shell reveal">
-        <div class="services-grid-page">
-            <!-- Vuelos -->
-            <article class="service-box">
-                <div class="icon-wrap">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
-                </div>
-                <h2 id="srv-vuelos-title">Vuelos y Conexiones</h2>
-                <p id="srv-vuelos-desc">Buscamos las mejores rutas y conexiones aéreas para que llegues a tu destino de la forma más segura y cómoda.</p>
-                <ul>
-                    <li id="srv-vuelos-li1">Rutas directas y con escalas</li>
-                    <li id="srv-vuelos-li2">Asesoría de equipaje</li>
-                    <li id="srv-vuelos-li3">Gestión de documentación de vuelo</li>
-                </ul>
-               <a href="vuelos.html" class="primary" style="width: 100%;" id="srv-vuelos-btn">Buscar Vuelos</a>
-            </article>
+        <section class="hero-services shell reveal">
 
-            <!-- Hoteles -->
-            <article class="service-box">
-                <div class="icon-wrap">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4 8 4v14"/><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M9 14h.01"/><path d="M15 14h.01"/></svg>
-                </div>
-                <h2 id="srv-hoteles-title">Hoteles y Alojamiento</h2>
-                <p id="srv-hoteles-desc">Encuentra el lugar perfecto para descansar. Desde hoteles económicos hasta resorts, coordinamos tu estancia.</p>
-                <ul>
-                    <li id="srv-hoteles-li1">Reservas en hoteles y casas</li>
-                    <li id="srv-hoteles-li2">Opciones para familias</li>
-                    <li id="srv-hoteles-li3">Ubicaciones estratégicas</li>
-                </ul>
-                <a href="hoteles.html" class="secondary" style="width: 100%;" id="srv-hoteles-btn">Buscar Alojamiento</a>
-            </article>
+            <span class="kicker" id="srv-kicker">Nuestra Agencia</span>
 
-            <!-- Reencuentros -->
-            <article class="service-box">
-                <div class="icon-wrap">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </div>
-                <h2 id="srv-reencuentros-title">Reencuentros Familiares</h2>
-                <p id="srv-reencuentros-desc">Nuestra especialidad. Ayudamos a cubanos y sus familias a organizar viajes desde Cuba, Brasil, Guayana y otros países.</p>
-                <ul>
-                    <li id="srv-reencuentros-li1">Planificación puerta a puerta</li>
-                    <li id="srv-reencuentros-li2">Acompañamiento en cada etapa</li>
-                    <li id="srv-reencuentros-li3">Asistencia con trámites</li>
-                </ul>
-                <a href="https://wa.me/18099995904?text=Hola,%20equipo%20de%20G%C3%A9nesis%20Global.%20Estoy%20interesado(a)%20en%20planificar%20un%20reencuentro%20familiar%20y%20necesito%20asesor%C3%ADa%20personalizada%20para%20organizar%20el%20viaje%20de%20mis%20seres%20queridos." target="_blank" class="secondary" style="width: 100%;" id="srv-reencuentros-btn">Planificar Reencuentro</a>
-            </article>
+            <h1 id="srv-title">
+                Servicios diseñados para
+                <br>
+                <span class="text-gradient">conectar distancias.</span>
+            </h1>
 
-            <!-- Documental -->
-            <article class="service-box">
-                <div class="icon-wrap">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                </div>
-                <h2 id="srv-doc-title">Orientación Documental</h2>
-                <p id="srv-doc-desc">Te brindamos información clara sobre los requisitos aplicables y coordinamos con profesionales autorizados cuando tu caso lo requiere.</p>
-                <ul>
-                    <li id="srv-doc-li1">Información de visados y pasaportes</li>
-                    <li id="srv-doc-li2">Coordinación con expertos legales</li>
-                    <li id="srv-doc-li3">Acompañamiento en el proceso</li>
-                </ul>
-                <a href="https://wa.me/18099995904?text=Hola,%20equipo%20de%20G%C3%A9nesis%20Global.%20Requiero%20orientaci%C3%B3n%20profesional%20sobre%20los%20requisitos%20documentales%20(visados%2C%20pasaportes%2C%20etc.)%20para%20mi%20pr%C3%B3ximo%20viaje.%20%C2%BFPodr%C3%ADan%20asesorarme%3F" target="_blank" class="secondary" style="width: 100%;" id="srv-doc-btn">Consultar Requisitos</a>
-            </article>
-        </div>
-    </section>
+            <p id="srv-desc">
+                No solo organizamos viajes; creamos puentes para que vuelvas a abrazar a los tuyos. Descubre todo lo que podemos hacer por ti.
+            </p>
 
-    <section class="shell reveal" style="padding-bottom: 100px;">
-        <div class="glass" style="padding: 50px; border-radius: 30px; text-align: center; background: linear-gradient(135deg, rgba(102,230,196,0.1), rgba(130,169,255,0.05));">
-            <span class="kicker" id="srv-otros-kicker">Más que viajes</span>
-            <h2 class="section-title" style="margin: 15px 0;" id="srv-otros-title">¿Buscas Recargas, Remesas o Cambios de Productos?</h2>
-            <p style="color: var(--text-soft); max-width: 600px; margin: 0 auto 30px;" id="srv-otros-desc">Hemos creado un espacio dedicado exclusivamente para nuestros otros servicios. Apoya a tu familia enviando saldo, dinero o comprando productos.</p>
-            <a href="otros-servicios.html" class="primary" style="padding: 16px 32px; font-size: 16px;" id="srv-otros-btn">Ir a Otros Servicios →</a>
-        </div>
-    </section>
+        </section>
+
+        <section class="shell reveal" aria-label="Nuestros servicios">
+
+            <div class="services-grid-page">
+
+                <!-- Vuelos -->
+
+                <article class="service-box">
+
+                    <div class="icon-wrap" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+                        </svg>
+                    </div>
+
+                    <h2 id="srv-vuelos-title">Vuelos y Conexiones</h2>
+
+                    <p id="srv-vuelos-desc">
+                        Te ayudamos a consultar rutas y conexiones aéreas para comparar alternativas y organizar tu viaje de acuerdo con tus necesidades.
+                    </p>
+
+                    <ul>
+                        <li id="srv-vuelos-li1">Consulta de rutas directas y con escalas</li>
+                        <li id="srv-vuelos-li2">Orientación sobre equipaje y condiciones de viaje</li>
+                        <li id="srv-vuelos-li3">Información general sobre documentación de vuelo</li>
+                    </ul>
+
+                    <a
+                        href="vuelos.html"
+                        class="primary"
+                        style="width: 100%;"
+                        id="srv-vuelos-btn"
+                    >
+                        Buscar Vuelos
+                    </a>
+
+                </article>
+
+                <!-- Hoteles -->
+
+                <article class="service-box">
+
+                    <div class="icon-wrap" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 21h18"/>
+                            <path d="M5 21V7l8-4 8 4v14"/>
+                            <path d="M9 10h.01"/>
+                            <path d="M15 10h.01"/>
+                            <path d="M9 14h.01"/>
+                            <path d="M15 14h.01"/>
+                        </svg>
+                    </div>
+
+                    <h2 id="srv-hoteles-title">Hoteles y Alojamiento</h2>
+
+                    <p id="srv-hoteles-desc">
+                        Explora opciones de alojamiento según tu destino, presupuesto y preferencias. Te facilitamos la búsqueda para que puedas comparar alternativas.
+                    </p>
+
+                    <ul>
+                        <li id="srv-hoteles-li1">Consulta de hoteles y alojamientos</li>
+                        <li id="srv-hoteles-li2">Opciones para viajes familiares</li>
+                        <li id="srv-hoteles-li3">Alternativas según ubicación y presupuesto</li>
+                    </ul>
+
+                    <a
+                        href="hoteles.html"
+                        class="secondary"
+                        style="width: 100%;"
+                        id="srv-hoteles-btn"
+                    >
+                        Buscar Alojamiento
+                    </a>
+
+                </article>
+
+                <!-- Reencuentros familiares -->
+
+                <article class="service-box">
+
+                    <div class="icon-wrap" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+
+                    <h2 id="srv-reencuentros-title">Reencuentros Familiares</h2>
+
+                    <p id="srv-reencuentros-desc">
+                        Acompañamos a familias que desean organizar un reencuentro. Ofrecemos orientación inicial para estudiar rutas, conexiones y alternativas de viaje desde Cuba, Brasil, Guyana y otros destinos.
+                    </p>
+
+                    <ul>
+                        <li id="srv-reencuentros-li1">Orientación para planificar el viaje</li>
+                        <li id="srv-reencuentros-li2">Acompañamiento informativo durante el proceso</li>
+                        <li id="srv-reencuentros-li3">Orientación sobre los pasos a considerar</li>
+                    </ul>
+
+                    <a
+                        href="https://wa.me/18099995904?text=Hola%2C%20equipo%20de%20G%C3%A9nesis%20Global.%20Estoy%20interesado(a)%20en%20planificar%20un%20reencuentro%20familiar%20y%20necesito%20orientaci%C3%B3n%20para%20organizar%20el%20viaje."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="secondary"
+                        style="width: 100%;"
+                        id="srv-reencuentros-btn"
+                    >
+                        Planificar Reencuentro
+                    </a>
+
+                </article>
+
+                <!-- Orientación documental -->
+
+                <article class="service-box">
+
+                    <div class="icon-wrap" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                    </div>
+
+                    <h2 id="srv-doc-title">Orientación Documental</h2>
+
+                    <p id="srv-doc-desc">
+                        Te ayudamos a identificar información general sobre los requisitos de viaje y, cuando sea necesario, a contactar con profesionales autorizados para recibir asesoría especializada.
+                    </p>
+
+                    <ul>
+                        <li id="srv-doc-li1">Información general sobre visados y pasaportes</li>
+                        <li id="srv-doc-li2">Orientación para contactar con profesionales autorizados</li>
+                        <li id="srv-doc-li3">Información sobre requisitos según el destino</li>
+                    </ul>
+
+                    <a
+                        href="https://wa.me/18099995904?text=Hola%2C%20equipo%20de%20G%C3%A9nesis%20Global.%20Necesito%20orientaci%C3%B3n%20general%20sobre%20los%20requisitos%20documentales%20para%20mi%20pr%C3%B3ximo%20viaje."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="secondary"
+                        style="width: 100%;"
+                        id="srv-doc-btn"
+                    >
+                        Consultar Requisitos
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- Otros servicios -->
+
+        <section class="shell reveal services-cta">
+
+            <div class="glass services-cta-inner">
+
+                <span class="kicker" id="srv-otros-kicker">
+                    Más que viajes
+                </span>
+
+                <h2 class="section-title" style="margin: 15px 0;" id="srv-otros-title">
+                    ¿Buscas Recargas, Remesas o Cambios de Productos?
+                </h2>
+
+                <p id="srv-otros-desc">
+                    Hemos creado un espacio dedicado exclusivamente para nuestros otros servicios. Consulta las opciones disponibles para apoyar a tu familia mediante recargas, remesas y productos.
+                </p>
+
+                <a
+                    href="otros-servicios.html"
+                    class="primary"
+                    style="padding: 16px 32px; font-size: 16px;"
+                    id="srv-otros-btn"
+                >
+                    Ir a Otros Servicios →
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
 
     <footer class="footer">
+
         <div class="shell footer-grid">
+
             <div>
-                <div class="brand" style="cursor:default;">
+                <div class="brand" style="cursor: default;">
                     <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
                     <span>
                         <b>GÉNESIS GLOBAL</b>
                         <small>Donde comienzan nuevas oportunidades.</small>
                     </span>
                 </div>
-                <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
+
+                <p style="margin-top: 8px;">
+                    Conectamos destinos. Reunimos familias.
+                </p>
             </div>
+
             <div>
                 <h4>Empresa</h4>
-                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
-                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
-                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
+
+                <a href="nosotros.html" style="display: block; color: var(--text-soft); text-decoration: none; font-size: 12px; padding: 4px 0;">
+                    Nosotros
+                </a>
+
+                <a href="servicios.html" style="display: block; color: var(--text-soft); text-decoration: none; font-size: 12px; padding: 4px 0;">
+                    Servicios
+                </a>
+
+                <a href="faq.html" style="display: block; color: var(--text-soft); text-decoration: none; font-size: 12px; padding: 4px 0;">
+                    FAQ
+                </a>
             </div>
+
             <div>
                 <h4>Contacto Directo</h4>
-                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
-                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
-                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
+
+                <a
+                    href="https://wa.me/5359508420"
+                    class="whatsapp-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="margin-bottom: 6px;"
+                >
+                    Cuba (CEO): +53 5 9508420
+                </a>
+
+                <a
+                    href="https://wa.me/554187097183"
+                    class="whatsapp-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="margin-bottom: 6px;"
+                >
+                    Brasil: +55 41 8709-7183
+                </a>
+
+                <a
+                    href="https://wa.me/18099995904"
+                    class="whatsapp-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    WhatsApp General
+                </a>
             </div>
+
         </div>
+
         <div class="shell copy">
-            <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
+
+            <span>
+                © 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.
+            </span>
+
             <span>
                 <a href="faq.html">FAQ</a> &middot;
                 <a href="help-center.html">Help Center</a> &middot;
@@ -174,17 +557,68 @@
                 <a href="cookies.html">Cookies</a> &middot;
                 <a href="newsletter.html">Newsletter</a>
             </span>
+
         </div>
+
     </footer>
 
-    <!-- Script para cargar productos desde Supabase y Traducción -->
+    <!-- Scripts -->
+
     <script src="i18n.js"></script>
+
     <script>
-        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        // Menú responsive
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('links');
+
+        function closeMenu() {
+            navLinks.classList.remove('open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', 'Abrir menú de navegación');
+        }
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = navLinks.classList.toggle('open');
+
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+            menuToggle.setAttribute(
+                'aria-label',
+                isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'
+            );
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                closeMenu();
+            }
+        });
+
+        // Animaciones de entrada
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.reveal').forEach(element => {
+                observer.observe(element);
+            });
+        } else {
+            document.querySelectorAll('.reveal').forEach(element => {
+                element.classList.add('show');
+            });
+        }
     </script>
+
 </body>
 </html>

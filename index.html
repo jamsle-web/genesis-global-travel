@@ -88,10 +88,6 @@
             }
         }
     </script>
-    <script type="module">
-        import { geoContains } from "https://esm.run/d3-geo@3.1.1";
-        window.geoContains = geoContains;
-    </script>
 
     <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -108,20 +104,65 @@
     <link rel="stylesheet" href="css/index.css">
     
     <style>
-        /* Estilos para los iconos dentro del formulario */
-        .input-with-icon { position: relative; }
-        .input-with-icon svg {
-            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-            width: 18px; height: 18px; stroke: var(--text-muted);
-            pointer-events: none; transition: stroke 0.3s;
-        }
-        .input-with-icon input, .input-with-icon select, .input-with-icon textarea {
-            padding-left: 40px !important;
-        }
-        .input-with-icon input:focus + svg, .input-with-icon select:focus + svg, .input-with-icon textarea:focus + svg {
-            stroke: var(--accent);
-        }
-        .input-with-icon.textarea-icon svg { top: 16px; transform: none; }
+       
+/* =========================================================
+   ICONOS DEL FORMULARIO — ALINEACIÓN PROFESIONAL
+   ========================================================= */
+
+.input-with-icon {
+    position: relative;
+}
+
+/* Etiquetas con altura consistente */
+.input-with-icon label {
+    display: block;
+    line-height: 18px;
+    margin-bottom: 6px;
+}
+
+/* Iconos centrados verticalmente dentro de los campos */
+.input-with-icon > svg {
+    position: absolute;
+    left: 14px;
+    top: 46px;
+    transform: translateY(-50%);
+
+    display: block;
+    width: 18px;
+    height: 18px;
+
+    stroke: var(--text-muted);
+    stroke-width: 1.8;
+
+    pointer-events: none;
+    transition: stroke 0.25s ease;
+
+    flex-shrink: 0;
+}
+
+/* Espacio para que el texto no choque con el icono */
+.input-with-icon input,
+.input-with-icon select,
+.input-with-icon textarea {
+    padding-left: 42px !important;
+}
+
+/* Estado activo */
+.input-with-icon:focus-within > svg {
+    stroke: var(--accent);
+}
+
+/* Icono del área de comentarios */
+.input-with-icon.textarea-icon > svg {
+    top: 68px;
+    transform: translateY(-50%);
+}
+
+/* Evitar desplazamientos por reglas globales */
+.input-with-icon > svg {
+    margin: 0;
+}
+
 
         /* ===== ESTILOS PARA LAS OPINIONES PÚBLICAS ===== */
         .review-card {
@@ -385,7 +426,7 @@
         
         <!-- Aquí se cargarán las opiniones desde Supabase -->
         <div id="public-reviews-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-            <p style="text-align: center; color: var(--text-soft); grid-column: 1/-1;">Cargando opiniones...</p>
+            <p data-review-state="loading" style="text-align: center; color: var(--text-soft); grid-column: 1/-1;">Cargando opiniones...</p>
         </div>
     </section>
     
@@ -431,8 +472,9 @@
     <!-- ============================================================ -->
     <!-- SCRIPT DEL GLOBO 3D (CON MEJORAS REALISTAS) -->
     <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+       import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { geoContains } from 'https://esm.run/d3-geo@3.1.1';
 
         const container = document.getElementById('globe-container');
         const width = container.clientWidth;
@@ -673,7 +715,7 @@
         let hoveredCountry = null;
 
         function getCountryFromPosition(point) {
-            if (!worldFeatures || worldFeatures.length === 0 || typeof window.geoContains !== 'function') return null;
+         if (!worldFeatures || worldFeatures.length === 0) return null;
             const pos = point.clone().normalize();
             const lat = Math.asin(pos.y) * 180 / Math.PI;
             const lon = Math.atan2(-pos.x, pos.z) * 180 / Math.PI;
@@ -681,7 +723,7 @@
             const feature = worldFeatures.find(feature => {
                 if (!feature || !feature.geometry) return false;
                 try {
-                    return window.geoContains(feature, coordinates);
+                   return geoContains(feature, coordinates);
                 } catch (error) { return false; }
             });
             if (!feature) return null;
@@ -834,42 +876,158 @@
     <script src="js/newsletter.js"></script>
     <script src="js/secret-trigger.js"></script>
 
-    <!-- SCRIPT PARA CARGAR OPINIONES EN EL SITIO PÚBLICO -->
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const grid = document.getElementById('public-reviews-grid');
-            if (!grid) return;
+   
+<!-- SCRIPT SEGURO PARA CARGAR OPINIONES PÚBLICAS -->
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const grid = document.getElementById('public-reviews-grid');
+        if (!grid) return;
 
-            try {
-                const { data: reviews, error } = await window.genesisSupabase
-                    .from('reviews')
-                    .select('*')
-                    .order('created_at', { ascending: false })
-                    .limit(6); // Muestra solo las 6 más recientes
+        const getReviewText = (key, fallback) => {
+            const translated = window.GenesisI18n?.getText(`reviews.${key}`);
+            return translated || fallback;
+        };
 
-                if (error) throw error;
+        const showMessage = (state, fallback) => {
+            const message = document.createElement('p');
+            message.dataset.reviewState = state;
+            message.style.cssText =
+                'text-align:center;color:var(--text-soft);grid-column:1/-1;';
+            message.textContent = getReviewText(state, fallback);
 
-                if (reviews && reviews.length > 0) {
-                    grid.innerHTML = reviews.map(r => `
-                        <div class="review-card">
-                            <div class="review-header">
-                                <img src="${r.image_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(r.client_name) + '&background=66e6c4&color=07111f'}" alt="${r.client_name}" class="review-avatar">
-                                <div>
-                                    <div class="review-stars">${'⭐'.repeat(r.stars || 5)}</div>
-                                    <div class="review-name">${r.client_name}</div>
-                                </div>
-                            </div>
-                            <p class="review-text">"${r.review_text}"</p>
-                        </div>
-                    `).join('');
-                } else {
-                    grid.innerHTML = '<p style="text-align: center; color: var(--text-soft); grid-column: 1/-1;">Aún no hay opiniones. ¡Sé el primero en viajar con nosotros!</p>';
-                }
-            } catch (error) {
-                console.error("Error cargando opiniones:", error);
-                grid.innerHTML = '<p style="text-align: center; color: var(--text-soft); grid-column: 1/-1;">No se pudieron cargar las opiniones en este momento.</p>';
+            grid.replaceChildren(message);
+        };
+
+        // Actualizar mensajes cuando cambie el idioma.
+        document.addEventListener('genesis:languagechange', () => {
+            const message = grid.querySelector('[data-review-state]');
+            if (!message) return;
+
+            const state = message.dataset.reviewState;
+
+            if (state === 'loading') {
+                message.textContent = getReviewText('loading', 'Loading reviews...');
+            } else if (state === 'empty') {
+                message.textContent = getReviewText('empty', 'No reviews yet.');
+            } else if (state === 'error') {
+                message.textContent = getReviewText('error', 'Reviews could not be loaded.');
             }
         });
-    </script>
+
+        try {
+            if (!window.genesisSupabase) {
+                throw new Error('Supabase no está inicializado.');
+            }
+
+            const { data: reviews, error } = await window.genesisSupabase
+                .from('reviews')
+                .select('client_name, review_text, image_url, stars, created_at')
+                .order('created_at', { ascending: false })
+                .limit(6);
+
+            if (error) throw error;
+
+            if (!Array.isArray(reviews) || reviews.length === 0) {
+                showMessage(
+                    'empty',
+                    'Aún no hay opiniones. ¡Sé el primero en viajar con nosotros!'
+                );
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+
+            reviews.forEach(review => {
+                const card = document.createElement('article');
+                card.className = 'review-card';
+
+                const header = document.createElement('div');
+                header.className = 'review-header';
+
+                const avatar = document.createElement('img');
+                avatar.className = 'review-avatar';
+                avatar.alt = 'Foto de perfil del cliente';
+                avatar.loading = 'lazy';
+                avatar.decoding = 'async';
+
+                const clientName = typeof review.client_name === 'string'
+                    ? review.client_name.trim().slice(0, 100)
+                    : 'Cliente';
+
+                const fallbackAvatar =
+                    'https://ui-avatars.com/api/?name=' +
+                    encodeURIComponent(clientName || 'Cliente') +
+                    '&background=66e6c4&color=07111f';
+
+                let avatarUrl = fallbackAvatar;
+
+                if (typeof review.image_url === 'string' && review.image_url.trim()) {
+                    try {
+                        const parsedUrl = new URL(review.image_url);
+
+                        if (parsedUrl.protocol === 'https:') {
+                            avatarUrl = parsedUrl.href;
+                        }
+                    } catch {
+                        // Se mantiene el avatar alternativo.
+                    }
+                }
+
+                avatar.src = avatarUrl;
+
+                avatar.addEventListener('error', () => {
+                    if (avatar.src !== fallbackAvatar) {
+                        avatar.src = fallbackAvatar;
+                    }
+                }, { once: true });
+
+                const details = document.createElement('div');
+
+                const stars = document.createElement('div');
+                stars.className = 'review-stars';
+
+                const rating = Number(review.stars);
+                const validRating = Number.isFinite(rating)
+                    ? Math.min(5, Math.max(1, Math.round(rating)))
+                    : 5;
+
+                stars.textContent = '★'.repeat(validRating) +
+                    '☆'.repeat(5 - validRating);
+
+                const name = document.createElement('div');
+                name.className = 'review-name';
+                name.textContent = clientName || 'Cliente';
+
+                details.append(stars, name);
+                header.append(avatar, details);
+
+                const reviewText = document.createElement('p');
+                reviewText.className = 'review-text';
+
+                const content = typeof review.review_text === 'string'
+                    ? review.review_text.trim().slice(0, 2000)
+                    : '';
+
+                reviewText.textContent = content
+                    ? `“${content}”`
+                    : '';
+
+                card.append(header, reviewText);
+                fragment.appendChild(card);
+            });
+
+            grid.replaceChildren(fragment);
+
+        } catch (error) {
+            console.error('Error cargando opiniones:', error);
+
+            showMessage(
+                'error',
+                'No se pudieron cargar las opiniones en este momento.'
+            );
+        }
+    });
+</script>
+
 </body>
 </html>
