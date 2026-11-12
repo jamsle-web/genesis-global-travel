@@ -1,142 +1,498 @@
+
 /* =========================================================
    GÉNESIS GLOBAL — PLANNER
-   Lógica del formulario y validaciones (Fase 2)
+   Formulario, validaciones y resumen multilingüe
+   Idiomas: ES / EN / FR / PT
    ========================================================= */
 
 const countryData = window.countryData || [];
 
-function showError(inputId, message) {
+/* =========================================================
+   1. TRADUCCIONES
+   ========================================================= */
+
+const plannerTranslations = {
+    es: {
+        originRequired: 'Por favor, indica tu origen.',
+        destinationRequired: 'Por favor, indica tu destino.',
+        required: 'Este campo es obligatorio.',
+        invalidEmail: 'Ingresa un correo electrónico válido.',
+        notSpecified: 'No especificada',
+        travelDate: 'Fecha de viaje:',
+        returnDate: 'Regreso:',
+        travelers: 'Viajeros:',
+        adults: 'adultos',
+        children: 'niños',
+        reason: 'Motivo:',
+        name: 'Nombre:',
+        whatsapp: 'WhatsApp:',
+        email: 'Email:',
+        residence: 'Residencia:',
+        comments: 'Comentarios:'
+    },
+
+    en: {
+        originRequired: 'Please enter your departure location.',
+        destinationRequired: 'Please enter your destination.',
+        required: 'This field is required.',
+        invalidEmail: 'Please enter a valid email address.',
+        notSpecified: 'Not specified',
+        travelDate: 'Travel date:',
+        returnDate: 'Return date:',
+        travelers: 'Travelers:',
+        adults: 'adults',
+        children: 'children',
+        reason: 'Purpose:',
+        name: 'Name:',
+        whatsapp: 'WhatsApp:',
+        email: 'Email:',
+        residence: 'Residence:',
+        comments: 'Comments:'
+    },
+
+    fr: {
+        originRequired: 'Veuillez indiquer votre lieu de départ.',
+        destinationRequired: 'Veuillez indiquer votre destination.',
+        required: 'Ce champ est obligatoire.',
+        invalidEmail: 'Veuillez saisir une adresse e-mail valide.',
+        notSpecified: 'Non spécifiée',
+        travelDate: 'Date du voyage :',
+        returnDate: 'Retour :',
+        travelers: 'Voyageurs :',
+        adults: 'adultes',
+        children: 'enfants',
+        reason: 'Motif :',
+        name: 'Nom :',
+        whatsapp: 'WhatsApp :',
+        email: 'E-mail :',
+        residence: 'Résidence :',
+        comments: 'Commentaires :'
+    },
+
+    pt: {
+        originRequired: 'Por favor, informe sua origem.',
+        destinationRequired: 'Por favor, informe seu destino.',
+        required: 'Este campo é obrigatório.',
+        invalidEmail: 'Informe um endereço de e-mail válido.',
+        notSpecified: 'Não especificada',
+        travelDate: 'Data da viagem:',
+        returnDate: 'Retorno:',
+        travelers: 'Viajantes:',
+        adults: 'adultos',
+        children: 'crianças',
+        reason: 'Motivo:',
+        name: 'Nome:',
+        whatsapp: 'WhatsApp:',
+        email: 'E-mail:',
+        residence: 'Residência:',
+        comments: 'Comentários:'
+    }
+};
+
+/* =========================================================
+   2. IDIOMA ACTUAL
+   ========================================================= */
+
+function getPlannerLanguage() {
+    const selectedLanguage =
+        window.GenesisI18n?.getLanguage?.() ||
+        document.documentElement.lang ||
+        'es';
+
+    const language = String(selectedLanguage).toLowerCase().slice(0, 2);
+
+    return plannerTranslations[language] ? language : 'es';
+}
+
+function plannerText(key) {
+    const language = getPlannerLanguage();
+
+    return plannerTranslations[language][key] ||
+        plannerTranslations.es[key] ||
+        key;
+}
+
+/* =========================================================
+   3. VALIDACIONES Y ERRORES
+   ========================================================= */
+
+function showError(inputId, messageKey) {
     const input = document.getElementById(inputId);
+
     if (!input) return;
+
     input.style.borderColor = '#ff6b6b';
+
     let errorEl = input.parentElement.querySelector('.error-msg');
+
     if (!errorEl) {
         errorEl = document.createElement('div');
         errorEl.className = 'error-msg';
         errorEl.style.color = '#ff6b6b';
         errorEl.style.fontSize = '12px';
         errorEl.style.marginTop = '5px';
+
         input.parentElement.appendChild(errorEl);
     }
-    errorEl.textContent = message;
+
+    // Guardamos la clave para poder actualizar el idioma.
+    errorEl.dataset.translationKey = messageKey;
+    errorEl.textContent = plannerText(messageKey);
 }
 
 function clearError(inputId) {
     const input = document.getElementById(inputId);
+
     if (!input) return;
+
     input.style.borderColor = '';
+
     const errorEl = input.parentElement.querySelector('.error-msg');
-    if (errorEl) errorEl.remove();
+
+    if (errorEl) {
+        errorEl.remove();
+    }
 }
+
+/* =========================================================
+   4. AUTOCOMPLETADO DE PAÍSES
+   ========================================================= */
 
 function setupAutocomplete(inputId, listId) {
     const input = document.getElementById(inputId);
     const list = document.getElementById(listId);
+
     if (!input || !list) return;
 
-    input.addEventListener('input', function() {
+    input.addEventListener('input', function () {
         clearError(inputId);
+
         const query = this.value.toLowerCase().trim();
-        if (query.length === 0) { list.classList.remove('show'); return; }
-        const filtered = countryData.filter(c => c.name.toLowerCase().includes(query) || c.code.toLowerCase().includes(query));
-        if (filtered.length === 0) { list.classList.remove('show'); return; }
-        list.innerHTML = '';
-        filtered.forEach(c => {
+
+        if (!query) {
+            list.classList.remove('show');
+            list.replaceChildren();
+            return;
+        }
+
+        const filtered = countryData.filter(country => {
+            const name = String(country.name || '').toLowerCase();
+            const code = String(country.code || '').toLowerCase();
+
+            return name.includes(query) || code.includes(query);
+        });
+
+        list.replaceChildren();
+
+        if (filtered.length === 0) {
+            list.classList.remove('show');
+            return;
+        }
+
+        filtered.forEach(country => {
             const item = document.createElement('div');
             item.className = 'autocomplete-item';
-            item.innerHTML = `<span class="flag">${c.flag}</span> ${c.name} (${c.code})`;
-            item.addEventListener('click', function() {
-                input.value = c.name;
+
+            const flag = document.createElement('span');
+            flag.className = 'flag';
+            flag.textContent = country.flag || '🌍';
+
+            const label = document.createElement('span');
+            label.textContent =
+                ` ${country.name} (${country.code})`;
+
+            item.append(flag, label);
+
+            item.addEventListener('click', function () {
+                input.value = country.name;
+
                 list.classList.remove('show');
-                input.dispatchEvent(new Event('change'));
+
+                input.dispatchEvent(
+                    new Event('change', { bubbles: true })
+                );
             });
+
             list.appendChild(item);
         });
+
         list.classList.add('show');
     });
 
-    document.addEventListener('click', function(e) {
-        if (!input.contains(e.target) && !list.contains(e.target)) list.classList.remove('show');
+    document.addEventListener('click', function (event) {
+        if (
+            !input.contains(event.target) &&
+            !list.contains(event.target)
+        ) {
+            list.classList.remove('show');
+        }
     });
 }
 
+/* =========================================================
+   5. NAVEGACIÓN ENTRE PASOS
+   ========================================================= */
+
 function showStep(stepId) {
-    document.querySelectorAll('.planner-step').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.planner-step').forEach(element => {
+        element.classList.remove('active');
+    });
+
     const step = document.getElementById(stepId);
-    if (step) step.classList.add('active');
-    document.getElementById('planner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (step) {
+        step.classList.add('active');
+    }
+
+    document.getElementById('planner')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
 }
 
-window.goToStep1 = function() { showStep('step1'); };
-
-window.goToStep2 = function() {
-    const origen = document.getElementById('origenInput').value.trim();
-    const destino = document.getElementById('destinoInput').value.trim();
-    let valid = true;
-    if (!origen) { showError('origenInput', 'Por favor, indica tu origen.'); valid = false; }
-    if (!destino) { showError('destinoInput', 'Por favor, indica tu destino.'); valid = false; }
-    if (valid) showStep('step2');
+window.goToStep1 = function () {
+    showStep('step1');
 };
 
-window.goToStep3 = function() { showStep('step3'); };
+window.goToStep2 = function () {
+    const origenInput = document.getElementById('origenInput');
+    const destinoInput = document.getElementById('destinoInput');
+
+    if (!origenInput || !destinoInput) return;
+
+    const origen = origenInput.value.trim();
+    const destino = destinoInput.value.trim();
+
+    let valid = true;
+
+    if (!origen) {
+        showError('origenInput', 'originRequired');
+        valid = false;
+    } else {
+        clearError('origenInput');
+    }
+
+    if (!destino) {
+        showError('destinoInput', 'destinationRequired');
+        valid = false;
+    } else {
+        clearError('destinoInput');
+    }
+
+    if (valid) {
+        showStep('step2');
+    }
+};
+
+window.goToStep3 = function () {
+    showStep('step3');
+};
+
+/* =========================================================
+   6. BANDERAS DE PAÍSES
+   ========================================================= */
 
 function getCountryFlag(name) {
-    const found = countryData.find(c => c.name === name);
+    const found = countryData.find(country => country.name === name);
+
     return found ? found.flag : '🌍';
 }
 
-window.showSummary = function() {
+/* =========================================================
+   7. CONSTRUCCIÓN SEGURA DEL RESUMEN
+   ========================================================= */
+
+let lastSummaryData = null;
+
+function createSummaryDetail(container, labelKey, value) {
+    const row = document.createElement('div');
+
+    const strong = document.createElement('strong');
+    strong.textContent = plannerText(labelKey) + ' ';
+
+    const content = document.createElement('span');
+    content.textContent = String(value ?? '');
+
+    row.append(strong, content);
+    container.appendChild(row);
+}
+
+function renderSummary(data) {
+    const summaryDiv = document.getElementById('summaryContent');
+
+    if (!summaryDiv || !data) return;
+
+    const fragment = document.createDocumentFragment();
+
+    // Ruta
+    const route = document.createElement('div');
+    route.className = 'route';
+
+    const origin = document.createElement('span');
+    origin.textContent = `${getCountryFlag(data.origen)} ${data.origen}`;
+
+    const arrow = document.createElement('span');
+    arrow.className = 'arrow';
+    arrow.textContent = '→';
+
+    const destination = document.createElement('span');
+    destination.textContent =
+        `${getCountryFlag(data.destino)} ${data.destino}`;
+
+    route.append(origin, arrow, destination);
+
+    // Detalles
+    const details = document.createElement('div');
+    details.className = 'details';
+
+    createSummaryDetail(
+        details,
+        'travelDate',
+        data.fechaViaje || plannerText('notSpecified')
+    );
+
+    createSummaryDetail(
+        details,
+        'returnDate',
+        data.fechaRegreso || plannerText('notSpecified')
+    );
+
+    const travelers = `${data.adultos} ${plannerText('adults')}` +
+        (Number(data.ninos) > 0
+            ? `, ${data.ninos} ${plannerText('children')}`
+            : '');
+
+    createSummaryDetail(details, 'travelers', travelers);
+    createSummaryDetail(details, 'reason', data.tipo);
+    createSummaryDetail(details, 'name', data.nombre);
+    createSummaryDetail(details, 'whatsapp', data.whatsapp);
+    createSummaryDetail(details, 'email', data.email);
+    createSummaryDetail(details, 'residence', data.residencia);
+
+    if (data.comentarios) {
+        createSummaryDetail(details, 'comments', data.comentarios);
+    }
+
+    fragment.append(route, details);
+
+    // Sustituye el contenido anterior sin interpretar HTML.
+    summaryDiv.replaceChildren(fragment);
+}
+
+/* =========================================================
+   8. VALIDACIÓN Y GENERACIÓN DEL RESUMEN
+   ========================================================= */
+
+window.showSummary = function () {
     const fields = ['nombre', 'whatsapp', 'email', 'residencia'];
+
     let valid = true;
 
     fields.forEach(field => {
-        const value = document.getElementById(field).value.trim();
-        if (!value) { showError(field, 'Este campo es obligatorio.'); valid = false; } 
-        else { clearError(field); }
+        const input = document.getElementById(field);
+
+        if (!input) {
+            valid = false;
+            return;
+        }
+
+        const value = input.value.trim();
+
+        if (!value) {
+            showError(field, 'required');
+            valid = false;
+        } else {
+            clearError(field);
+        }
     });
 
-    const email = document.getElementById('email').value.trim();
+    const emailInput = document.getElementById('email');
+
+    if (!emailInput) return;
+
+    const email = emailInput.value.trim();
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email && !emailRegex.test(email)) { showError('email', 'Ingresa un correo válido.'); valid = false; }
+
+    if (email && !emailRegex.test(email)) {
+        showError('email', 'invalidEmail');
+        valid = false;
+    }
 
     if (!valid) return;
 
-    const origen = document.getElementById('origenInput').value.trim();
-    const destino = document.getElementById('destinoInput').value.trim();
-    const fechaViaje = document.getElementById('fechaViaje').value;
-    const fechaRegreso = document.getElementById('fechaRegreso').value;
-    const adultos = document.getElementById('adultos').value;
-    const ninos = document.getElementById('ninos').value;
-    const tipoSelect = document.getElementById('tipoViaje');
-    const tipo = tipoSelect.options[tipoSelect.selectedIndex].text;
-    const nombre = document.getElementById('nombre').value.trim();
-    const whatsapp = document.getElementById('whatsapp').value.trim();
-    const residencia = document.getElementById('residencia').value.trim();
-    const comentarios = document.getElementById('comentarios').value.trim();
+    const getValue = id =>
+        document.getElementById(id)?.value.trim() || '';
 
-    const summaryDiv = document.getElementById('summaryContent');
-    summaryDiv.innerHTML = `
-        <div class="route">
-            <span>${getCountryFlag(origen)} ${origen}</span>
-            <span class="arrow">→</span>
-            <span>${getCountryFlag(destino)} ${destino}</span>
-        </div>
-        <div class="details">
-            <div><strong>📅 Fecha viaje:</strong> ${fechaViaje || 'No especificada'}</div>
-            <div><strong>📅 Regreso:</strong> ${fechaRegreso || 'No especificada'}</div>
-            <div><strong>👥 Viajeros:</strong> ${adultos} adultos${ninos > 0 ? `, ${ninos} niños` : ''}</div>
-            <div><strong>❤️ Motivo:</strong> ${tipo}</div>
-            <div><strong>👤 Nombre:</strong> ${nombre}</div>
-            <div><strong>📱 WhatsApp:</strong> ${whatsapp}</div>
-            <div><strong>📧 Email:</strong> ${email}</div>
-            <div><strong>🌍 Residencia:</strong> ${residencia}</div>
-            ${comentarios ? `<div><strong>💬 Comentarios:</strong> ${comentarios}</div>` : ''}
-        </div>
-    `;
+    const tipoSelect = document.getElementById('tipoViaje');
+
+    const tipo = tipoSelect?.selectedIndex >= 0
+        ? tipoSelect.options[tipoSelect.selectedIndex].text
+        : '';
+
+    lastSummaryData = {
+        origen: getValue('origenInput'),
+        destino: getValue('destinoInput'),
+        fechaViaje: getValue('fechaViaje'),
+        fechaRegreso: getValue('fechaRegreso'),
+        adultos: getValue('adultos'),
+        ninos: getValue('ninos'),
+        tipo,
+        nombre: getValue('nombre'),
+        whatsapp: getValue('whatsapp'),
+        email,
+        residencia: getValue('residencia'),
+        comentarios: getValue('comentarios')
+    };
+
+    renderSummary(lastSummaryData);
+
     showStep('step4');
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+/* =========================================================
+   9. INICIALIZACIÓN
+   ========================================================= */
+
+function initializePlanner() {
     setupAutocomplete('origenInput', 'origenList');
     setupAutocomplete('destinoInput', 'destinoList');
+
+    // Limpiar errores cuando el usuario corrige un campo.
+    [
+        'origenInput',
+        'destinoInput',
+        'nombre',
+        'whatsapp',
+        'email',
+        'residencia'
+    ].forEach(id => {
+        const input = document.getElementById(id);
+
+        if (!input) return;
+
+        input.addEventListener('input', () => clearError(id));
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializePlanner);
+} else {
+    initializePlanner();
+}
+
+/* =========================================================
+   10. ACTUALIZACIÓN DE IDIOMA
+   ========================================================= */
+
+document.addEventListener('genesis:languagechange', () => {
+    // Actualizar errores que ya estén visibles.
+    document.querySelectorAll('.error-msg[data-translation-key]').forEach(error => {
+        error.textContent = plannerText(error.dataset.translationKey);
+    });
+
+    // Actualizar el resumen si el usuario ya llegó al último paso.
+    if (lastSummaryData) {
+        renderSummary(lastSummaryData);
+    }
 });
