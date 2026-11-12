@@ -104,20 +104,65 @@
     <link rel="stylesheet" href="css/index.css">
     
     <style>
-        /* Estilos para los iconos dentro del formulario */
-        .input-with-icon { position: relative; }
-        .input-with-icon svg {
-            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-            width: 18px; height: 18px; stroke: var(--text-muted);
-            pointer-events: none; transition: stroke 0.3s;
-        }
-        .input-with-icon input, .input-with-icon select, .input-with-icon textarea {
-            padding-left: 40px !important;
-        }
-        .input-with-icon input:focus + svg, .input-with-icon select:focus + svg, .input-with-icon textarea:focus + svg {
-            stroke: var(--accent);
-        }
-        .input-with-icon.textarea-icon svg { top: 16px; transform: none; }
+       
+/* =========================================================
+   ICONOS DEL FORMULARIO — ALINEACIÓN PROFESIONAL
+   ========================================================= */
+
+.input-with-icon {
+    position: relative;
+}
+
+/* Etiquetas con altura consistente */
+.input-with-icon label {
+    display: block;
+    line-height: 18px;
+    margin-bottom: 6px;
+}
+
+/* Iconos centrados verticalmente dentro de los campos */
+.input-with-icon > svg {
+    position: absolute;
+    left: 14px;
+    top: 46px;
+    transform: translateY(-50%);
+
+    display: block;
+    width: 18px;
+    height: 18px;
+
+    stroke: var(--text-muted);
+    stroke-width: 1.8;
+
+    pointer-events: none;
+    transition: stroke 0.25s ease;
+
+    flex-shrink: 0;
+}
+
+/* Espacio para que el texto no choque con el icono */
+.input-with-icon input,
+.input-with-icon select,
+.input-with-icon textarea {
+    padding-left: 42px !important;
+}
+
+/* Estado activo */
+.input-with-icon:focus-within > svg {
+    stroke: var(--accent);
+}
+
+/* Icono del área de comentarios */
+.input-with-icon.textarea-icon > svg {
+    top: 68px;
+    transform: translateY(-50%);
+}
+
+/* Evitar desplazamientos por reglas globales */
+.input-with-icon > svg {
+    margin: 0;
+}
+
 
         /* ===== ESTILOS PARA LAS OPINIONES PÚBLICAS ===== */
         .review-card {
