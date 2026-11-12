@@ -1,10 +1,15 @@
+
 <!doctype html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="Encuentra hoteles y alojamientos en diferentes destinos con GÉNESIS GLOBAL. Consulta opciones disponibles mediante Booking.com y recibe asistencia por WhatsApp.">
+    <meta name="theme-color" content="#0B1020">
+
     <title>Buscar Alojamiento | GÉNESIS GLOBAL</title>
-    
+
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -13,52 +18,227 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
-    
+
     <style>
-        .hero-flights { padding: 140px 0 60px; text-align: center; }
-        .hero-flights h1 { font-size: clamp(40px, 6vw, 70px); margin: 20px 0; letter-spacing: -0.05em; }
-        .hero-flights p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 18px; line-height: 1.7; }
+        .hero-flights {
+            padding: 140px 0 60px;
+            text-align: center;
+        }
+
+        .hero-flights h1 {
+            font-size: clamp(40px, 6vw, 70px);
+            margin: 20px 0;
+            letter-spacing: -0.05em;
+        }
+
+        .hero-flights p {
+            color: var(--text-soft);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.7;
+        }
 
         .search-box {
-            background: var(--glass); border: 1px solid var(--border); border-radius: 24px;
-            padding: 40px; max-width: 1000px; margin: -30px auto 60px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4); position: relative; z-index: 10;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 1000px;
+            margin: -30px auto 60px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 10;
         }
-        
-        .search-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 15px; align-items: end; }
 
-        .input-group { display: flex; flex-direction: column; position: relative; width: 100%; }
-        .input-group label { font-size: 11px; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; margin-left: 10px; }
-        .input-group input, .input-group select {
-            background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px;
-            padding: 16px 16px 16px 45px; color: #fff; font-family: inherit; font-size: 15px;
-            outline: none; transition: all 0.3s; width: 100%;
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
         }
-        .input-group input:focus, .input-group select:focus { border-color: var(--accent); background: rgba(102, 230, 196, 0.05); }
-        .input-group svg { position: absolute; left: 15px; bottom: 16px; width: 20px; height: 20px; stroke: var(--text-muted); pointer-events: none; }
-        .input-group input:focus + svg, .input-group select:focus + svg { stroke: var(--accent); }
 
-        .search-form button { height: 54px; padding: 0 30px; font-size: 16px; border-radius: 12px; margin-bottom: 1px; white-space: nowrap; }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            width: 100%;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            margin-left: 10px;
+        }
+
+        .input-group input,
+        .input-group select {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 16px 16px 45px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--accent);
+            background: rgba(102, 230, 196, 0.05);
+        }
+
+        .input-group input:focus-visible,
+        .input-group select:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .input-group svg {
+            position: absolute;
+            left: 15px;
+            bottom: 16px;
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .input-group input:focus + svg,
+        .input-group select:focus + svg {
+            stroke: var(--accent);
+        }
+
+        .search-form button {
+            height: 54px;
+            padding: 0 30px;
+            font-size: 16px;
+            border-radius: 12px;
+            margin-bottom: 1px;
+            white-space: nowrap;
+        }
+
+        .booking-disclaimer {
+            margin-top: 25px;
+            padding: 16px 18px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(0,0,0,0.15);
+            color: var(--text-soft);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .booking-disclaimer strong {
+            color: var(--text);
+        }
+
+        .booking-disclaimer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .booking-disclaimer a:hover {
+            text-decoration: underline;
+        }
+
+        .search-status {
+            margin-top: 15px;
+            color: var(--accent);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .search-status:empty {
+            display: none;
+        }
+
+        .whatsapp-help {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            color: var(--text-soft);
+            font-size: 13px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .whatsapp-help:hover {
+            color: var(--accent);
+        }
+
+        .whatsapp-help svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
 
         @media (max-width: 900px) {
-            .search-form { grid-template-columns: 1fr; }
-            .search-form button { width: 100%; margin-top: 10px; }
-            .search-box { margin: -30px 20px 40px; padding: 30px 20px; }
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .search-form button {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .search-box {
+                margin: -30px 20px 40px;
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-flights {
+                padding: 120px 20px 50px;
+            }
+
+            .hero-flights h1 {
+                font-size: clamp(36px, 10vw, 48px);
+            }
+
+            .hero-flights p {
+                font-size: 15px;
+            }
+
+            .search-box {
+                padding: 25px 18px;
+                border-radius: 20px;
+            }
         }
     </style>
 </head>
+
 <body>
 
+    <!-- NAVEGACIÓN -->
     <nav class="nav shell" id="nav">
+
         <a href="index.html" class="brand">
             <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
-            <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
+            <span>
+                <b>GÉNESIS GLOBAL</b>
+                <small>Donde comienzan nuevas oportunidades.</small>
+            </span>
         </a>
+
         <div id="links" class="links">
             <a href="index.html">Inicio</a>
             <a href="servicios.html" style="color: var(--accent);">Servicios</a>
@@ -66,65 +246,311 @@
             <a href="nosotros.html">Nosotros</a>
             <a href="otros-servicios.html">Otros Servicios</a>
         </div>
+
         <div class="nav-actions">
-            <a href="index.html?scroll=planner" class="cta">Planificar mi viaje</a>
+            <a href="index.html?scroll=planner" class="cta">
+                Planificar mi viaje
+            </a>
         </div>
-        <button class="menu" onclick="toggleMenu()">☰</button>
+
+        <button
+            class="menu"
+            type="button"
+            onclick="toggleMenu()"
+            aria-label="Abrir menú de navegación"
+            aria-controls="links"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
+
     </nav>
 
+    <!-- HERO -->
     <section class="hero-flights shell reveal">
+
         <span class="kicker">Alojamiento</span>
-        <h1>Encuentra tu <span class="text-gradient">hotel o casa.</span></h1>
-        <p>Buscamos las mejores opciones de alojamiento para que tu estancia sea perfecta.</p>
+
+        <h1>
+            Encuentra tu <span class="text-gradient">hotel o casa.</span>
+        </h1>
+
+        <p>
+            Explora opciones de alojamiento en diferentes destinos
+            y encuentra el espacio ideal para tu próxima estancia.
+        </p>
+
     </section>
 
+    <!-- BUSCADOR -->
     <section class="shell reveal">
+
         <div class="search-box">
-            <form class="search-form" id="hotelSearchForm">
+
+            <form
+                class="search-form"
+                id="hotelSearchForm"
+                novalidate
+            >
+
+                <!-- DESTINO -->
                 <div class="input-group">
-                    <label>Destino</label>
-                    <input type="text" id="destination" placeholder="Ciudad o País" required>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+
+                    <label for="destination">Destino</label>
+
+                    <input
+                        type="text"
+                        id="destination"
+                        name="destination"
+                        placeholder="Ciudad o País"
+                        autocomplete="off"
+                        maxlength="120"
+                        required
+                        aria-describedby="searchStatus"
+                    >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+
                 </div>
+
+                <!-- LLEGADA -->
                 <div class="input-group">
-                    <label>Llegada</label>
-                    <input type="date" id="checkinDate" required>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+
+                    <label for="checkinDate">Llegada</label>
+
+                    <input
+                        type="date"
+                        id="checkinDate"
+                        name="checkin"
+                        required
+                        aria-describedby="searchStatus"
+                    >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                        <line x1="16" x2="16" y1="2" y2="6"/>
+                        <line x1="8" x2="8" y1="2" y2="6"/>
+                        <line x1="3" x2="21" y1="10" y2="10"/>
+                    </svg>
+
                 </div>
+
+                <!-- SALIDA -->
                 <div class="input-group">
-                    <label>Salida</label>
-                    <input type="date" id="checkoutDate" required>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+
+                    <label for="checkoutDate">Salida</label>
+
+                    <input
+                        type="date"
+                        id="checkoutDate"
+                        name="checkout"
+                        required
+                        aria-describedby="searchStatus"
+                    >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                        <line x1="16" x2="16" y1="2" y2="6"/>
+                        <line x1="8" x2="8" y1="2" y2="6"/>
+                        <line x1="3" x2="21" y1="10" y2="10"/>
+                    </svg>
+
                 </div>
-                <button type="submit" class="primary">Buscar Hoteles</button>
+
+                <!-- BOTÓN -->
+                <button
+                    type="submit"
+                    class="primary"
+                >
+                    Buscar Hoteles
+                </button>
+
             </form>
+
+            <!-- INFORMACIÓN SOBRE BOOKING -->
+            <div class="booking-disclaimer">
+
+                <strong>Información importante:</strong>
+
+                La búsqueda de alojamientos se realiza externamente
+                mediante Booking.com. GÉNESIS GLOBAL no gestiona
+                directamente las reservas ni garantiza precios,
+                disponibilidad o confirmaciones.
+
+                Las condiciones finales deben verificarse en
+                la plataforma de Booking.com.
+
+                <br>
+
+                <a
+                    href="https://www.booking.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Visitar Booking.com
+                </a>
+
+            </div>
+
+            <!-- ESTADO DEL BUSCADOR -->
+            <p
+                id="searchStatus"
+                class="search-status"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+            ></p>
+
+            <!-- ASISTENCIA WHATSAPP -->
+            <a
+                href="https://wa.me/18099995904?text=Hola%2C%20necesito%20asistencia%20para%20buscar%20alojamiento."
+                class="whatsapp-help"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Solicitar asistencia por WhatsApp al número general de GÉNESIS GLOBAL"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>
+                </svg>
+
+                ¿Necesitas ayuda? Contacta con nosotros por WhatsApp.
+
+            </a>
+
         </div>
+
     </section>
 
+    <!-- FOOTER -->
     <footer class="footer">
+
         <div class="shell footer-grid">
+
             <div>
+
                 <div class="brand" style="cursor:default;">
+
                     <img src="favicon-32x32.png" alt="GÉNESIS GLOBAL">
-                    <span><b>GÉNESIS GLOBAL</b><small>Donde comienzan nuevas oportunidades.</small></span>
+
+                    <span>
+                        <b>GÉNESIS GLOBAL</b>
+                        <small>Donde comienzan nuevas oportunidades.</small>
+                    </span>
+
                 </div>
-                <p style="margin-top:8px;">Conectamos destinos. Reunimos familias.</p>
+
+                <p style="margin-top:8px;">
+                    Conectamos destinos. Reunimos familias.
+                </p>
+
             </div>
+
             <div>
+
                 <h4>Empresa</h4>
-                <a href="nosotros.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Nosotros</a>
-                <a href="servicios.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">Servicios</a>
-                <a href="faq.html" style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;">FAQ</a>
+
+                <a
+                    href="nosotros.html"
+                    style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;"
+                >
+                    Nosotros
+                </a>
+
+                <a
+                    href="servicios.html"
+                    style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;"
+                >
+                    Servicios
+                </a>
+
+                <a
+                    href="faq.html"
+                    style="display:block; color: var(--text-soft); text-decoration:none; font-size:12px; padding: 4px 0;"
+                >
+                    FAQ
+                </a>
+
             </div>
+
             <div>
+
                 <h4>Contacto Directo</h4>
-                <a href="https://wa.me/5359508420" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Cuba (CEO): +53 5 9508420</a>
-                <a href="https://wa.me/554187097183" class="whatsapp-link" target="_blank" style="margin-bottom: 6px;">Brasil: +55 41 8709-7183</a>
-                <a href="https://wa.me/18099995904" class="whatsapp-link" target="_blank">WhatsApp General</a>
+
+                <a
+                    href="https://wa.me/5359508420"
+                    class="whatsapp-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="margin-bottom: 6px;"
+                >
+                    Cuba (CEO): +53 5 9508420
+                </a>
+
+                <a
+                    href="https://wa.me/554187097183"
+                    class="whatsapp-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="margin-bottom: 6px;"
+                >
+                    Brasil: +55 41 8709-7183
+                </a>
+
+                <a
+                    href="https://wa.me/18099995904"
+                    class="whatsapp-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    WhatsApp General: +1 809 999 5904
+                </a>
+
             </div>
+
         </div>
+
         <div class="shell copy">
-            <span>© 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.</span>
+
+            <span>
+                © 2026 GÉNESIS GLOBAL — Donde comienzan nuevas oportunidades.
+            </span>
+
             <span>
                 <a href="faq.html">FAQ</a> &middot;
                 <a href="help-center.html">Help Center</a> &middot;
@@ -133,27 +559,324 @@
                 <a href="cookies.html">Cookies</a> &middot;
                 <a href="newsletter.html">Newsletter</a>
             </span>
+
         </div>
+
     </footer>
 
+    <!-- JAVASCRIPT -->
     <script>
-        function toggleMenu() { document.getElementById('links').classList.toggle('open'); }
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Redirigir a Booking.com (o cualquier buscador de hoteles)
-        document.getElementById('hotelSearchForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const dest = document.getElementById('destination').value.trim();
-            const checkin = document.getElementById('checkinDate').value;
-            const checkout = document.getElementById('checkoutDate').value;
+        /* =========================================
+           NAVEGACIÓN RESPONSIVE
+        ========================================= */
 
-            // Abrir Booking.com con los datos de búsqueda
-            const bookingUrl = `https://www.booking.com/searchresults.es.html?ss=${encodeURIComponent(dest)}&checkin=${checkin}&checkout=${checkout}`;
-            window.open(bookingUrl, '_blank');
-        });
+        function toggleMenu() {
+
+            const links = document.getElementById('links');
+            const menuButton = document.querySelector('.menu');
+
+            if (!links || !menuButton) return;
+
+            const isOpen = links.classList.toggle('open');
+
+            menuButton.setAttribute(
+                'aria-expanded',
+                String(isOpen)
+            );
+
+            menuButton.setAttribute(
+                'aria-label',
+                isOpen
+                    ? 'Cerrar menú de navegación'
+                    : 'Abrir menú de navegación'
+            );
+
+        }
+
+
+        /* =========================================
+           ANIMACIONES REVEAL
+        ========================================= */
+
+        if ('IntersectionObserver' in window) {
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+
+                    entries.forEach(entry => {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add('show');
+
+                            observer.unobserve(entry.target);
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.1
+                }
+            );
+
+            document.querySelectorAll('.reveal').forEach(el => {
+
+                observer.observe(el);
+
+            });
+
+        } else {
+
+            document.querySelectorAll('.reveal').forEach(el => {
+
+                el.classList.add('show');
+
+            });
+
+        }
+
+
+        /* =========================================
+           BUSCADOR DE ALOJAMIENTOS
+           BOOKING.COM
+        ========================================= */
+
+        const hotelForm = document.getElementById('hotelSearchForm');
+
+        const destinationInput = document.getElementById('destination');
+
+        const checkinInput = document.getElementById('checkinDate');
+
+        const checkoutInput = document.getElementById('checkoutDate');
+
+        const searchStatus = document.getElementById('searchStatus');
+
+
+        /* Obtener fecha local sin problemas de zona horaria */
+
+        function getLocalDate(date = new Date()) {
+
+            const year = date.getFullYear();
+
+            const month = String(
+                date.getMonth() + 1
+            ).padStart(2, '0');
+
+            const day = String(
+                date.getDate()
+            ).padStart(2, '0');
+
+            return `${year}-${month}-${day}`;
+
+        }
+
+
+        /* Calcular el día siguiente */
+
+        function getNextDay(dateString) {
+
+            if (!dateString) return '';
+
+            const [year, month, day] = dateString
+                .split('-')
+                .map(Number);
+
+            const date = new Date(
+                year,
+                month - 1,
+                day
+            );
+
+            date.setDate(date.getDate() + 1);
+
+            return getLocalDate(date);
+
+        }
+
+
+        /* Actualizar restricciones de fechas */
+
+        function updateDateConstraints() {
+
+            const today = getLocalDate();
+
+            checkinInput.min = today;
+
+            const minimumCheckout = checkinInput.value
+                ? getNextDay(checkinInput.value)
+                : getNextDay(today);
+
+            checkoutInput.min = minimumCheckout;
+
+            /* Validar llegada */
+
+            if (
+                checkinInput.value &&
+                checkinInput.value < today
+            ) {
+
+                checkinInput.setCustomValidity(
+                    'La fecha de llegada no puede ser anterior a hoy.'
+                );
+
+            } else {
+
+                checkinInput.setCustomValidity('');
+
+            }
+
+            /* Validar salida */
+
+            if (
+                checkinInput.value &&
+                checkoutInput.value &&
+                checkoutInput.value <= checkinInput.value
+            ) {
+
+                checkoutInput.setCustomValidity(
+                    'La salida debe ser posterior a la fecha de llegada.'
+                );
+
+            } else if (
+                checkoutInput.value &&
+                checkoutInput.value < today
+            ) {
+
+                checkoutInput.setCustomValidity(
+                    'La fecha de salida no puede ser anterior a hoy.'
+                );
+
+            } else {
+
+                checkoutInput.setCustomValidity('');
+
+            }
+
+        }
+
+
+        /* Inicializar restricciones */
+
+        updateDateConstraints();
+
+
+        /* Actualizar validaciones al modificar fechas */
+
+        checkinInput.addEventListener(
+            'change',
+            updateDateConstraints
+        );
+
+        checkoutInput.addEventListener(
+            'change',
+            updateDateConstraints
+        );
+
+
+        /* Validar destino sin espacios */
+
+        destinationInput.addEventListener(
+            'input',
+            function () {
+
+                destinationInput.setCustomValidity(
+                    destinationInput.value.trim()
+                        ? ''
+                        : 'Introduce una ciudad o país de destino.'
+                );
+
+            }
+        );
+
+
+        /* =========================================
+           ENVIAR BÚSQUEDA A BOOKING.COM
+        ========================================= */
+
+        hotelForm.addEventListener(
+            'submit',
+            function (event) {
+
+                event.preventDefault();
+
+                searchStatus.textContent = '';
+
+                updateDateConstraints();
+
+                destinationInput.setCustomValidity(
+                    destinationInput.value.trim()
+                        ? ''
+                        : 'Introduce una ciudad o país de destino.'
+                );
+
+                /* Validación HTML */
+
+                if (!hotelForm.reportValidity()) {
+
+                    return;
+
+                }
+
+                const destination = destinationInput.value.trim();
+
+                const checkin = checkinInput.value;
+
+                const checkout = checkoutInput.value;
+
+                /* Validación adicional de fechas */
+
+                if (
+                    !checkin ||
+                    !checkout ||
+                    checkout <= checkin
+                ) {
+
+                    checkoutInput.setCustomValidity(
+                        'La salida debe ser posterior a la llegada.'
+                    );
+
+                    checkoutInput.reportValidity();
+
+                    return;
+
+                }
+
+                /* Construir parámetros de Booking */
+
+                const params = new URLSearchParams({
+
+                    ss: destination,
+
+                    checkin: checkin,
+
+                    checkout: checkout
+
+                });
+
+                const bookingUrl =
+                    'https://www.booking.com/searchresults.es.html?' +
+                    params.toString();
+
+                /* Informar al usuario */
+
+                searchStatus.textContent =
+                    'Tu búsqueda está preparada. Se abrirá Booking.com en una nueva pestaña. La disponibilidad y las reservas se gestionan directamente en esa plataforma.';
+
+                /* Abrir Booking de forma segura */
+
+                window.open(
+                    bookingUrl,
+                    '_blank',
+                    'noopener,noreferrer'
+                );
+
+            }
+        );
+
     </script>
+
 </body>
 </html>
